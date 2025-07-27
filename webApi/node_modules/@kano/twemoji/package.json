@@ -1,0 +1,9 @@
+{
+  "name": "@kano/twemoji",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "A copy of twemoji with exports and typescript definitions",
+  "repository": "git@github.com:KanoComputing/twemoji-min.git",
+  "author": "Paul Varache <paul@kano.me>",
+  "license": "MIT"
+}
