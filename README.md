@@ -7,6 +7,7 @@
 
 <img width="1184" height="914" alt="Screenshot from 2025-07-30 20-55-02" src="https://github.com/user-attachments/assets/df6a51d4-b4d5-4626-aa1c-ef898d8e0b41" />
 
+![policy_AI_COMPLETE(1)](https://github.com/user-attachments/assets/57e2423f-e109-4f3d-894e-e71b5cea100c)
 
 
 # Pipeline Flow Explanation
