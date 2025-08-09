@@ -82,11 +82,16 @@ export class LiveResearchChatBot extends PsChatAssistant {
 
   private handleWebSocketMessage(message: any): void {
     // Handle other WebSocket messages from the server
-    // This can be extended based on your needs
-    if (message.type === 'stream' || message.type === 'message') {
-      // Handle streaming messages or other types
-      console.log('Received message:', message);
-    }
+    console.log('Received WebSocket message:', message);
+    
+    // Forward all non-clientId messages to parent's message handler
+    // The parent class expects a MessageEvent object
+    const mockEvent = {
+      data: JSON.stringify(message)
+    } as MessageEvent;
+    
+    // Call parent's onMessage method to handle chat responses
+    this.onMessage(mockEvent);
   }
 
   static override get styles() {
