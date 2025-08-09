@@ -7,8 +7,9 @@ import { terser } from 'rollup-plugin-terser';
 //import { generateSW } from 'rollup-plugin-workbox';
 //import analyze from 'rollup-plugin-analyzer';
 import replace from '@rollup/plugin-replace';
-import pkg from './package.json';
-const commonjs = require('rollup-plugin-commonjs');
+import { readFileSync } from 'fs';
+const pkg = JSON.parse(readFileSync('./package.json', 'utf8'));
+import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 
 function getCustomVersion(version) {

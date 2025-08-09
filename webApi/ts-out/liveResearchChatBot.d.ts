@@ -1,9 +1,11 @@
 import { PsBaseChatBot } from "@policysynth/api/base/chat/baseChatBot.js";
+import WebSocket from 'ws';
 export declare class LiveResearchChatBot extends PsBaseChatBot {
     numberOfQueriesToGenerate: number;
     percentOfQueriesToSearch: number;
     percentOfResultsToScan: number;
     persistMemory: boolean;
+    constructor(wsClientId: string, wsClients: Map<string, WebSocket>, memoryId?: string);
     summarySystemPrompt: string;
     jsonWebPageResearchSchema: string;
     renderFollowupSystemPrompt(): string;

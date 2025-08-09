@@ -25,20 +25,31 @@ export class LiveResearchChatBot extends PsChatAssistant {
 
   serverApi: ResearchServerApi;
 
+  // Override parent WebSocket initialization to prevent conflicts
+  override initWebSockets(): void {
+    console.log('initWebSockets called - using custom WebSocket');
+    // Use our custom WebSocket initialization instead of parent's
+    this.initializeWebSocketConnection();
+  }
+
+  // Override to prevent parent from closing our WebSocket
+  override disconnectedCallback(): void {
+    console.log('disconnectedCallback called - keeping WebSocket open');
+    // Call parent but don't let it close our WebSocket
+    // super.disconnectedCallback();
+  }
+
   override connectedCallback(): void {
     super.connectedCallback(); 
     this.defaultInfoMessage = this.t("I'm your helpful web research assistant");
     this.textInputLabel = this.t('Please state your research question.');
     
     this.serverApi = new ResearchServerApi();
-    
-    // Initialize WebSocket connection if not already done
-    //this.initializeWebSocketConnection();
   }
 
   private initializeWebSocketConnection(): void {
     if (!this.wsClientId) {
-      const wsUrl = `ws://localhost:${this.defaultDevWsPort}`;
+      const wsUrl = `ws://localhost:${this.defaultDevWsPort}/ws`;
       console.log('Connecting to WebSocket:', wsUrl);
       
       this.ws = new WebSocket(wsUrl);
@@ -52,25 +63,28 @@ export class LiveResearchChatBot extends PsChatAssistant {
           const message = JSON.parse(event.data);
           console.log('WebSocket message received:', message);
           
-          if (message.type === 'clientId') {
-            this.wsClientId = message.data;
+          if (message.clientId) {
+            this.wsClientId = message.clientId;
             console.log('WebSocket client ID set:', this.wsClientId);
-          } else {
-            // Handle other message types as needed
-            this.handleWebSocketMessage(message);
+            console.log('Chat bot is now ready to send messages!');
           }
+          
+          // Always forward messages to parent handler (including clientId)
+          this.handleWebSocketMessage(message);
         } catch (error) {
           console.error('Error parsing WebSocket message:', error);
         }
       };
       
-      this.ws.onclose = () => {
-        console.log('WebSocket disconnected');
+      this.ws.onclose = (event) => {
+        console.log('WebSocket disconnected - code:', event.code, 'reason:', event.reason);
+        console.log('wsClientId at disconnect:', this.wsClientId);
+        // Clear the clientId since connection is lost
+        this.wsClientId = '';
         // Attempt to reconnect after a delay
         setTimeout(() => {
-          if (!this.wsClientId) {
-            this.initializeWebSocketConnection();
-          }
+          console.log('Attempting reconnection...');
+          this.initializeWebSocketConnection();
         }, 3000);
       };
       
@@ -114,6 +128,12 @@ export class LiveResearchChatBot extends PsChatAssistant {
   }
 
   override async sendChatMessage() {
+    // Ensure WebSocket is connected and wsClientId is set
+    if (!this.wsClientId) {
+      console.error('WebSocket not connected yet. Please wait for connection to establish.');
+      return;
+    }
+
     const userMessage = this.chatInputField!.value;
     if (this.chatLog.length === 0) {
       this.fire('start-process');
@@ -122,6 +142,8 @@ export class LiveResearchChatBot extends PsChatAssistant {
 
     this.addUserChatBotMessage(userMessage);
 
+    console.log('Sending conversation request with wsClientId:', this.wsClientId);
+    
     await this.serverApi.conversation(
       this.serverMemoryId,
       this.simplifiedChatLog,

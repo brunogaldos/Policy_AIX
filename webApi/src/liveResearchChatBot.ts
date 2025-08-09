@@ -1,4 +1,5 @@
 import { PsBaseChatBot } from "@policysynth/api/base/chat/baseChatBot.js";
+import WebSocket from 'ws';
 
 import { SearchQueriesRanker } from "@policysynth/agents/webResearch/searchQueriesRanker.js";
 import { SearchQueriesGenerator } from "@policysynth/agents/webResearch/searchQueriesGenerator.js";
@@ -13,13 +14,25 @@ export class LiveResearchChatBot extends PsBaseChatBot {
   percentOfResultsToScan = 0.25;
   persistMemory = true;
 
+  constructor(
+    wsClientId: string,
+    wsClients: Map<string, WebSocket>,
+    memoryId?: string
+  ) {
+    console.log("Inside PsBaseChatBot constructor:");
+    console.log("wsClientId:", wsClientId);
+    console.log("wsClients Map keys:", Array.from(wsClients.keys()));
+    
+    super(wsClientId, wsClients, memoryId);
+  }
+
   summarySystemPrompt = `Please analyse those sources step by step and provide a summary of the most relevant information.
     Provide links to the original webpages, if they are relevant, in markdown format as citations.
   `;
 
   // For directing the LLMs to focus on the most relevant parts of each web page
   jsonWebPageResearchSchema = `
-    //MOST IMPORTANT INSTRUCTIONS: You are a researchers for the Skills First project and we are looking for any information that can help us identify law or regulations that are barriers to Skills First policies in New Jersey.
+    //MOST IMPORTANT INSTRUCTIONS: You are a researchers for the Skills First project and we are looking for any information that can help us identify law or regulations that are barriers to Skills First policies in the area or city from the query.
     {
       potentialSourcesOfInformationAboutBarriersToSkillsFirstPolicies: string[],
       potentialDescriptionOfBarriersToSkillsFirstPolicies: string[],
