@@ -1,9 +1,8 @@
-import { PolicySynthApiApp } from '@policysynth/api/app.js';
 import { AnalyticsController } from '@policysynth/api/controllers/analyticsController.js';
-
+import { CustomPolicySynthApiApp } from './customApp.js';
 import { LiveResearchChatController } from './controllers/liveResearchChatController.js';
 
-const app = new PolicySynthApiApp(
+const app = new CustomPolicySynthApiApp(
   [
     AnalyticsController,
     LiveResearchChatController

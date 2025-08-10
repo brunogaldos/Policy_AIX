@@ -1,0 +1,1 @@
+{"version":3,"file":"customApp.d.ts","sourceRoot":"","sources":["../src/customApp.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,iBAAiB,EAAE,MAAM,yBAAyB,CAAC;AAG5D,qBAAa,uBAAwB,SAAQ,iBAAiB;gBAChD,WAAW,EAAE,GAAG,EAAE,EAAE,IAAI,CAAC,EAAE,MAAM;IAY7C,OAAO,CAAC,cAAc;CAiFvB"}

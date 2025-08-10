@@ -5,7 +5,16 @@ export class LiveResearchChatController extends BaseController {
     constructor(wsClients) {
         super(wsClients);
         this.path = "/api/live_research_chat";
+        this.testCors = async (req, res) => {
+            console.log(`🧪 CORS test request from origin: ${req.headers.origin}`);
+            res.json({
+                message: "CORS test successful",
+                origin: req.headers.origin,
+                timestamp: new Date().toISOString()
+            });
+        };
         this.getChatLog = async (req, res) => {
+            console.log(`🔍 GET request to ${req.path} from origin: ${req.headers.origin}`);
             const memoryId = req.params.memoryId;
             let chatLog;
             let totalCosts;
@@ -26,6 +35,7 @@ export class LiveResearchChatController extends BaseController {
             catch (error) {
                 console.log(error);
                 res.sendStatus(500);
+                return;
             }
             if (chatLog) {
                 res.send({ chatLog, totalCosts });
@@ -35,12 +45,25 @@ export class LiveResearchChatController extends BaseController {
             }
         };
         this.liveResearchChat = async (req, res) => {
-            const chatLog = req.body.chatLog;
+            console.log(`🔍 PUT request to ${req.path} from origin: ${req.headers.origin}`);
+            console.log(`📋 Request headers:`, JSON.stringify(req.headers, null, 2));
+            console.log(`📦 Request body:`, JSON.stringify(req.body, null, 2));
+            const chatLog = req.body.chatLog || [];
             const wsClientId = req.body.wsClientId;
             const memoryId = req.body.memoryId;
-            const numberOfSelectQueries = req.body.numberOfSelectQueries;
-            const percentOfTopQueriesToSearch = req.body.percentOfTopQueriesToSearch;
-            const percentOfTopResultsToScan = req.body.percentOfTopResultsToScan;
+            const numberOfSelectQueries = req.body.numberOfSelectQueries || 5;
+            const percentOfTopQueriesToSearch = req.body.percentOfTopQueriesToSearch || 0.25;
+            const percentOfTopResultsToScan = req.body.percentOfTopResultsToScan || 0.25;
+            // For testing purposes, allow requests without wsClientId
+            if (!wsClientId) {
+                console.log('⚠️ No wsClientId provided - this is a test request');
+                res.status(200).json({
+                    message: "Test request received successfully",
+                    note: "For full functionality, establish WebSocket connection first",
+                    timestamp: new Date().toISOString()
+                });
+                return;
+            }
             let saveChatLog;
             try {
                 const bot = new LiveResearchChatBot(wsClientId, this.wsClients, memoryId);
@@ -55,6 +78,7 @@ export class LiveResearchChatController extends BaseController {
             catch (error) {
                 console.log(error);
                 res.sendStatus(500);
+                return;
             }
             console.log(`LiveResearchChatController for id ${wsClientId} initialized chatLog of length ${chatLog?.length}`);
             if (saveChatLog) {
@@ -69,5 +93,6 @@ export class LiveResearchChatController extends BaseController {
     async initializeRoutes() {
         this.router.put(this.path + "/", this.liveResearchChat);
         this.router.get(this.path + "/:memoryId", this.getChatLog);
+        this.router.get(this.path + "/test", this.testCors); // Add test endpoint
     }
 }

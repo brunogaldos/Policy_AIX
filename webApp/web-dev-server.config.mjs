@@ -31,7 +31,8 @@ export default /** @type {import('@web/dev-server').DevServerConfig} */ ({
   middleware: [
     proxy('/api/', {
       target: 'http://localhost:5029/',
-      //changeOrigin: true
+      changeOrigin: true,
+      logLevel: 'debug'
     })
   ],
 });

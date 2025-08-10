@@ -88,11 +88,8 @@ export class LiveResearchChatBot extends PsBaseChatBot {
         Math.floor(rankedSearchQueries.length * this.percentOfQueriesToSearch)
       );
 
-      // Add "New Jersey" to the each search query
-      //TODO: Do not hard code "New Jersey"
-      queriesToSearch.forEach((query) => {
-        query += " New Jersey";
-      });
+      // Note: Removed hardcoded "New Jersey" filter to make research more general
+      // queriesToSearch can now be used as-is without location filtering
 
       // Search the web
       this.sendAgentStart("Searching the Web...");
