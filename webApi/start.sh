@@ -1,4 +1,29 @@
 #!/usr/bin/env bash
+
+echo "🧹 Cleaning up existing processes..."
+
+# Kill any existing Node.js processes on port 5029
+echo "   Killing processes on port 5029..."
+pkill -f "node.*5029" || true
+pkill -f "nodemon.*5029" || true
+
+# Kill any existing Node.js server processes
+echo "   Killing existing Node.js server processes..."
+pkill -f "node.*server.js" || true
+pkill -f "nodemon.*server.js" || true
+
+# Kill any processes using the WebSocket port
+echo "   Killing WebSocket processes..."
+pkill -f "ws.*5029" || true
+
+# Wait a moment for processes to fully terminate
+sleep 2
+
+echo "✅ Cleanup complete!"
+
+docker compose up -d
+sleep 5
+
 set -euo pipefail
 
 # Load variables from .env file (if it exists)
