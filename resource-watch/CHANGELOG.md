@@ -1,0 +1,784 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+
+## [3.X.X] - 2023-X-X
+### Added
+
+### Changed
+
+### Fixed
+
+### Removed
+
+## [3.6.0] - 2023-06-07
+### Added
+- Support for deck.gl layers: tileLayers with DecodedRasterLayer [RW-138](https://vizzuality.atlassian.net/browse/RW-138)
+- rich schema script for specific datasets. [RW-141](https://vizzuality.atlassian.net/browse/RW-141)
+
+### Changed
+- updates default Pardot URL to custom one.[RW-8](https://gfw.atlassian.net/browse/RW-8)
+- dataset fetching determined by `NEXT_PUBLIC_ENVS_SHOW` environmental variable.
+- bump `moment@2.29.3`.
+- Coral Reefs dashboard: text changes. [RW-137](https://vizzuality.atlassian.net/browse/RW-137)
+- bump `next@12.1.6`.
+
+### Fixed
+- `/embed/map/{widget_id}` and `/data/widget/{widget_id}` routes take into account latitude/longitude values set in widget configuration. [RW-3](https://gfw.atlassian.net/browse/RW-3)
+- map overlay style that prevented a user could draw on the map.
+- typo in published layers checkbox. [RW-146](https://vizzuality.atlassian.net/browse/RW-146)
+- Explore: fixes navigation when a user clicks on "All datasets" button after searching. Now the search results remain. [RW-87](https://vizzuality.atlassian.net/browse/RW-87)
+
+### Removed
+- removes previous/deprecated versions of Google Analytics scripts and environmental variables, keeping a single GTM container. [RW-17](https://gfw.atlassian.net/browse/RW-17)
+- removes Planet Pulse page. [RW-149](https://vizzuality.atlassian.net/browse/RW-149)
+- removes user survey. [RW-142](https://vizzuality.atlassian.net/browse/RW-142)
+- removes unused `resetFiltersSelected` action.
+- removes `isServer` state in redux and its action/reducer.
+- removes `chroma-js`.
+- removes `react-input-autosize`.
+- removes `react-fast-compare`.
+- removes `react-dates`.
+
+## [3.5.0] - 2022-05-03
+### Added
+- survey modal. [RW-135](https://vizzuality.atlassian.net/browse/RW-135)
+- new content to Coral Reefs dashboard. [RW-128](https://vizzuality.atlassian.net/browse/RW-128)
+- canonical URL to explore pages. [RW-127](https://vizzuality.atlassian.net/browse/RW-127)
+- meta tag to not index explore page for unpublished datasets. [RW-126](https://vizzuality.atlassian.net/browse/RW-126)
+- ocean watch: responsive homepage. [OW-209](https://vizzuality.atlassian.net/browse/OW-209)
+- geostore names to widget titles.
+- custom "no data" for set of indicators. [OW-179](https://vizzuality.atlassian.net/browse/OW-179)
+
+### Changed
+- removes noindex meta tag in development.
+- ocean watch: removes `the World` in country index page.
+- ocean watch: removes `the World` from coastline options list.
+- moves native `scripts` to NextJS scripts.
+- updates `eslint@8.9.0` and other linters and plugins.
+- `next@12.1.0`
+- disables robot crawling for staging and preproduction sites.
+- updates Coral Reefs calls to action. [OW-29](https://vizzuality.atlassian.net/browse/OW-29)
+- `next@12.0.10`
+
+### Fixed
+- async issue adding/removing resources from a collection or favorites. [RW-93](https://vizzuality.atlassian.net/browse/RW-93)
+- ocean watch: highlight of "Coastal Profile" tab.
+- highlighting of navigation bar based on current page. [RW-92](https://vizzuality.atlassian.net/browse/RW-92)
+- storybook: star icon appearing in widget header. [RW-78](https://vizzuality.atlassian.net/browse/RW-78)
+- wrong attributes sent to the user data creation endpoint.
+- my visualizations: fixes PDF download. [OW-125](https://vizzuality.atlassian.net/browse/OW-125)
+- explore: area of interest handling. [RW-120](https://vizzuality.atlassian.net/browse/RW-120)
+
+### Removed
+- reset password page. [RW-72](https://vizzuality.atlassian.net/browse/RW-72)
+
+## [3.4.0] - 2022-01-27
+### Added
+- Google Tag Manager container ID. [RW-136](https://vizzuality.atlassian.net/browse/RW-136)
+- support for attributions in maps. [RW-77](https://vizzuality.atlassian.net/browse/RW-77)
+- interception to handle requests from Global Fishing Watch. [RW-117](https://vizzuality.atlassian.net/browse/RW-117)
+- 'FeatureService' provider for Layer Manager. [RW-114](https://vizzuality.atlassian.net/browse/RW-114)
+- `WMS` provider for Layer Manager. [RW-113](https://vizzuality.atlassian.net/browse/RW-113)
+- `tailwindcss` framework.
+
+### Changed
+- `yarn@3`
+- disables encoding params for embeds and dashboards. [RW-115](https://vizzuality.atlassian.net/browse/RW-115)
+- disables widget alerts.
+- migrates widgets to Typescript.
+- unifies Ocean Watch widgets with the rest of dashboards. [RW-101](https://vizzuality.atlassian.net/browse/RW-101)
+- `widget-editor@2.6.5` (Mapbox release) [RW-110](https://vizzuality.atlassian.net/browse/RW-110)
+- map labels change according to selected basemap.
+- makes changes in admin to preview layers with new spec. [RW-103](https://vizzuality.atlassian.net/browse/RW-103)
+- updates standalone Area of Interest layer specs to match new layer specification. [RW-99](https://vizzuality.atlassian.net/browse/RW-99)[RW-97](https://vizzuality.atlassian.net/browse/RW-97)[RW-102](https://vizzuality.atlassian.net/browse/RW-102)
+- makes map's `onMapViewportChange` function optional.	
+- `webpack 5` and `next@12`
+- improved styles for widget captions. [OW-164](https://vizzuality.atlassian.net/browse/OW-164)
+
+### Fixed
+- Ocean Watch: water quality basins interactivity. [OW-201](https://vizzuality.atlassian.net/browse/OW-201)
+- map thumbnails: concatenation when a tile query includes single comma. [RW-108](https://vizzuality.atlassian.net/browse/RW-108)
+- Ocean Watch: tooltip overlapping click on map. [OW-175](https://vizzuality.atlassian.net/browse/OW-175)
+- Ocean Watch: false error in Climate NDC indicator when query is empty. [OW-193](https://vizzuality.atlassian.net/browse/OW-193)
+- planet pulse: removes conditional Cesium script load. [RW-106](https://vizzuality.atlassian.net/browse/RW-106)
+- mini-explore: layer interactivity. [OW-185](https://vizzuality.atlassian.net/browse/OW-185)
+
+### Removed
+- `polyfill`, `leaflet-utfgrid`, `promise.prototype.finally`, `whatwg-fetch` dependencies.
+- Leaflet CSS stylesheets and other styles related to Leaflet.
+- removed Carto verification when an admin creates/edits a layer. [RW-103](https://vizzuality.atlassian.net/browse/RW-103)
+
+## [3.3.0] - 2021-11-11
+### Added
+- zoom controls to map-slide type widgets. [OW-101](https://vizzuality.atlassian.net/browse/OW-101)
+- Hidden field to newsletter to identify users coming from Ocean Watch pages. [OW-181](https://vizzuality.atlassian.net/browse/OW-181)
+- Ability to remove border styles of Area of Interest layer. [OW-91](https://vizzuality.atlassian.net/browse/OW-91)
+
+### Changed
+- allows string as indicator score. [OW-194](https://vizzuality.atlassian.net/browse/OW-194)
+- hides boundaries of map selector in Ocean Watch homepage. [OW-192](https://vizzuality.atlassian.net/browse/OW-192)
+- ability to hide boundaries controls in maps. [OW-192](https://vizzuality.atlassian.net/browse/OW-192)
+- boundaries disabled by default in map slides. [OW-192](https://vizzuality.atlassian.net/browse/OW-192)
+- enforces layer activeness in map/map-swipe widgets regardless its configuration.
+- `@vizzuality/wysiwyg@3.1.4` [RW-74](https://vizzuality.atlassian.net/browse/RW-74)
+
+### Fixed
+- mini-explore: swapping layers in dataset. [OW-159](https://vizzuality.atlassian.net/browse/OW-159)
+- invalid score (NaN) in Ocean Watch widget. [OW-167](https://vizzuality.atlassian.net/browse/OW-167)
+- explore URL to embed (/embed/data/explore) now supports (optionally) selected dataset when sharing. [RW-88](https://vizzuality.atlassian.net/browse/RW-88)
+- restores old endpoint to render embed map-swipes without a widget. [RW-89](https://vizzuality.atlassian.net/browse/RW-89)
+
+
+
+## [3.2.0] - 2021-10-06
+### Added
+- redirect from `/dashboards/ocean` to `/dashboards/ocean-watch`.
+- Ocean Watch: Ocean Watch beta. [OW-171](https://vizzuality.atlassian.net/browse/OW-171)
+- Ocean Watch: analytics events. [OW-76](https://vizzuality.atlassian.net/browse/OW-76)
+- Ocean Watch: added OW partners carousel to several pages.
+- Ocean Watch: populates about page with API content. [OW-63](https://vizzuality.atlassian.net/browse/OW-63)
+- Ocean Watch: setup of about page. [OW-21](https://vizzuality.atlassian.net/browse/OW-21)
+- Ocean Watch: custom anchor titles. [OW-146](https://vizzuality.atlassian.net/browse/OW-146)
+- embeds: map-swipe widgets. [OW-121](https://vizzuality.atlassian.net/browse/OW-121)
+- Ocean watch country page: text blocks. [OW-123](https://vizzuality.atlassian.net/browse/OW-123)
+- Ocean Watch storytelling: worldwide geostore.
+- Ocean Watch storytelling: added "back to top" button. [OW-106](https://vizzuality.atlassian.net/browse/OW-106)
+- Ocean Watch country page: collapsible mini-explore. [OW-102](https://vizzuality.atlassian.net/browse/OW-102)
+- Ocean Watch country page: anchors. [OW-20](https://vizzuality.atlassian.net/browse/OW-20)
+- Ocean Watch country page introduction: increases size of the country selector. [OW-108](https://vizzuality.atlassian.net/browse/OW-108)
+- Ocean Watch country page introduction: map image. [OW-107](https://vizzuality.atlassian.net/browse/OW-107)
+- Ocean Watch country page: texts. [OW-110](https://vizzuality.atlassian.net/browse/OW-110)
+- Ocean watch introduction: texts. [OW-109](https://vizzuality.atlassian.net/browse/OW-109)
+- Ocean watch country page: call to action suggest a story [OW-41](https://vizzuality.atlassian.net/browse/OW-41)
+- Ocean watch country page: call to action data contribution/request [OW-38](https://vizzuality.atlassian.net/browse/OW-38)
+- Ocean watch country page: call to action to go to general explore page [OW-32](https://vizzuality.atlassian.net/browse/OW-32)
+- Ocean Watch storytelling: add skip to countries button. [OW-105](https://vizzuality.atlassian.net/browse/OW-105)
+- dim effect to banners.
+- Ocean Watch introduction: call to action suggest a story [OW-39](https://vizzuality.atlassian.net/browse/OW-39)
+- Ocean Watch introduction: call to action data contribution/request [OW-36](https://vizzuality.atlassian.net/browse/OW-36)
+- Ocean Watch introduction: call to action to go to general explore page  [OW-28](https://vizzuality.atlassian.net/browse/OW-28)
+- Ocean Watch introduction: call to action to go to coral reefs dashboard [OW-30](https://vizzuality.atlassian.net/browse/OW-30)
+- Area of Interest preview when user uploads a file. [RW-68](https://vizzuality.atlassian.net/browse/RW-68)
+- Ocean Watch: River Water Quality section. [OW-68](https://vizzuality.atlassian.net/browse/OW-68)
+- show/hide area of interest by zoom level. [OW-90](https://vizzuality.atlassian.net/browse/OW-90)
+- Ocean Watch: mask layer. [OW-99](https://vizzuality.atlassian.net/browse/OW-99)
+- Ocean Watch: map swipe widget with support for multiple layers. [OW-87](https://vizzuality.atlassian.net/browse/OW-87)
+- Ocean Watch: custom opacity per layer in map-type widgets. [OW-86](https://vizzuality.atlassian.net/browse/OW-86)
+- Ocean Watch: widget parametrization.
+- Ocean Watch: loads available countries and their geometries. [OW-49](https://vizzuality.atlassian.net/browse/OW-83)
+- Ocean Watch: indicators set in introduction page. [OW-49](https://vizzuality.atlassian.net/browse/OW-49)
+- Storybook.
+- Ocean Watch: indicators set in country profiles pages. [OW-74](https://vizzuality.atlassian.net/browse/OW-74)
+- explore – my data: Pardot form. [RW-39](https://vizzuality.atlassian.net/browse/RW-39)
+- Ocean Watch configuration file.
+- Ocean Watch: Isolated mini Explore component. [OW-77](https://vizzuality.atlassian.net/browse/OW-77)
+- logic to render mini Explore component through WYSIWYG editor.
+- `@artsy/fresnel` package to handle responsive.
+- Ocean Watch: partners page. [OW-23](https://vizzuality.atlassian.net/browse/OW-23)
+- Ocean Watch: basic dashboard structure. [OW-26](https://vizzuality.atlassian.net/browse/OW-26)
+- Ocean Watch: initial routes. [OW-54](https://vizzuality.atlassian.net/browse/OW-54)
+- Ocean Watch: adds new type of partners. [OW-56](https://vizzuality.atlassian.net/browse/OW-56)
+
+
+### Changed
+- updates links pointing to old Ocean dashboard to point to new Ocean Watch dashboard.
+- Ocean Watch: changed texts and links of "Suggest a Story" banner. [OW-129](https://vizzuality.atlassian.net/browse/OW-129)
+- Ocean Watch storytelling: increases map zoom one level. [OW-113](https://vizzuality.atlassian.net/browse/OW-113)
+- `redux@4.1.0`
+- `react-redux@7.2.4`
+- Ocean Watch: updated texts from Partners page. [OW-24](https://vizzuality.atlassian.net/browse/OW-24)
+- optional Redis client locally.
+- widget-editor@2.6.2
+- relocates pages according to Next's dynamic routes. [RW-52](https://vizzuality.atlassian.net/browse/RW-52)
+- replaces `next-routes` links and router with `next/link` and `next/router` packages. [RW-54](https://vizzuality.atlassian.net/browse/RW-54)
+
+
+### Fixed
+- mini-explore/mini-explore-widgets: interactivity based on id field presence. [OW-155](https://vizzuality.atlassian.net/browse/OW-155)
+- feedback button in preproduction environment. [OW-163](https://vizzuality.atlassian.net/browse/OW-163)
+- mini-explore-widgets: missing initial placeholder. [OW-147](https://vizzuality.atlassian.net/browse/OW-147)
+- wrong pathname route when the explore tries to reflect its state in the URL. [RW-82](https://vizzuality.atlassian.net/browse/RW-82)
+- WYSIWYG: removes mini-explore button from toolbar. [RW-74](https://vizzuality.atlassian.net/browse/RW-74)
+- opacity 0 couldn't be applied to layer. [OW-94](https://vizzuality.atlassian.net/browse/OW-94)
+- data explore: areas of interest not loading.[RW-67](https://vizzuality.atlassian.net/browse/RW-67)
+- mini-explore: USA and World boundaries.
+- warning with dashboard links.
+- fixes search place in Explore map. [RW-58](https://vizzuality.atlassian.net/browse/RW-58)
+- fixes height and padding styles of map widgets. [RW-44](https://vizzuality.atlassian.net/browse/RW-44)
+
+
+### Removed
+- `NEXT_PUBLIC_FEATURE_FLAG_OCEAN_WATCH` environmental variable.
+- `origin` query param from `/auth` endpoints.[RW-71](https://vizzuality.atlassian.net/browse/RW-71)
+- Axios' cancelToken.
+- removes `react-responsive` and `react-responsive-redux`.
+- removes `hostname` and its action from global state.
+- removes `routes` global state. [RW-53](https://vizzuality.atlassian.net/browse/RW-53)
+
+
+## [3.1.0] - 2020-04-26
+### Added
+- Google Analytics v4 tracking script.
+- scripts folder containing scripts used in the application.
+- 500 static page.
+
+### Changed
+- updated text of My Data's coming soon view. [RW-38](https://vizzuality.atlassian.net/browse/RW-38)
+- consistent spelling of `favorite`. [RW-35](https://vizzuality.atlassian.net/browse/RW-35)
+- refactor: uses dynamic import for loading scripts without SSR.
+- `next@10.1.3`
+
+### Fixed
+- visual bug where the dataset navigation bar in the explore sidebar would remain after closing the sidebar. [RW-37](https://vizzuality.atlassian.net/browse/RW-37)
+- wrong deserialization of the user object when an user updated its profile. [RW-21](https://vizzuality.atlassian.net/browse/RW-21)
+- `/static-page` endpoint. [RW-19](https://vizzuality.atlassian.net/browse/RW-19?focusedCommentId=10534)
+
+### Removed
+- `dashboards` redaction.
+
+## [3.0.7] - 2020-04-06
+### Added
+- 404 static page.
+- added tests to verify pages are loaded successfully in `get-involved`, `about`, `data` pages.
+- added new service and entrypoint to launch Docker.
+
+### Changed
+- `bitly@7.1.2`
+- run [name-default-component codemod](https://nextjs.org/docs/advanced-features/codemods#name-default-component).
+- `widget-editor@2.6.1`
+- replaced `webpack-bundle-analyzer` dependency with `@next/bundle-analyzer`.
+- replaced redundant environment variables that pointed to the RW API URL with a single one.
+- replaced staging API URL: `staging-api.globalforestwatch.org` to `staging-api.resourcewatch.org`
+- replaced `better-npm-run` with `cross-env`.
+- moved `@babel/core` to devDependencies.
+- updated `Node` version from `v8` to current `LTS` (`v14`).
+- `@vizzuality/wysiwyg` (former `vizz-wysiwyg`) has been updated removing a lot of unused/deprecated dependencies that were blocking the application to upgrade the Node version.
+- renamed some internal folders called `pages` to `tabs` as they were giving some issues with the new Node version.
+- Energy dashboard: added 2 new widgets.
+
+### Fixed
+- fixed a bug where the map would zoom in/out when a popup with scroll was displayed.
+- fixed a bug where map styles overlapped.
+- fixed wrong URL for related datasets card box.
+- fixed authentication issue in static-pages endpoint. [RW-19](https://vizzuality.atlassian.net/browse/RW-19)
+- fixed issue where the "Powered By Resource Watch" logo in embeds didn't appear in external sites.
+- fixed issue with user areas overlapping with dataset detail view in Explore page.
+- fixed issue with Twitter card attributes in dashboards. [#177007206](https://www.pivotaltracker.com/story/show/177007206)
+
+### Removed
+- styles optimization (`cssnano` and `optimize-css-assets-webpack-plugin` dependencies)
+- duplicated meta charset tag and other meta tags in the document.
+- user token from tools endpoint.
+- `moveto` dependency.
+- `moment-range` dependency.
+- `three` dependency.
+- `json-loader` dependency.
+- `bcrypt` dependency.
+
+## [2.20.5] - 2020-02-23
+### Added
+- Coral and Air Quality topic links.[Contribution](https://github.com/resource-watch/resource-watch/commit/a83244ad31ae68369603592bc3f2c01ed3bab860)
+
+### Changed
+- Removed "BETA" from Resource Watch logo. [#176843582](https://www.pivotaltracker.com/story/show/176843582)
+
+### Fixed
+- data explore route in embed maps. [Contribution](https://github.com/resource-watch/resource-watch/commit/c5a7f5cb950c1495914d38ca6caef36dc80470af)
+- Explore: search not working first time. [#176263572](https://www.pivotaltracker.com/story/show/176263572)
+
+### Removed
+- RW_FEATURE_FLAG_AREAS_V2 feature flag.
+
+## [2.20.4] - 2020-12-17
+### Added
+- Explore: added spinner to area creation as it takes several seconds to finish.
+
+### Changed
+- `widget-editor@2.5.5`
+
+### Fixed
+- admin: fixed widget metadata override when the user saved the widget via `widget-editor`. [#175408294](https://www.pivotaltracker.com/story/show/175408294/comments/220475227)
+- restored URL params (zoom, latitude, longitude) for map-swipe. [#176121901](https://www.pivotaltracker.com/story/show/176121901)
+
+### Removed
+
+## [2.20.1] - 2020-12-14
+### Added
+- captions to widgets in energy/countries dashboard (only in preproduction).
+- map-type widget embed: widget links. [#175408294](https://www.pivotaltracker.com/story/show/175408294)
+- Dashboards: added better error handling for maps instead of crashing. [#175408544](https://www.pivotaltracker.com/story/show/175408544)
+- Explore detail: added `spatial_-_resolution` metadata field. [#175672826](https://www.pivotaltracker.com/story/show/175672826)
+- In area cards, now it's possible to rename the area there without navigating somewhere.
+- Explore: area of interest bounds.
+- Explore: added `aoi` param to URL to allow loading areas of interest from the URL.
+- pagination for collections coming from API.
+- call action in areas of interest to go to all-data section.
+- Explore: added active state for prominent buttons in new area form.
+- Embed maps: display user areas. [#175394222](https://www.pivotaltracker.com/story/show/175394222)
+- widget-editor: WRI's colour scheme.
+
+### Changed
+- Explore: disables area subscriptions.
+- now the area card displays a resume of the subscriptions instead of the subscriptions.
+- migrates to `v2 areas`.
+- hides cancelled areas requests from app notifications (now they display in the console quietly).
+- `widget-editor@2.5.2`
+- sorts collections by name by default.
+- `widget-editor@2.5.1`
+- parses bbox coming from `widget-editor` to display in a Mapbox map. [#175450361](https://www.pivotaltracker.com/story/show/175450361)
+- memoizes `widget-editor` adapter to avoid unexpected re-renders. [#175594527](https://www.pivotaltracker.com/story/show/175594527)
+- text tweaks for AoIs. [#175788944](https://www.pivotaltracker.com/story/show/175788944)
+- replaces deprecated `viewport-mercator-project` with `@math.gl/web-mercator`;
+- improves the way the dashboard detail page is loaded avoiding empty sections during data fetching [#172928273](https://www.pivotaltracker.com/story/show/172928273).
+- Dashboards: now the blocks renders with the scroll user instead of loading everything at once.
+This should reduce the page workload and impact. [#175408544](https://www.pivotaltracker.com/story/show/175408544)
+- `widget-editor@2.5.0`
+- Enabled subscriptions for area cards regardless where the cards are displayed.
+- Unified way of working with areas of interest in map explore in energy dashboard.
+- Explore map now displays one area of interest at the same time. 
+- In MyRW, collections without resources are hide depending on the tab the user is.
+- updates icons for widgets and datasets in collections table.
+- moved collections away from redux. 
+- Updated styles for primary buttons when they are disabled according to UI Kit.
+- Explore: disallows to create an area if the respective fields are not populated correctly.
+- Explore: unified button styles of top bar buttons.
+- Explore: unified prominent button styles from datasets and areas.
+- Explore map and area cards now use different styles for areas.
+- unified methods to process files when a user uploads an area.
+- moved `favicon` to `public` root.
+- changed from `static` to `public` the folder where the server serves statics.
+- `next@9.1.7`
+- widget-editor: better separation of utils and constants.
+
+### Fixed
+- wrong height page loading certain pages. [#172928273](https://www.pivotaltracker.com/story/show/172928273)
+- avoids passing null/undefined widgets in GEDC. [#175594527](https://www.pivotaltracker.com/story/show/175594527)
+- tooltip crashing when data is undefined. [#175888099](https://www.pivotaltracker.com/story/show/175888099)
+- query not fetching country list in Energy dashboard. [#175594527](https://www.pivotaltracker.com/story/show/175594527)
+- visual glitch with top bar in explore detail.
+- collections more consistent across the app. [#175272462](https://www.pivotaltracker.com/story/show/175272462)
+- Explore: glitch in country selector inside new are form.
+
+### Removed
+- user favorites management from redux.
+- unused `layout/page` component.
+- Explore: panel to edit area.
+- MyRW: tab to edit area.
+- `x-powered-by` headers.
+- Explore: top bars of sidebar are now clickable.
+- deprecated widget schemas and utils replaced by `widget-editor`
+- `canvas` and `vega` dependencies.
+
+## [2.16.0] - 10-21-2020
+### Added
+- possibility of drawing custom areas in Explore map. [#175261981](https://www.pivotaltracker.com/story/show/175261981)
+- added pagination for areas in MyRW. [#175261981](https://www.pivotaltracker.com/story/show/175261981)
+- user areas of interest can now be displayed in Explore map. Also, edition is available. [#175261981](https://www.pivotaltracker.com/story/show/175261981)
+- sitemap generation.
+- new fetching for fields from `carto` datasets. Instead of using WRI's API `/fields` endpoint, points directly to Carto SQL API as it admits query modifications. [#171632711](https://www.pivotaltracker.com/story/show/171632711)
+- better error handling for widget cards fetching layers.
+- extra validation step to ensure `widgetConfig` attribute of widgets is present and valid. [#174911795](https://www.pivotaltracker.com/story/show/174911795)
+
+### Changed
+- login in Explore page won't redirect to MyRW anymore, the user will remain in the Explore page. [#175261981](https://www.pivotaltracker.com/story/show/175261981)
+- unified design of area cards in explore and MyRW. [#175261981](https://www.pivotaltracker.com/story/show/175261981)
+- widget-editor@2.4.1
+- maintenance: moved `webpack` from `dependencies` to `devDependencies`.
+- widget-editor: updated RW-adapter to accept app's params (like API url).
+- maintenance: updated `eslint` and its plugins. [#174977793](https://www.pivotaltracker.com/story/show/174977793)
+
+### Fixed
+- intermittent area edition bug where the area to edit wasn't loaded properly. [#175261981](https://www.pivotaltracker.com/story/show/175261981)
+- widget-editor: fixed a WE crash when the user changes the visualization type in a map-only widget. [#175165737](https://www.pivotaltracker.com/story/show/175165737)
+- admin: in layer edition, the interactivity wasn't being applied on first load until the user modifies it for first time. Now it does.
+- widget-editor: fixed error updating fields. [#174996497](https://www.pivotaltracker.com/story/show/174996497)
+- widget-editor: override of default disabled features. [#174930015](https://www.pivotaltracker.com/story/show/174930015)
+
+### Removed
+- maintenance: removed unused `next-progressbar` and `webpackbar` dev dependencies.
+- maintenance: removed unused `colors` dev dependency.
+- widget-editor: removed deprecated assets. [#174952659](https://www.pivotaltracker.com/story/show/174952659)
+
+## [2.2.1] - 2020-02-03
+### Fixed
+- Fix issue with dashboard detail updating only partially. [[code]](https://github.com/resource-watch/resource-watch/pull/1229)
+
+## [2.2.0] - 2020-02-03
+### Added
+- Added is featured option to admin/dashboards new/edit page. [[code]](https://github.com/resource-watch/resource-watch/pull/1182)
+- Modal added to Planet Pulse page plus other related updates. [[code]](https://github.com/resource-watch/resource-watch/pull/1188)
+- Redirects to dashboard pages from old deprecated topic pages. [[code]](https://github.com/resource-watch/resource-watch/pull/1224)
+
+### Fixed
+- Fix for metadata form bug. [[code]](https://github.com/resource-watch/resource-watch/pull/1183)
+- Fix for an issue with the delete link in the dashboards table from the back office. [[code]](https://github.com/resource-watch/resource-watch/pull/1186)
+- Restore backoffice interaction to provide column names for selection. [[code]](https://github.com/resource-watch/resource-watch/pull/1187)
+- Fixed vizualization bug - temporality load widget (new vizualization). [[code]](https://github.com/resource-watch/resource-watch/pull/1187)
+- Get involved page - style fix. [[code]](https://github.com/resource-watch/resource-watch/pull/1191)
+- Planet pulse - css dropdown menu fix (responsive). [[code]](https://github.com/resource-watch/resource-watch/pull/1193)
+- Fix the problem when dialogs temporary load when the page loads first time. [[code]](https://github.com/resource-watch/resource-watch/pull/1195)
+- Fix width for the main page subheader box. [[code]](https://github.com/resource-watch/resource-watch/pull/1201)
+- Fix explore detail buttons not appearing. [[code]](https://github.com/resource-watch/resource-watch/pull/1202)
+- Fix charts overflowing in explore cards. [[code]](https://github.com/resource-watch/resource-watch/pull/1206) 
+- Fix "More" link to point to dashboards gallery. [[code]](https://github.com/resource-watch/resource-watch/pull/1207) 
+- Fix planet pulse dropdown native menu visibility. [[code]](https://github.com/resource-watch/resource-watch/pull/1209)
+- Dashboard page link fix + myrw dashboard preview fix. [[code]](https://github.com/resource-watch/resource-watch/pull/1212)
+- Fix: set the default layer on open in map click. [[code]](https://github.com/resource-watch/resource-watch/pull/1213)
+
+### Changed
+- Planet pulse: remove obsolete "Forest clearing" layer. [[code]](https://github.com/resource-watch/resource-watch/pull/1181)
+- Update all routes (header, footer, dashboard gallery) to dashboard dynamic routes (from API). Removed topics routes. [[code]](https://github.com/resource-watch/resource-watch/pull/1185)
+- Home page - topics section replaced by featured dashboards section. [[code]](https://github.com/resource-watch/resource-watch/pull/1192)
+- Layers service refactored to comply with new approach for services. [[code]](https://github.com/resource-watch/resource-watch/pull/1194)
+- Added unsafe prefix to deprecated methods. [[code]](https://github.com/resource-watch/resource-watch/pull/1197)
+- Some updates to layers displayed in Planet Pulse. [[code]](https://github.com/resource-watch/resource-watch/pull/1198)
+- Minor updates to blog feed to load new Spotlight category. [[code]](https://github.com/resource-watch/resource-watch/pull/1199)
+- Minor change to Pulse pop up text. [[code]](https://github.com/resource-watch/resource-watch/pull/1200)
+- `explore-actions` refactored to use services methods instead of explicit calls to `fetch`. [[code]](https://github.com/resource-watch/resource-watch/pull/1203)
+- Refactor of `pages` service to use axios. [[code]](https://github.com/resource-watch/resource-watch/pull/1210)
+- Remove unused passport dependencies. [[code]](https://github.com/resource-watch/resource-watch/pull/1214)
+- Changed preview url for admin dashboards. [[code]](https://github.com/resource-watch/resource-watch/pull/1215)
+- Support for cloning topics into dashboards removed. [[code]](https://github.com/resource-watch/resource-watch/pull/1218)
+- Dashboards "More" links removed. [[code]](https://github.com/resource-watch/resource-watch/pull/1220)
+- Show dashboards gallery section only when there is content for it. [[code]](https://github.com/resource-watch/resource-watch/pull/1221)
+- Remove button to clone a topic when creating a dashboard. [[code]](https://github.com/resource-watch/resource-watch/pull/1226)
+
+## [2.1.10] - 2019-12-11
+### Added
+- Log site search events with GA [[code]](https://github.com/resource-watch/resource-watch/pull/1170)
+
+### Fixed
+- Fix for a problem in the `TagsForm` component [[code]](https://github.com/resource-watch/resource-watch/pull/1162)
+- Several subscriptions issues fixed in [[code]](https://github.com/resource-watch/resource-watch/pull/1156)
+- Fix for a couple minor errors in Areas of interest --> subscriptions [[code]](https://github.com/resource-watch/resource-watch/pull/1168)
+
+### Changed
+- API communication services refactor, including improvements such as: 
+    - use of [Axios](https://github.com/axios/axios) in all requests
+	- better error handling
+	- better error logs
+	- serialize responses when applicable using the component `WRISerializer`
+	The code for these changes can be found here: [[1]](https://github.com/resource-watch/resource-watch/pull/1155), [[2]](https://github.com/resource-watch/resource-watch/pull/1157), [[3]](https://github.com/resource-watch/resource-watch/pull/1162), [[4]](https://github.com/resource-watch/resource-watch/pull/1164)
+- Subscriptions are now handled following the standardized agreed approach, i.e. one subscription entity should be created in the API for each combination of [area, dataset, subscription type] [[code]](https://github.com/resource-watch/resource-watch/pull/1156)
+- Next.js updated to the latest version `9.1.1` [[code]](https://github.com/resource-watch/resource-watch/pull/1161). More info about the changes included can be found [here](https://nextjs.org/blog/next-9-1)
+- Set origin parameter when signing up user on the API [[code]](https://github.com/resource-watch/resource-watch/pull/1166)
+- Delete insights-related obsolete code and files across the app [[code]](https://github.com/resource-watch/resource-watch/pull/1174)
+
+## [2.1.9] - 2019-09-30
+### Added
+- Hooks linter & Staged lint [[code]](https://github.com/resource-watch/resource-watch/pull/1135)
+- Add checkbox to newsletter page [[code]](https://github.com/resource-watch/resource-watch/pull/1143)
+
+### Fixed
+- Use metadata title in subscribe to alerts modal from explore detail [[code]](https://github.com/resource-watch/resource-watch/pull/1136)
+- Subscriptions fixes [[code]](https://github.com/resource-watch/resource-watch/pull/1139)
+- Fix bounds and styles in area cards [[code]](https://github.com/resource-watch/resource-watch/pull/1140)
+- Fix area update and fields displayed in form [[code]](https://github.com/resource-watch/resource-watch/pull/1141)
+- Fix area creation [[code]](https://github.com/resource-watch/resource-watch/pull/1142)
+- Fix subscriptions' preview title [[code]](https://github.com/resource-watch/resource-watch/pull/1147)
+- Fix for content shown in the topics tooltip from the navigation bar [[code]](https://github.com/resource-watch/resource-watch/pull/1148)
+
+### Changed
+- Adds Cesium navigation styles externally [[code]](https://github.com/resource-watch/resource-watch/pull/1131)
+- small patch to edit sentence on newsletter ty page [[code]](https://github.com/resource-watch/resource-watch/pull/1138)
+
+## [2.1.8] - 2019-09-16
+### Added
+- Specify order in which layers should appear on Explore [[code]](https://github.com/resource-watch/resource-watch/pull/1027)
+- Newsletter thank you page [[code]](https://github.com/resource-watch/resource-watch/pull/1103)
+- Expandable table of contents in FAQs [[code]](https://github.com/resource-watch/resource-watch/pull/1107)
+- Applications read-only field added to dataset form in the back office [[code]](https://github.com/resource-watch/resource-watch/pull/1113)
+
+### Fixed
+- Fix for error saving widgets from dataset detail page [[code]](https://github.com/resource-watch/resource-watch/pull/1099)
+- Fix for email share icon dissapearance [[code]](https://github.com/resource-watch/resource-watch/pull/1100)
+- Issue with location search in Explore fixed [[code]](https://github.com/resource-watch/resource-watch/pull/1104)
+- Fix placeholder and improve text of Environment field in Layer form [[code]](https://github.com/resource-watch/resource-watch/pull/1105)
+- Fix issue with widget creation in MyRW [[code]](https://github.com/resource-watch/resource-watch/pull/1115)
+- Fix related to the widget editor and how we infer is a widget is of type map or not [[code]](https://github.com/resource-watch/resource-watch/pull/1117)
+- Fix for an issue that prevented some fields to appear in the dataset form page from the back office (e.g. the published check box). Fix related to the widget editor and how we infer is a widget is of type map or not [[code]](https://github.com/resource-watch/resource-watch/pull/1118)
+- Prevent wrong env values to be set when creating/updating subscriptions [[code]](https://github.com/resource-watch/resource-watch/pull/1120)
+- Fix error thrown when saving edit dataset page [[code]](https://github.com/resource-watch/resource-watch/pull/1121)
+- Fix issue consisting of subscriptions not showing up in the AOI section [[code]](https://github.com/resource-watch/resource-watch/pull/1123)
+- Fix for dataset creation issue [[code]](https://github.com/resource-watch/resource-watch/pull/1124)
+- MyRW visualizations --> Edit button link logic fixed [[code]](https://github.com/resource-watch/resource-watch/pull/1128)
+
+### Changed
+- Datasets and visualizations from collections link to different pages depending on user and ownership [[code]](https://github.com/resource-watch/resource-watch/pull/1106)
+- Upgrade widget editor to 1.4.5 [[code]](https://github.com/resource-watch/resource-watch/pull/1112)
+- Bump mixin-deep from 1.3.1 to 1.3.2 [[code]](https://github.com/resource-watch/resource-watch/pull/1114)
+- Remove front-end 'wall' preventing unpublished datasets to be visible in Explore detail [[code]](https://github.com/resource-watch/resource-watch/pull/1118)
+- The user should stay in the dataset form page after clicking on save/update [[code]](https://github.com/resource-watch/resource-watch/pull/1118)
+- Myrw --> Vizualizations: show most recent widgets first [[code]](https://github.com/resource-watch/resource-watch/pull/1122)
+- Upgrade to next@9.0.5 [[code]](https://github.com/resource-watch/resource-watch/pull/1126)
+- Bump lodash from 4.17.11 to 4.17.13 [[code]](https://github.com/resource-watch/resource-watch/pull/1127)
+
+
+
+## [2.1.7] - 2019-08-19
+### Fixed
+- Fixes interactions layer issue in admin [[code]](https://github.com/resource-watch/resource-watch/pull/1094)
+- Fixes edge case for layer interactions [[code]](https://github.com/resource-watch/resource-watch/pull/1095)
+
+## [2.1.6] - 2019-08-19
+### Added
+- Alert preview improvements [[code]](https://github.com/resource-watch/resource-watch/pull/1089)
+
+### Fixed
+- Fix for Markdown link styles [[code]](https://github.com/resource-watch/resource-watch/pull/1083)
+- Fix issue with Layer form (published checkbox was always checked) [[code]](https://github.com/resource-watch/resource-watch/pull/1087)
+- Fix "Dataset not found" error when saving widgets [[code]](https://github.com/resource-watch/resource-watch/pull/1090)
+
+## [2.1.5] - 2019-08-01
+### Added
+- Explore detail: markdown related improvements [[code]](https://github.com/resource-watch/resource-watch/pull/1070)
+
+### Fixed
+- Fix for: "Array error when saving widget" [[code]](https://github.com/resource-watch/resource-watch/pull/1075)
+- Fix for issue: Backoffice widget creator only appears when dataset manually selected [[code]](https://github.com/resource-watch/resource-watch/pull/1077)
+
+### Changed
+- Adds origin param to reset password [[code]](https://github.com/resource-watch/resource-watch/pull/1074)
+- Adds origin in reset-password token generation [[code]](https://github.com/resource-watch/resource-watch/pull/1076)
+- Encapsulate CSS for markdown lists into a separate CSS class - Adds origin in reset-password token generation [[code]](https://github.com/resource-watch/resource-watch/pull/1078)
+- forgotten password - moves to axios and logger [code]](https://github.com/resource-watch/resource-watch/pull/1079)
+
+## [2.1.4] - 2019-07-25
+### Added
+- Prevent blog feed from loading "UNCATEGORIZED" blog posts. [[code]](https://github.com/resource-watch/resource-watch/pull/1015)
+- Catalog page: pagination and other improvements. [[code]](https://github.com/resource-watch/resource-watch/pull/1017)
+- MyRW: Improvements to search results messages in MyRW. [[code]](https://github.com/resource-watch/resource-watch/pull/1019)
+- Improved styles and pagination in Dashboards "Add visualization" modal. [[code]](https://github.com/resource-watch/resource-watch/pull/1023)
+- Improvements for MyRWDatasets and DatasetList components. [[code]](https://github.com/resource-watch/resource-watch/pull/1024)
+- Re-enable the pre-populating of the dataset name when creating widget and layers. [[code]](https://github.com/resource-watch/resource-watch/pull/1030)
+- Handle icons that are RW specific using Icomoon directly from the RW app. [[code]](https://github.com/resource-watch/resource-watch/pull/1039)
+- Implement "remove" buttons in back office detail pages (widget + layer). [[code]](https://github.com/resource-watch/resource-watch/pull/1041)
+- Share by email functionality added to all share modals. [[code]](https://github.com/resource-watch/resource-watch/pull/1042)
+- Layer info pop-up "more info" button leads to `resourcewatch.org/data/explore/[slug]`. [[code]](https://github.com/resource-watch/resource-watch/pull/1047)
+- GDPR banner added both to the app and the back office. [[code]](https://github.com/resource-watch/resource-watch/pull/1049)
+- Surface the Last update date in Explore detail only when this field has a value. [[code]](https://github.com/resource-watch/resource-watch/pull/1054)
+- Icon component-level styles. Adds optimize-css-assets-webpack-plugin / cssnano [[code]](https://github.com/resource-watch/resource-watch/pull/1056)
+- Add application and environment parameters to services. [[code]](https://github.com/resource-watch/resource-watch/pull/1058)
+- removes unused tasks. [[code]](https://github.com/resource-watch/resource-watch/pull/1061)
+- adds auth in preproduction environment. [[code]](https://github.com/resource-watch/resource-watch/pull/1064)
+- Timeline appearance improved when there are many time steps. [[code]](https://github.com/resource-watch/resource-watch/pull/1071)
+
+### Fixed
+- Fixes posts fetching. [[code]](https://github.com/resource-watch/resource-watch/pull/1004)
+- Removes default meta viewport. [[code]](https://github.com/resource-watch/resource-watch/pull/1005)
+- Fixes issue setting map center in widget-block. [[code]](https://github.com/resource-watch/resource-watch/pull/1012)
+- Reorganizes styles to avoid override. [[code]](https://github.com/resource-watch/resource-watch/pull/1016)
+- Fixes fetching widgets in MyRW. [[code]](https://github.com/resource-watch/resource-watch/pull/1018)
+- MyRW fix: redundant "Explore datasets" button removed from Datasets section. [[code]](https://github.com/resource-watch/resource-watch/pull/1020)
+- MyRW fix: show pagination tool only when there is more than one page. [[code]](https://github.com/resource-watch/resource-watch/pull/1021)
+- Fix user collections not being loaded in Explore. [[code]](https://github.com/resource-watch/resource-watch/pull/1026)
+- Fix back office navigation on save. [[code]](https://github.com/resource-watch/resource-watch/pull/1028)
+- Fix issue when clicking on Remove layer in the back office. [[code]](https://github.com/resource-watch/resource-watch/pull/1029)
+- Back office fix: clicking on widgets/layers breadcrumbs leads to the corresponding dataset page. [[code]](https://github.com/resource-watch/resource-watch/pull/1031)
+- Fix "Suggest a story" link from button in homepage banner. [[code]](https://github.com/resource-watch/resource-watch/pull/1033)
+- Fix for favorite widgets not loading in MyRW. [[code]](https://github.com/resource-watch/resource-watch/pull/1034)
+- Fix error thrown on Collections page load. [[code]](https://github.com/resource-watch/resource-watch/pull/1046)
+- Fix for layer creation (breadcrumbs + bug when selecting dataset). [[code]](https://github.com/resource-watch/resource-watch/pull/1048)
+- Fix issues with collections, myrw datasets tabs and collections links to datasets + widgets. [[code]](https://github.com/resource-watch/resource-watch/pull/1050)
+- Prevent widgets from other apps to be loaded in MyRW. [[code]](https://github.com/resource-watch/resource-watch/pull/1051)
+- Fix issue with dependency. [[code]](https://github.com/resource-watch/resource-watch/pull/1062)
+- Fix issue with layers and widgets having two environments associated at once. [[code]](https://github.com/resource-watch/resource-watch/pull/1068)
+
+### Changed
+- Bump fstream from 1.0.11 to 1.0.12. [[code]](https://github.com/resource-watch/resource-watch/pull/1006)
+- Upgrades autoprefixer. [[code]](https://github.com/resource-watch/resource-watch/pull/1008)
+- Bump js-yaml from 3.12.0 to 3.13.1. [[code]](https://github.com/resource-watch/resource-watch/pull/1009)
+- Bump handlebars from 4.0.12 to 4.1.2. [[code]](https://github.com/resource-watch/resource-watch/pull/1010)
+- Updates legend timeline styles. [[code]](https://github.com/resource-watch/resource-watch/pull/1014)
+- vizz-wysiwyg version upgraded to 2.1.2. [[code]](https://github.com/resource-watch/resource-watch/pull/1022)
+- Clean up of obsolete/unused images plus Splash page related code. [[code]](https://github.com/resource-watch/resource-watch/pull/1032)
+- Refactor widget block edition. [[code]](https://github.com/resource-watch/resource-watch/pull/1036)
+- Update MyRW with new design to remove elements. [[code]](https://github.com/resource-watch/resource-watch/pull/1037)
+- Leaflet styles updated to 1.3.4. [[code]](https://github.com/resource-watch/resource-watch/pull/1038)
+- Bump jquery from 3.3.1 to 3.4.1. [[code]](https://github.com/resource-watch/resource-watch/pull/1040)
+- Bump lodash-es from 4.17.11 to 4.17.14. [[code]](https://github.com/resource-watch/resource-watch/pull/1044)
+- Bump lodash.mergewith from 4.6.1 to 4.6.2. [[code]](https://github.com/resource-watch/resource-watch/pull/1045)
+- Email share fields updated. [[code]](https://github.com/resource-watch/resource-watch/pull/1052)
+- Back office layer+widget form updates. [[code]](https://github.com/resource-watch/resource-watch/pull/1053)
+- next@9. [[code]](https://github.com/resource-watch/resource-watch/pull/1055)
+- Share email icon renamed to email. [[code]](https://github.com/resource-watch/resource-watch/pull/1059)
+- simplifies auth and variables involved. [[code]](https://github.com/resource-watch/resource-watch/pull/1065)
+- Updates key names. [[code]](https://github.com/resource-watch/resource-watch/pull/1066)
+
+## [2.1.3] - 2019-05-10
+### Added
+- Updates application to `next@8.1.0` [[code]](https://github.com/resource-watch/resource-watch/commit/348401322f70b3b3d88d5afdf4b190ce394ce3b0)
+### Fixed
+- Fixes a bug where topics weren't fetched landing to `/sign-in`. [[code]](https://github.com/resource-watch/resource-watch/pull/989)
+- Fixes wrong styles in forgotten password page [[code]](https://github.com/resource-watch/resource-watch/commit/7e21220a5e5935c3a90be1b0e4f3e5a0a4afaa1d)
+- Admin backoffice: fixes layers and widgets filtering  in dataset view [[code]](https://github.com/resource-watch/resource-watch/commit/b22244b4528e6f10ae83e7add4b43b6ac47443e7)
+- Admin backoffice: fixes an issue loading dataset title after widget edition [[code]](https://github.com/resource-watch/resource-watch/commit/b22244b4528e6f10ae83e7add4b43b6ac47443e7)
+- Admin backoffice: fixes an issue where owner column values weren't displayed properly. Also, fixes sorting by owner. [[code]](https://github.com/resource-watch/resource-watch/commit/254bc2606f359ba48b5743f68f528b15297a07a6)
+
+### Changed
+- Admin backoffice: changes pagination: now it renders dynamically instead of fetching all resources at the same time reducing waiting times. [[code]](https://github.com/resource-watch/resource-watch/pull/981) [[code]](https://github.com/resource-watch/resource-watch/pull/984) [[code]](https://github.com/resource-watch/resource-watch/pull/985)
+
+
+## [2.1.2] - 2019-04-25
+### Fixed
+- Fixed wrong fetch preventing to display the current resource name in the admin edition [[code]](https://github.com/resource-watch/resource-watch/commit/19782d29fa7b813d502bb9ac68559ef9b608084f)
+
+### Changed
+- Updated fetch method for getting a dataset.
+- Changed error handling for fetching.	
+
+
+## [2.1.1] - 2019-04-17
+### Fixed
+- Fixed an error preventing a user save/update a layer in the admin [[code]](https://github.com/resource-watch/resource-watch/pull/969/commits/18ddf6c9bfee1e84b5d512479e26c71c3a3c9d44)
+### Changed
+- Updated Pulse's layers texts according Amelia's suggestions [[code]](https://github.com/resource-watch/resource-watch/commit/d31bccb107b64c2f8356ba8d7a5a2bcb69caf879)
+
+## [2.1.0] - 2019-04-11
+### Added
+- Unifies sign-up modal across the application.
+- Open Graph tags to display a thumbnail when a user shares/embeds a widget.
+- Better page handling error when the app crashes or don't found a resource.
+### Fixed
+- Fixes override styling with NextJS `7.0`
+
+### Changed
+- Updated `og:image` in `/data/wigdet/${id}` with widget's thumbnail.
+- Updated `widget-editor` dependency to latest version (`1.4.4`).
+- Updated pages structure to be monofile and reduce compilation times.
+- Added loggers to services to catch errors better.
+- Updated `lodash` to fix a critical vulnerability.
+- Renamed `wri-api-components` to `vizzuality-components`.
+
+### Removed
+- Removed `widgetDetail` module. Now the widget is passed as a prop.
+
+## [2.0.3] - 2019-03-27
+### Added
+- Replaced the modal used for sharing a widget in myRW for the same one used in the explore page
+making the sharing experience more consistent. Removed old one.
+- Now `/data/widget/{id}` route is accessible for non-published widgets .
+
+## [2.0.2] - 2019-03-26
+### Fixed
+- Fixed bad alignment of user icon in app header.
+- Cross-browsing: header search result suffered from crippling in Firefox 66.
+
+### Changed
+- Moved from `wri-api-components` to `vizzuality-components`. `wri-api-components` will be deprecated at some point.
+- Removed header items from store. There was no need to keep them there. Now they are stored in a
+component-level `constants` file. This also applies for admin header.
+- Styling: removed white border from embed maps (explore, map, map-swipe).
+
+
+## [2.0.1] - 2019-03-18
+### Fixed
+- Fixed error compilation with `node-gyp` and `canvas` in Dockerfile
+adding `pango-dev`, `jpeg-dev` dependencies.
+
+## [2.0.0] - 2019-03-13
+### Changed
+- Updates app pages according to Next 7.0.
+- Updated `README` according to recent changes.
+
+### Add
+- `./pages/_app` file. No need to connect every page to the store anymore.
+- `./pages/_document`
+
+## [1.2.0] 2017-11-14
+
+### Fixed
+
+### Added
+- Description of the fields/columns in the editor
+
+### Changed
+
+## [1.1.0] - 2017-10-11
+
+### Fixed
+- Explore details tags are filtered so that generic/unuseful tags are not shown
+- Legend actions buttons are not shown in the widget editor in Map mode
+- Insight cards: Source used to create the cards have been unified, links are visible now (white color)
+- Explore Detail: Source is not shown in the header
+- Explore: Tags button is properly placed now in lists mode as well
+- Planer pulse: Floods layer colors fixed
+- Planet pulse drop downs have now a `z-index` that makes them be displayed on top of the layer card
+- Planet pulse Carto layers are fetched based on the information in the `pulseConfig` object
+- Planet pulse 3D layers get their respective markers using the info located in `pulseConfig`
+- Planet pulse globe tooltips show only the fields that are specified in the object `interactionConfig`
+- Bar charts properly handle `null` and negative values
+- Pie and bar charts are now responsive and are properly displayed as thumbnails (newer charts only)
+- Fixed invariant violation error
+- Fixed map container error in back office
+- Datasets always show geoInfo value, even if they are rasters (it will be always true)
+- Widget map creation
+- Better validations for widgetEditor
+- MapControls component added
+- BasemapControl component added
+- ShareControl component added
+- Footer updated
+- Add map widgets to dashboards
+- Add text widgets to dashboards
+- Manually-created widgets could break the tooltip if no proper formatting would be provided
+- Opacity selector for all layers
+- Metadata subtitle
+- WMS Metadata and Dataset form doesn't call fields endpoint
+- Explore detail: download links working
+- Explore detail: correct SEO tags
+
+### Added
+- Prototype of the Splash page
+- Pulse: Use Cesium for both 2D and 3D layers
+- Explore: favourite datasets
+- Explore detail: favourite dataset
+- MyRW Dataset favourites
+- Explore detail tags section
+- Favorite widget functionality at Embed widget page
+- Styles for LayerInfoModal component
+- Technical title (formal name) added to Explore Detail
+- Subscribe to alerts from Planet Pulse
+- Insights cards: The whole card is clickable now
+- Planet pulse improvements: color used as extra dimension in more 3D layers
+- Planet pulse globe tooltips have hyperlinks for url values
+- New prototype of tags tooltip in Explore
+- New search input for the filter tooltip in the Widget Editor
+- Implementation of decision tree to get visualizations by dataset. [PDF](https://vizzuality.slack.com/files/U4C2Q99RB/F79L7J7UL/rw_-_widget_creation.pdf)
+- New command to check datasets for widget editor `yarn check-datasets`
+- New command to check layers `yarn check-layers`
+- Vega Chart as component
+- Added Vega Chart Thumbnail with theme configuration
+- Added support for server rendering in Explore page (for search crawler)
+- Added support for GEE layers in Map
+- Pie charts display an "others" category to avoid duplicate colors
+- Transifex
+- Transifex blacklist
+- Router onChange progress
+- Dock Component
+- Dashboards: The user is able to add more than one widget at a time. Depending on the number quill will add them in a row with 1, 2 or 3 columns. Never more than 3 widgets
+- Added map widgets to dashboards
+- Added text widgets to dashboards
+- MapControls component added
+- BasemapControl component added
+- ShareControl component added
+- Added new endpoint `profiles` to save and upload profile images in S3 service
+- Added checkbox for label layers in Explore page
+- Terms and privacy policy pages
+- Tool admin page added to CMS.
+- Added support for timeline in one layer `Standarized Precipitation Index`
+- Tool page connected to BO
+
+### Changed
+
+- Planet pulse: extra point light added to the scene so that colors can be perceived more easily
+- Tooltips of the charts are now based on the [`interaction_config` object](https://github.com/resource-watch/notebooks/blob/master/ResourceWatch/Api_definition/widget_definition.ipynb) of the `widgetConfig`
+- WRI logo separate from partner carousel.
+- Footer style's.
+- Better validations for widgetEditor
+- Unique components for Legend and Map
+- Basemaps by default doesn't have labels
+- Styles for search results

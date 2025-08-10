@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    name: resource-watch-staging
+  name: resource-watch-staging
+  namespace: rw
+spec:
+  progressDeadlineSeconds: 2147483647
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      name: resource-watch-staging
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        name: resource-watch-staging
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: type
+                    operator: In
+                    values:
+                      - webapps
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: name
+                      operator: In
+                      values:
+                        - resource-watch-staging
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+      containers:
+        - args:
+            - start
+          env:
+            - name: SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: RW_SECRET
+                  name: appsecrets
+            - name: RW_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: RW_STAGING_AUTH_USER
+                  name: appsecrets
+            - name: RW_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: RW_STAGING_AUTH_PASSWORD
+                  name: appsecrets
+            - name: REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_URI
+                  name: dbsecrets
+            - name: NEXT_PUBLIC_RW_GOGGLE_API_TOKEN_SHORTENER
+              valueFrom:
+                secretKeyRef:
+                  key: RW_GOGGLE_API_TOKEN_SHORTENER
+                  name: appsecrets
+            - name: NEXTAUTH_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: RW_JWT_SECRET
+                  name: appsecrets
+            - name: NEXTAUTH_URL
+              value: https://staging.resourcewatch.org
+          image: gfwdockerhub/resource-watch
+          imagePullPolicy: Always
+          name: resource-watch-staging
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "0"
+              memory: "0"
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: regcred
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: { }
+      terminationGracePeriodSeconds: 30
