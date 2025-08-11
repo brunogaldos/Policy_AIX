@@ -1,13 +1,8 @@
 @import 'css/settings';
 
 .l-header {
-  background-color: $dark-pink;
-  background-image: $header-bg-image,
-    linear-gradient(
-      86deg,
-      $header-gradient-color-1 0%,
-      $header-gradient-color-2 100%
-    );
+  background-color: #40505A; // Exact dark teal-grey from the image
+  background-image: none; // Remove gradient
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -32,21 +27,16 @@
   .header-logo {
     position: relative;
 
-    .brand-logo {
-      width: 200px;
-      height: 35px;
-      display: block;
-      fill: $white;
-    }
-
     .brand-title {
       display: block;
-      height: 0;
-      width: 0;
-      color: transparent;
-      text-indent: -9999px;
-      visibility: hidden;
+      color: #E0E0E0; // Light grey/off-white from the image
+      font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      font-weight: 300; // Light weight as shown in the image
       margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 1px; // Proper letter spacing for modern look
+      line-height: 1.2;
     }
   }
 
@@ -67,9 +57,15 @@
           display: inline-flex;
           align-items: center;
           padding: 7px 10px;
-          color: $white;
-          fill: $white;
+          color: #E0E0E0; // Light grey/off-white from the image
+          fill: #E0E0E0;
           cursor: pointer;
+          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-size: 14px;
+          font-weight: 300; // Light weight as shown in the image
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          line-height: 1.2;
 
           &:hover {
             color: $yellow;
@@ -82,7 +78,7 @@
           position: relative;
           color: $yellow;
           fill: $yellow;
-          font-weight: bold;
+          font-weight: 400; // Slightly bolder for active state
           text-decoration: none;
 
           &:after {
@@ -100,5 +96,3 @@
     }
   }
 }
-
-

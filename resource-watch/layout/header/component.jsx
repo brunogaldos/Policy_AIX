@@ -41,8 +41,7 @@ export default function Header({
               <div className="header-logo">
                 <Link href="/">
                   <a>
-                    <Icon name="icon-rw-logo" className="brand-logo" />
-                    <h1 className="brand-title">Resource Watch</h1>
+                    <h1 className="brand-title">AIX POLICY</h1>
                   </a>
                 </Link>
               </div>
