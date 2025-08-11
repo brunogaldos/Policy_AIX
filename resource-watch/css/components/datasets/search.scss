@@ -14,12 +14,18 @@
       padding: math.div($margin-size-extra-small, 2) 40px;
       margin: 0;
 
-      font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans;
+      font-family: 'Inter', 'Roboto', 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
       font-size: $font-size-normal;
-      color: $charcoal-grey;
+      font-weight: 500; // Medium weight to match header
+      color: #FFFFFF; // Updated color to match header text
 
       border-radius: 4px;
-      border: 1px solid $border-color-2;
+      border: 1px solid rgba(255, 255, 255, 0.3); // Light white border
+      background-color: rgba(255, 255, 255, 0.1); // Subtle white background
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.7); // Light white placeholder text
+      }
 
       &.-open {
         border-radius: 4px 4px 0 0;
@@ -38,12 +44,12 @@
 
       &.-search {
         left: 16px;
-        fill: $charcoal-grey;
+        fill: #FFFFFF; // Updated color to match header text
       }
 
       &.-arrow {
         right: 16px;
-        fill: $dark-pink;
+        fill: #FFFFFF; // Updated color to match header text
 
         &.-open {
           transform: translate(0, -50%) rotate(-180deg);
@@ -58,17 +64,19 @@
 
   .search-dropdown {
     border-radius: 0 0 4px 4px;
-    border: 1px solid $border-color-2;
+    border: 1px solid rgba(255, 255, 255, 0.3); // Light white border
     border-top: none;
+    background-color: #45535C; // Updated background color to match header
 
     .search-dropdown-list {
       padding: $space-1 * 2;
       font-size: $font-size-normal;
+      color: #FFFFFF; // Updated color to match header text
 
       > * {
         margin: $space-1 * 2 0 0;
         padding: $space-1 * 2 0 0;
-        border-top: 1px solid $border-color-2;
+        border-top: 1px solid rgba(255, 255, 255, 0.2); // Light white border
 
         &:first-child {
           margin: 0;
@@ -85,9 +93,11 @@
       h4 {
         display: inline-block;
         font-size: $font-size-normal;
-        font-weight: $font-weight-regular;
+        font-weight: 500; // Medium weight to match header
+        font-family: 'Inter', 'Roboto', 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
         margin: 0;
-        border-bottom: 1px solid $border-color-1;
+        color: #FFFFFF; // Updated color to match header text
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2); // Light white border
       }
 
       .list-item-results {
@@ -96,11 +106,13 @@
           text-align: left;
           margin: 0;
           padding: 4px 8px;
-          color: $charcoal-grey;
+          color: #FFFFFF; // Updated color to match header text
+          font-family: 'Inter', 'Roboto', 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+          font-weight: 500; // Medium weight to match header
           cursor: pointer;
 
           &.-active {
-            background: $porcelain;
+            background: rgba(255, 255, 255, 0.1); // Subtle white background
           }
         }
       }
