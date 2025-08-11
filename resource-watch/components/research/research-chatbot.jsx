@@ -572,13 +572,13 @@ const ResearchChatbot = ({
   }
 
   return (
-    <div className={`research-chatbot-overlay ${className}`}>
+    <div className={`research-chatbot-dropdown ${className}`}>
       <div className="research-chatbot-container">
         {/* Header */}
         <div className="research-chatbot-header">
           <div className="research-chatbot-title">
-            <span className="research-chatbot-icon">🔍</span>
-            <h3>Research Assistant</h3>
+            <span className="research-chatbot-icon">•</span>
+            <h3>AI Assistant</h3>
           </div>
           <div className="research-chatbot-header-actions">
             {messages.length > 5 && (
@@ -607,8 +607,8 @@ const ResearchChatbot = ({
         <div className="research-chatbot-messages">
           {messages.length === 0 && !isInitializing && (
             <div className="research-chatbot-welcome">
-              <div className="research-chatbot-welcome-icon">🔍</div>
-              <h4>Welcome to Research Assistant</h4>
+              <div className="research-chatbot-welcome-icon">•</div>
+              <h4>Welcome to AI Assistant</h4>
               <p>Ask me anything and I'll search the web to find comprehensive answers for you.</p>
             </div>
           )}
@@ -733,7 +733,7 @@ const ResearchChatbot = ({
               className="research-chatbot-send"
               aria-label="Send message"
             >
-              {isLoading ? '⏳' : '📤'}
+              {isLoading ? '•' : '→'}
             </button>
           </div>
 
@@ -743,7 +743,7 @@ const ResearchChatbot = ({
                 isConnected ? 'connected' : 'disconnected'
               }`}
             >
-              {isConnected ? '🟢' : '🔴'}
+              {isConnected ? '⚪' : '🔴'}
             </span>
             <span className="research-chatbot-status-text">
               {isInitializing ? 'Connecting...' : isConnected ? 'Connected' : 'Disconnected'}
@@ -752,19 +752,16 @@ const ResearchChatbot = ({
         </div>
       </div>
 
+// ... existing code ...
+
       <style jsx>{`
-        .research-chatbot-overlay {
+        .research-chatbot-dropdown {
           position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0, 0, 0, 0.6);
+          top: 20px;
+          right: 20px;
           z-index: 9999;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 20px;
+          width: 400px;
+          max-width: calc(100vw - 40px);
         }
 
         .research-chatbot-container {
@@ -772,9 +769,8 @@ const ResearchChatbot = ({
           border-radius: 12px;
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
           width: 100%;
-          max-width: 600px;
-          height: 80vh;
-          max-height: 700px;
+          height: 500px;
+          max-height: 70vh;
           display: flex;
           flex-direction: column;
           overflow: hidden;
@@ -798,14 +794,14 @@ const ResearchChatbot = ({
 
         .research-chatbot-icon {
           font-size: 20px;
-          color: #E0E0E0; // Light grey like Climate TRACE
+          color: #FFFFFF; // Pure white like header
         }
 
         .research-chatbot-title h3 {
           margin: 0;
           font-size: 18px;
           font-weight: 300; // Light weight like Climate TRACE
-          color: #E0E0E0; // Light grey like Climate TRACE
+          color: #FFFFFF; // Pure white like header
           font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
           text-transform: uppercase; // Uppercase like Climate TRACE
           letter-spacing: 0.5px; // Letter spacing like Climate TRACE
@@ -818,11 +814,11 @@ const ResearchChatbot = ({
         }
 
         .research-chatbot-clear {
-          background: rgba(224, 224, 224, 0.1); // Subtle background like Climate TRACE
-          border: 1px solid #E0E0E0; // Light border like Climate TRACE
+          background: rgba(255, 255, 255, 0.1); // Subtle background like header
+          border: 1px solid #FFFFFF; // White border like header
           font-size: 14px;
           cursor: pointer;
-          color: #E0E0E0; // Light grey like Climate TRACE
+          color: #FFFFFF; // Pure white like header
           padding: 6px 12px;
           border-radius: 6px; // Slightly rounded like Climate TRACE
           transition: all 0.2s ease;
@@ -835,19 +831,18 @@ const ResearchChatbot = ({
           letter-spacing: 0.3px; // Letter spacing like Climate TRACE
         }
 
-       .research-chatbot-clear:hover {
-          background: rgba(224, 224, 224, 0.2); // Subtle hover like Climate TRACE
-          color: #E0E0E0;
-          border-color: #E0E0E0;
+        .research-chatbot-clear:hover {
+          background: rgba(255, 255, 255, 0.2); // Subtle hover like header
+          color: #FFFFFF;
+          border-color: #FFFFFF;
         }
 
-
         .research-chatbot-close {
-          background: rgba(224, 224, 224, 0.1); // Subtle background like Climate TRACE
-          border: 1px solid #E0E0E0; // Light border like Climate TRACE
+          background: rgba(255, 255, 255, 0.1); // Subtle background like header
+          border: 1px solid #FFFFFF; // White border like header
           font-size: 28px;
           cursor: pointer;
-          color: #E0E0E0; // Light grey like Climate TRACE
+          color: #FFFFFF; // Pure white like header
           padding: 4px;
           width: 36px;
           height: 36px;
@@ -859,10 +854,9 @@ const ResearchChatbot = ({
         }
 
         .research-chatbot-close:hover {
-          background: rgba(224, 224, 224, 0.2); // Subtle hover like Climate TRACE
-          color: #E0E0E0;
+          background: rgba(255, 255, 255, 0.2); // Subtle hover like header
+          color: #FFFFFF;
         }
-
 
         .research-chatbot-messages {
           flex: 1;
@@ -871,30 +865,38 @@ const ResearchChatbot = ({
           display: flex;
           flex-direction: column;
           gap: 16px;
+          background: #40505A; // Dark teal-grey like Climate TRACE
         }
 
         .research-chatbot-welcome {
           text-align: center;
           padding: 40px 20px;
-          color: #6b7280;
+          color: #FFFFFF; // Pure white like header
         }
 
         .research-chatbot-welcome-icon {
           font-size: 48px;
           margin-bottom: 16px;
+          color: #FFFFFF; // Pure white like header
         }
 
         .research-chatbot-welcome h4 {
           margin: 0 0 8px 0;
           font-size: 20px;
-          font-weight: 600;
-          color: #1f2937;
+          font-weight: 300; // Light weight like Climate TRACE
+          color: #FFFFFF; // Pure white like header
+          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          text-transform: uppercase; // Uppercase like Climate TRACE
+          letter-spacing: 0.5px; // Letter spacing like Climate TRACE
         }
 
         .research-chatbot-welcome p {
           margin: 0;
           font-size: 16px;
           line-height: 1.5;
+          color: #FFFFFF; // Pure white like header
+          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-weight: 300; // Light weight like Climate TRACE
         }
 
         .research-chatbot-message {
@@ -913,43 +915,173 @@ const ResearchChatbot = ({
         }
 
         .research-chatbot-message-content {
-          max-width: 85%;
+          max-width: 80%;
           padding: 12px 16px;
-          border-radius: 16px;
-          word-wrap: break-word;
-          line-height: 1.5;
+          border-radius: 12px;
           font-size: 14px;
+          line-height: 1.5;
+          word-wrap: break-word;
         }
 
         .research-chatbot-message-user .research-chatbot-message-content {
-          background: #3b82f6;
-          color: white;
-          border-radius: 16px 16px 4px 16px;
+          background: rgba(255, 255, 255, 0.2); // Subtle background like header
+          color: #FFFFFF; // Pure white like header
+          border: 1px solid #FFFFFF; // White border like header
+          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-weight: 300; // Light weight like Climate TRACE
         }
 
         .research-chatbot-message-assistant .research-chatbot-message-content {
-          background: #f3f4f6;
-          color: #1f2937;
-          border-radius: 16px 16px 16px 4px;
+          background: rgba(255, 255, 255, 0.1); // Subtle background like header
+          color: #FFFFFF; // Pure white like header
+          border: 1px solid #FFFFFF; // White border like header
+          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-weight: 300; // Light weight like Climate TRACE
         }
 
         .research-chatbot-message-system .research-chatbot-message-content {
-          background: #dbeafe;
-          color: #1e40af;
+          background: rgba(255, 255, 255, 0.1); // Subtle background like header
+          color: #FFFFFF; // Pure white like header
           border-radius: 16px;
           font-style: italic;
           font-size: 13px;
+          border-left: 4px solid #FFFFFF; // White border like header
+          padding-left: 12px;
+          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-weight: 300; // Light weight like Climate TRACE
+        }
+
+        .research-chatbot-message-error .research-chatbot-message-content {
+          background: rgba(239, 68, 68, 0.1); // Error background
+          color: #FFFFFF; // Pure white like header
+          border: 1px solid #ef4444;
+          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-weight: 300; // Light weight like Climate TRACE
+        }
+
+        .research-chatbot-input-container {
+          padding: 20px 24px;
+          border-top: 1px solid #FFFFFF; // White border like header
+          background: #40505A; // Dark teal-grey like Climate TRACE
+        }
+
+        .research-chatbot-error {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: rgba(239, 68, 68, 0.1);
+          color: #FFFFFF; // Pure white like header
+          padding: 8px 12px;
+          border-radius: 6px; // Slightly rounded like Climate TRACE
+          margin-bottom: 12px;
+          border: 1px solid #ef4444;
+          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-weight: 300; // Light weight like Climate TRACE
+        }
+
+        .research-chatbot-retry {
+          background: rgba(255, 255, 255, 0.1); // Subtle background like header
+          border: 1px solid #FFFFFF; // White border like header
+          color: #FFFFFF; // Pure white like header
+          padding: 4px 8px;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 12px;
+          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-weight: 300; // Light weight like Climate TRACE
+          text-transform: uppercase; // Uppercase like Climate TRACE
+          letter-spacing: 0.3px; // Letter spacing like Climate TRACE
+        }
+
+        .research-chatbot-input-wrapper {
+          display: flex;
+          gap: 8px;
+          align-items: flex-end;
+        }
+
+        .research-chatbot-input {
+          flex: 1;
+          padding: 12px 16px;
+          border: 1px solid #FFFFFF; // White border like header
+          border-radius: 6px; // Slightly rounded like Climate TRACE
+          background: rgba(255, 255, 255, 0.1); // Subtle background like header
+          color: #FFFFFF; // Pure white like header
+          font-size: 14px;
+          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-weight: 300; // Light weight like Climate TRACE
+          resize: none;
+          outline: none;
+          transition: all 0.2s ease;
+        }
+
+        .research-chatbot-input:focus {
+          border-color: #FFFFFF; // White border like header
+          background: rgba(255, 255, 255, 0.15); // Slightly more visible on focus
+        }
+
+        .research-chatbot-input:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        .research-chatbot-input::placeholder {
+          color: rgba(255, 255, 255, 0.6); // Subtle placeholder color
+        }
+
+        .research-chatbot-send {
+          background: transparent; // Minimalistic transparent background
+          border: 1px solid #FFFFFF; // White border like header
+          color: #FFFFFF; // Pure white like header
+          padding: 8px 12px;
+          border-radius: 4px; // Smaller radius for minimalistic look
+          cursor: pointer;
+          font-size: 18px;
+          transition: all 0.2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-width: 40px;
+          font-weight: 300; // Light weight for minimalistic look
+        }
+
+        .research-chatbot-send:hover:not(:disabled) {
+          background: rgba(255, 255, 255, 0.1); // Subtle hover like header
+          border-color: #FFFFFF;
+        }
+
+        .research-chatbot-send:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        .research-chatbot-status {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-top: 12px;
+          font-size: 12px;
+          color: #FFFFFF; // Pure white like header
+          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-weight: 300; // Light weight like Climate TRACE
+        }
+
+        .research-chatbot-status-indicator {
+          font-size: 12px;
+        }
+
+        .research-chatbot-status-text {
+          text-transform: uppercase; // Uppercase like Climate TRACE
+          letter-spacing: 0.3px; // Letter spacing like Climate TRACE
         }
 
         .research-chatbot-message-time {
           font-size: 11px;
-          color: #9ca3af;
+          color: rgba(255, 255, 255, 0.6); // Subtle time color
           margin-top: 4px;
-          padding: 0 4px;
-        }
-
-        .research-chatbot-message-user .research-chatbot-message-time {
-          text-align: right;
+          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-weight: 300; // Light weight like Climate TRACE
+          text-transform: uppercase; // Uppercase like Climate TRACE
+          letter-spacing: 0.3px; // Letter spacing like Climate TRACE
         }
 
         .research-chatbot-typing {
@@ -961,7 +1093,7 @@ const ResearchChatbot = ({
         .research-chatbot-typing span {
           width: 6px;
           height: 6px;
-          background: #9ca3af;
+          background: #FFFFFF; // Pure white like header
           border-radius: 50%;
           animation: typing 1.4s infinite ease-in-out;
         }
@@ -975,9 +1107,7 @@ const ResearchChatbot = ({
         }
 
         @keyframes typing {
-          0%,
-          80%,
-          100% {
+          0%, 80%, 100% {
             transform: scale(0.8);
             opacity: 0.5;
           }
@@ -987,130 +1117,11 @@ const ResearchChatbot = ({
           }
         }
 
-        .research-chatbot-input-container {
-          padding: 20px 24px;
-          border-top: 1px solid #e5e7eb;
-          background: #f9fafb;
-        }
-
-        .research-chatbot-error {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          background: #fef2f2;
-          color: #dc2626;
-          padding: 12px 16px;
-          border-radius: 8px;
-          margin-bottom: 12px;
-          font-size: 14px;
-        }
-
-        .research-chatbot-retry {
-          background: #dc2626;
-          color: white;
-          border: none;
-          border-radius: 6px;
-          padding: 6px 12px;
-          cursor: pointer;
-          font-size: 12px;
-          font-weight: 500;
-        }
-
-        .research-chatbot-retry:hover {
-          background: #b91c1c;
-        }
-
-        .research-chatbot-input-wrapper {
-          display: flex;
-          gap: 12px;
-          align-items: flex-end;
-          margin-bottom: 12px;
-        }
-
-        .research-chatbot-input {
-          flex: 1;
-          border: 1px solid #d1d5db;
-          border-radius: 12px;
-          padding: 12px 16px;
-          font-family: inherit;
-          font-size: 14px;
-          resize: none;
-          outline: none;
-          transition: border-color 0.2s ease;
-        }
-
-        .research-chatbot-input:focus {
-          border-color: #3b82f6;
-          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        .research-chatbot-input:disabled {
-          background: #f3f4f6;
-          color: #9ca3af;
-          cursor: not-allowed;
-        }
-
-        .research-chatbot-send {
-          background: #3b82f6;
-          color: white;
-          border: none;
-          border-radius: 12px;
-          padding: 12px 16px;
-          cursor: pointer;
-          font-size: 16px;
-          min-width: 52px;
-          height: 48px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.2s ease;
-        }
-
-        .research-chatbot-send:hover:not(:disabled) {
-          background: #2563eb;
-          transform: translateY(-1px);
-        }
-
-        .research-chatbot-send:disabled {
-          background: #d1d5db;
-          cursor: not-allowed;
-          transform: none;
-        }
-
-        .research-chatbot-status {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          font-size: 12px;
-          color: #6b7280;
-        }
-
-        .research-chatbot-status-indicator {
-          font-size: 10px;
-        }
-
-        .research-chatbot-status-text {
-          font-weight: 500;
-        }
-
-        .research-chatbot-status-indicator.connected + .research-chatbot-status-text {
-          color: #059669;
-        }
-
-        .research-chatbot-status-indicator.disconnected + .research-chatbot-status-text {
-          color: #dc2626;
-        }
-
-        /* Research result specific styling */
-        .research-chatbot-message-research .research-chatbot-message-content {
-          max-width: 95%;
-          background: #f8fafc;
-          border: 1px solid #e2e8f0;
-          border-radius: 16px 16px 16px 4px;
-        }
-
         .research-chatbot-research-content {
           line-height: 1.6;
+          color: #FFFFFF; // Pure white like header
+          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-weight: 300; // Light weight like Climate TRACE
         }
 
         .research-chatbot-line {
@@ -1122,26 +1133,26 @@ const ResearchChatbot = ({
         }
 
         .research-chatbot-link {
-          color: #3b82f6;
+          color: #FFFFFF; // Pure white like header
           text-decoration: underline;
-          font-weight: 500;
+          font-weight: 400; // Slightly bolder for links
           transition: color 0.2s ease;
         }
 
         .research-chatbot-link:hover {
-          color: #1d4ed8;
+          color: #FFFFFF; // Pure white like header
           text-decoration: none;
         }
 
         .research-chatbot-link:visited {
-          color: #7c3aed;
+          color: rgba(224, 224, 224, 0.8); // Slightly dimmer for visited links
         }
 
         .research-chatbot-streaming-indicator {
           display: inline-block;
           width: 8px;
           height: 16px;
-          background: #3b82f6;
+          background: #E0E0E0; // Light grey like Climate TRACE
           margin-left: 4px;
           animation: blink 1s infinite;
         }
@@ -1153,26 +1164,30 @@ const ResearchChatbot = ({
 
         /* Progress message styling */
         .research-chatbot-message-system .research-chatbot-message-content {
-          background: #dbeafe;
-          color: #1e40af;
+          background: rgba(224, 224, 224, 0.1); // Subtle background like Climate TRACE
+          color: #E0E0E0; // Light grey like Climate TRACE
           border-radius: 16px;
           font-style: italic;
           font-size: 13px;
-          border-left: 4px solid #3b82f6;
+          border-left: 4px solid #E0E0E0; // Light border like Climate TRACE
           padding-left: 12px;
+          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-weight: 300; // Light weight like Climate TRACE
         }
 
         /* Mobile responsiveness */
         @media (max-width: 768px) {
-          .research-chatbot-overlay {
-            padding: 0;
+          .research-chatbot-dropdown {
+            top: 10px;
+            right: 10px;
+            width: calc(100vw - 20px);
           }
 
           .research-chatbot-container {
             width: 100%;
-            height: 100vh;
-            max-height: none;
-            border-radius: 0;
+            height: 400px;
+            max-height: 60vh;
+            border-radius: 8px;
           }
 
           .research-chatbot-header {
@@ -1208,6 +1223,8 @@ const ResearchChatbot = ({
           }
         }
       `}</style>
+
+// ... existing code ...
     </div>
   );
 };

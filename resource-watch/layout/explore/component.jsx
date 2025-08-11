@@ -104,13 +104,13 @@ const Explore = (props) => {
 
   return (
     <>
-      {/* Research Button */}
+      {/* AI Assistant Button */}
       <button
         className="research-btn"
-        onClick={() => setIsChatOpen(true)}
+        onClick={() => setIsChatOpen(!isChatOpen)}
       >
-        <span>🔍</span>
-        <span>Research</span>
+        <span>•</span>
+        <span>AI</span>
       </button>
 
       <Layout title={titleSt} description={descriptionSt} className="-fullscreen" isFullScreen>
