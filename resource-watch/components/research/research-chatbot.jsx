@@ -768,7 +768,7 @@ const ResearchChatbot = ({
         }
 
         .research-chatbot-container {
-          background: white;
+          background: #40505A; // Dark teal-grey like Climate TRACE header
           border-radius: 12px;
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
           width: 100%;
@@ -778,6 +778,7 @@ const ResearchChatbot = ({
           display: flex;
           flex-direction: column;
           overflow: hidden;
+          border: 1px solid #E0E0E0; // Light border like Climate TRACE
         }
 
         .research-chatbot-header {
@@ -785,8 +786,8 @@ const ResearchChatbot = ({
           justify-content: space-between;
           align-items: center;
           padding: 20px 24px;
-          border-bottom: 1px solid #e5e7eb;
-          background: #f9fafb;
+          border-bottom: 1px solid #E0E0E0; // Light border like Climate TRACE
+          background: #40505A; // Dark teal-grey like Climate TRACE
         }
 
         .research-chatbot-title {
@@ -797,13 +798,17 @@ const ResearchChatbot = ({
 
         .research-chatbot-icon {
           font-size: 20px;
+          color: #E0E0E0; // Light grey like Climate TRACE
         }
 
         .research-chatbot-title h3 {
           margin: 0;
           font-size: 18px;
-          font-weight: 600;
-          color: #1f2937;
+          font-weight: 300; // Light weight like Climate TRACE
+          color: #E0E0E0; // Light grey like Climate TRACE
+          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          text-transform: uppercase; // Uppercase like Climate TRACE
+          letter-spacing: 0.5px; // Letter spacing like Climate TRACE
         }
 
         .research-chatbot-header-actions {
@@ -813,45 +818,51 @@ const ResearchChatbot = ({
         }
 
         .research-chatbot-clear {
-          background: none;
-          border: 1px solid #d1d5db;
+          background: rgba(224, 224, 224, 0.1); // Subtle background like Climate TRACE
+          border: 1px solid #E0E0E0; // Light border like Climate TRACE
           font-size: 14px;
           cursor: pointer;
-          color: #6b7280;
+          color: #E0E0E0; // Light grey like Climate TRACE
           padding: 6px 12px;
-          border-radius: 8px;
+          border-radius: 6px; // Slightly rounded like Climate TRACE
           transition: all 0.2s ease;
           display: flex;
           align-items: center;
           gap: 4px;
+          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-weight: 300; // Light weight like Climate TRACE
+          text-transform: uppercase; // Uppercase like Climate TRACE
+          letter-spacing: 0.3px; // Letter spacing like Climate TRACE
         }
 
-        .research-chatbot-clear:hover {
-          background: #f3f4f6;
-          color: #374151;
-          border-color: #9ca3af;
+       .research-chatbot-clear:hover {
+          background: rgba(224, 224, 224, 0.2); // Subtle hover like Climate TRACE
+          color: #E0E0E0;
+          border-color: #E0E0E0;
         }
+
 
         .research-chatbot-close {
-          background: none;
-          border: none;
+          background: rgba(224, 224, 224, 0.1); // Subtle background like Climate TRACE
+          border: 1px solid #E0E0E0; // Light border like Climate TRACE
           font-size: 28px;
           cursor: pointer;
-          color: #6b7280;
+          color: #E0E0E0; // Light grey like Climate TRACE
           padding: 4px;
           width: 36px;
           height: 36px;
           display: flex;
           align-items: center;
           justify-content: center;
-          border-radius: 8px;
+          border-radius: 6px; // Slightly rounded like Climate TRACE
           transition: all 0.2s ease;
         }
 
         .research-chatbot-close:hover {
-          background: #e5e7eb;
-          color: #374151;
+          background: rgba(224, 224, 224, 0.2); // Subtle hover like Climate TRACE
+          color: #E0E0E0;
         }
+
 
         .research-chatbot-messages {
           flex: 1;
