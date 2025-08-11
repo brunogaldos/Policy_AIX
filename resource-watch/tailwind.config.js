@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const typography = require('@tailwindcss/typography');
 const lineClamp = require('@tailwindcss/line-clamp');
 
@@ -13,61 +12,24 @@ module.exports = {
       typography: (theme) => ({
         DEFAULT: {
           css: {
-            color: theme('colors.gray.darkest'),
+            color: theme('colors.gray.100'),
             lineHeight: 1.625,
+            fontFamily: theme('fontFamily.sans'),
           },
         },
       }),
+      colors: {
+        'ui-dark': '#1e1e1e',
+        'ui-panel': 'rgba(30, 30, 30, 0.85)',
+        'accent-orange': '#ff7849',
+        'accent-blue': '#4da6ff',
+        'accent-purple': '#a78bfa',
+        'accent-green': '#34d399',
+      },
     },
     fontFamily: {
-      sans: ['Lato', '"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+      sans: ['Inter', 'Lato', '"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
     },
-    fontSize: {
-      '3xs': '0.625rem',
-      '2xs': '0.75rem',
-      xs: '0.815rem',
-      sm: '0.875rem',
-      base: '1rem',
-      lg: '1.625rem',
-      xl: '2.625rem',
-      '2xl': '4rem',
-    },
-    fontWeight: {
-      light: 300,
-      normal: 400,
-      bold: 700,
-    },
-    colors: {
-      transparent: 'transparent',
-      current: 'currentColor',
-      black: '#000',
-      white: '#fff',
-      gray: {
-        darkest: '#393f44',
-        dark: '#717171',
-        DEFAULT: '#caccd0',
-        light: '#f0f1f2',
-      },
-      red: {
-        DEFAULT: '#d0021b',
-      },
-      yellow: {
-        DEFAULT: '#fab72e',
-      },
-      green: {
-        DEFAULT: '#65b60d',
-      },
-      blue: {
-        DEFAULT: '#2c75b0',
-        light: '#3bb2d0',
-      },
-      pink: {
-        DEFAULT: '#c32d7b',
-      },
-    },
-  },
-  variants: {
-    extend: {},
   },
   plugins: [typography, lineClamp],
 };

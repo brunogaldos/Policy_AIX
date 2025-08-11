@@ -19,8 +19,6 @@ import NoBrowserSupport from 'components/app/common/Browser';
 import GDPRBanner from 'components/ui/gdpr-banner';
 import ProgressBar from 'components/progress-bar';
 
-const UserReportButton = dynamic(() => import('../../user-report'), { ssr: false });
-
 export interface LayoutAppProps {
   children: ReactNode;
   className?: string;
@@ -85,8 +83,6 @@ const LayoutApp: FC<LayoutAppProps> = ({
       />
 
       <Toastr preventDuplicates transitionIn="fadeIn" transitionOut="fadeOut" />
-
-      <UserReportButton />
     </div>
   );
 };

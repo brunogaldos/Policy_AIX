@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-undef */
 import { useState, useMemo, useCallback } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
@@ -19,7 +20,6 @@ import ExploreDiscover from 'layout/explore/explore-discover';
 import ExploreNearRealTime from 'layout/explore/explore-near-real-time';
 import ExploreFavorites from 'layout/explore/explore-favorites';
 import ExploreMyData from 'layout/explore/explore-my-data';
-// import Icon from 'components/ui/icon';
 import { ResearchChatbot } from 'components/research';
 
 // lib
@@ -44,9 +44,11 @@ const Explore = (props) => {
   const [mobileWarningOpened, setMobileWarningOpened] = useState(true);
   const [dataset, setDataset] = useState(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
+
   const handleClearPolygon = useCallback(() => {
     stopDrawing();
   }, [stopDrawing]);
+
   const isAuthenticatedSection = useMemo(
     () =>
       [
@@ -62,7 +64,7 @@ const Explore = (props) => {
       {!subsection && !selected && (
         <>
           <ExploreMenu />
-          <div className="explore-sidebar-content" id="sidebar-content-container" key={section}>
+          <div className="explore-sidebar-content panel-style" id="sidebar-content-container" key={section}>
             {section === EXPLORE_SECTIONS.ALL_DATA && <ExploreDatasets />}
             {section === EXPLORE_SECTIONS.TOPICS && <ExploreTopics />}
             {section === EXPLORE_SECTIONS.COLLECTIONS && userIsLoggedIn && <ExploreCollections />}
@@ -90,64 +92,31 @@ const Explore = (props) => {
     if (!datasetData?.slug || !DATASETS_WITH_SCHEMA.includes(datasetData?.slug)) {
       return null;
     }
-
     return dynamic(() => import(`scripts/schemas/${datasetData.slug.toLowerCase()}`));
   }, [datasetData]);
 
-  const metadata = dataset && dataset.metadata && dataset.metadata[0];
-  const infoObj = metadata && metadata.info;
-  const titleSt = selected ? infoObj && infoObj.name : '';
+  const metadata = dataset?.metadata?.[0];
+  const infoObj = metadata?.info;
+  const titleSt = selected ? infoObj?.name : '';
   const descriptionSt = selected
-    ? infoObj && infoObj.functions
+    ? infoObj?.functions
     : 'Browse more than 200 global data sets on the state of our planet.';
 
-
-  
   return (
     <>
       {/* Research Button */}
       <button
-        style={{
-          position: 'fixed',
-          top: '20px',
-          right: '20px',
-          zIndex: 999999,
-          background: '#2563eb',
-          color: 'white',
-          padding: '12px 16px',
-          fontSize: '14px',
-          border: 'none',
-          borderRadius: '8px',
-          cursor: 'pointer',
-          fontWeight: '600',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-          transition: 'all 0.2s ease',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px'
-        }}
+        className="research-btn"
         onClick={() => setIsChatOpen(true)}
-        onMouseEnter={(e) => {
-          e.target.style.background = '#1d4ed8';
-          e.target.style.transform = 'translateY(-1px)';
-          e.target.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
-        }}
-        onMouseLeave={(e) => {
-          e.target.style.background = '#2563eb';
-          e.target.style.transform = 'translateY(0)';
-          e.target.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)';
-        }}
       >
         <span>🔍</span>
         <span>Research</span>
       </button>
-      
+
       <Layout title={titleSt} description={descriptionSt} className="-fullscreen" isFullScreen>
         {DatasetSchemaScript && <DatasetSchemaScript />}
         <Head>
-          {/* unpublished datasets are not indexed by search engines but still accessible in the application */}
           {datasetData && !datasetData?.published && <meta name="robots" content="noindex, follow" />}
-          {/* adds canonical url to avoid content duplicity between pages with dataset slug and ID */}
           {datasetData && (
             <link
               rel="canonical"
@@ -156,50 +125,43 @@ const Explore = (props) => {
           )}
         </Head>
 
-      <div className="c-page-explore">
-        <Media greaterThanOrEqual="md" className="flex flex-1">
-          <>
-            {/*
-              We set this key so that, by rerendering the sidebar, the sections are
-              scrolled to the top when the selected section changes.
-            */}
-            <ExploreSidebar key={section}>{getSidebarLayout()}</ExploreSidebar>
-            {isDrawing && (
-              <div className="clear-polygon-container">
-                <button type="button" onClick={handleClearPolygon} className="c-btn -primary -alt">
-                  Clear Polygon
-                </button>
-              </div>
-            )}
-            <ExploreMap />
-          </>
-        </Media>
-        <Media at="sm" className="flex flex-1">
-          <>
-            {getSidebarLayout()}
-            {/* Mobile warning */}
-            <Modal
-              isOpen={mobileWarningOpened}
-              onRequestClose={() => setMobileWarningOpened(false)}
-            >
-              <div>
-                <p>
-                  The mobile version of Explore has limited functionality, please check the desktop
-                  version to have access to the full list of features available.
-                </p>
-              </div>
-            </Modal>
-          </>
-        </Media>
+        <div className="c-page-explore">
+          <Media greaterThanOrEqual="md" className="flex flex-1">
+            <>
+              <ExploreSidebar key={section}>{getSidebarLayout()}</ExploreSidebar>
+              {isDrawing && (
+                <div className="clear-polygon-container">
+                  <button type="button" onClick={handleClearPolygon} className="c-btn -primary -alt">
+                    Clear Polygon
+                  </button>
+                </div>
+              )}
+              <ExploreMap />
+            </>
+          </Media>
+          <Media at="sm" className="flex flex-1">
+            <>
+              {getSidebarLayout()}
+              <Modal
+                isOpen={mobileWarningOpened}
+                onRequestClose={() => setMobileWarningOpened(false)}
+              >
+                <div>
+                  <p>
+                    The mobile version of Explore has limited functionality, please check the desktop
+                    version to have access to the full list of features available.
+                  </p>
+                </div>
+              </Modal>
+            </>
+          </Media>
 
-        {/* Research Chatbot Modal */}
-        <ResearchChatbot
-          isOpen={isChatOpen}
-          onClose={() => setIsChatOpen(false)}
-        />
-
-      </div>
-    </Layout>
+          <ResearchChatbot
+            isOpen={isChatOpen}
+            onClose={() => setIsChatOpen(false)}
+          />
+        </div>
+      </Layout>
     </>
   );
 };
