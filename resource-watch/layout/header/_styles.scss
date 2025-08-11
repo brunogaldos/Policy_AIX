@@ -1,7 +1,7 @@
 @import 'css/settings';
 
 .l-header {
-  background-color: #40505A; // Exact dark teal-grey from the image
+  background-color: #45535C; // Updated background color
   background-image: none; // Remove gradient
   background-repeat: no-repeat;
   background-position: center;
@@ -29,13 +29,13 @@
 
     .brand-title {
       display: block;
-      color: #E0E0E0; // Light grey/off-white from the image
-      font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: #FFFFFF; // Pure white color
+      font-family: 'Inter', 'Roboto', 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
       font-size: 16px;
-      font-weight: 300; // Light weight as shown in the image
+      font-weight: 500; // Medium weight
       margin: 0;
       text-transform: uppercase;
-      letter-spacing: 1px; // Proper letter spacing for modern look
+      letter-spacing: 0.1em; // Exact letter spacing
       line-height: 1.2;
     }
   }
@@ -57,14 +57,14 @@
           display: inline-flex;
           align-items: center;
           padding: 7px 10px;
-          color: #E0E0E0; // Light grey/off-white from the image
-          fill: #E0E0E0;
+          color: #FFFFFF; // Pure white color
+          fill: #FFFFFF;
           cursor: pointer;
-          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-family: 'Inter', 'Roboto', 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
           font-size: 14px;
-          font-weight: 300; // Light weight as shown in the image
+          font-weight: 500; // Medium weight
           text-transform: uppercase;
-          letter-spacing: 0.5px;
+          letter-spacing: 0.1em; // Exact letter spacing
           line-height: 1.2;
 
           &:hover {
@@ -78,7 +78,7 @@
           position: relative;
           color: $yellow;
           fill: $yellow;
-          font-weight: 400; // Slightly bolder for active state
+          font-weight: 500; // Medium weight
           text-decoration: none;
 
           &:after {

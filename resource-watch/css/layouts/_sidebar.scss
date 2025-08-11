@@ -7,8 +7,8 @@ $min-width-sidebar-closed: 10px;
   display: flex;
   flex-direction: column;
   max-width: $max-width-sidebar;
-  background-color: $white;
-  color: $charcoal-grey;
+  background-color: #45535C; // Updated background color to match header
+  color: #FFFFFF; // Updated text color to match header
   z-index: 3;
 
   @media screen and (min-width: map-get($breakpoints, medium)) {
@@ -53,7 +53,7 @@ $min-width-sidebar-closed: 10px;
     left: 100%;
     z-index: 1;
     cursor: pointer;
-    background-color: rgba($dove-grey, .8);
+    background-color: #45535C; // Updated background color to match header
     border: none;
     border-radius: 0 2px 2px 0;
     transition: background $animation-time-2 $ease-in-out-sine;
@@ -64,14 +64,14 @@ $min-width-sidebar-closed: 10px;
 
     .c-icon {
       width: 12px;
-      fill: $white;
+      fill: #FFFFFF; // Pure white color to match header
 
       &.-left { transform: rotate(90deg); }
       &.-right { transform: rotate(-90deg); }
     }
 
     &:hover {
-      background-color: rgba(darken($dove-grey, 5%), .8);
+      background-color: rgba(255, 255, 255, 0.1); // Subtle hover with white
     }
   }
 }
