@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -euo pipefail
 echo "🧹 Cleaning up existing processes..."
 
 # Kill any existing Node.js processes on port 5029
@@ -21,14 +21,16 @@ sleep 2
 
 echo "✅ Cleanup complete!"
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$SCRIPT_DIR/docker"
 docker compose up -d
 sleep 5
 
-set -euo pipefail
-
 # Load variables from .env file (if it exists)
 if [[ -f .env ]]; then
-  export $(grep -v '^#' .env | xargs)
+  set -a
+  source .env
+  set +a
 else
   echo "⚠️  .env file not found."
   exit 1
@@ -46,4 +48,5 @@ fi
 : "${DISABLE_FORCE_HTTPS:?Missing DISABLE_FORCE_HTTPS in .env}"
 
 # Run npm with variables already in the environment
+cd ..
 npm run watch-start
