@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  postgres_db:
+    container_name: AIX_postgres_17
+    image: postgres:17-alpine
+    restart: always
+    network_mode: host
+    environment:
+      POSTGRES_USER: puser
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: policy_development
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+
+  redis_db:
+    image: redis:6.2.13-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    network_mode: host
+    volumes:
+      - redis-db-data:/data
+
+
+
+
+volumes:
+  postgres-data:
+    driver: local
+  redis-db-data:
+    driver: local

@@ -1,0 +1,53 @@
+{
+  "jsonUrls": [
+    "https://raw.githubusercontent.com/owid/owid-datasets/master/datasets/Peru%20Democracy%20Index/Peru%20Democracy%20Index.json",
+    "https://raw.githubusercontent.com/datasets/population/master/data/population.json"
+  ],
+  "documentUrls": [
+    "https://content.thegovlab.com/items/reboot_democracy_resources/1867?fields=*.*,event_series.general_events_series_id.*",
+    "https://www.idea.int/sites/default/files/publications/country-profile-peru.pdf",
+    "https://www.transparency.org/en/countries/peru"
+  ],
+  "categories": [
+    "Case Studies",
+    "Events",
+    "Blogs/Articles/Podcasts",
+    "Democracy Project Website"
+  ],
+  "aboutProject": "The Rebooting Democracy chatbot has rich information about collective intelligence, AI, and democracy. It can provide you with case studies, news, articles, and resources. It can also provide you with recommendations on the basis of your preferences. It can also provide you with documents and URLs for further reading.",
+  "examples": {
+    "Case Studies": [
+      {
+        "title": "Participatory Budgeting in Lima",
+        "url": "https://www.uclg-cisdp.org/en/observatory/participatory-budgeting-lima",
+        "description": "An initiative in Lima where citizens directly participate in deciding budget priorities for their districts."
+      },
+      {
+        "title": "Indigenous Community Consultation in the Peruvian Amazon",
+        "url": "https://www.culturalsurvival.org/publications/cultural-survival-quarterly/free-prior-and-informed-consent-indigenous-peoples-peru",
+        "description": "A case study on the application of free, prior, and informed consent in extractive projects."
+      }
+    ],
+    "Events": [
+      {
+        "title": "Peru Democracy Dialogue 2023",
+        "url": "https://www.ndi.org/our-stories/peru-democracy-dialogues",
+        "description": "A national forum to discuss democratic reforms, citizen engagement, and anti-corruption strategies."
+      }
+    ],
+    "Blogs/Articles/Podcasts": [
+      {
+        "title": "Digital Tools in Peru's Civic Participation",
+        "url": "https://blogs.iadb.org/administracion-publica/en/digital-tools-in-perus-civic-participation/",
+        "description": "An overview of how digital platforms are enhancing public involvement in governance in Peru."
+      }
+    ],
+    "Democracy Project Website": [
+      {
+        "title": "Transparencia Peru",
+        "url": "https://www.transparencia.org.pe/",
+        "description": "A non-profit dedicated to strengthening democracy and transparency in Peru."
+      }
+    ]
+  }
+}
