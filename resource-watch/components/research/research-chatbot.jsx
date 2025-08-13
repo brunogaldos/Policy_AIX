@@ -151,29 +151,15 @@ const ResearchChatbot = ({
   /**
    * Handle WebSocket messages
    */
-  const handleWebSocketMessage = useCallback(
+    const handleWebSocketMessage = useCallback(
     (message) => {
       console.log('🔍 DEBUG: Research chatbot received WebSocket message:', message);
       logger.info('Research chatbot received WebSocket message:', message);
 
+      // Only process messages that are meant for user display
       switch (message.type) {
-        case 'agent_start':
-          // Add a new progress message for each research step
-          addMessage('system', `🔄 ${message.data?.message || message.message || 'Starting research...'}`);
-          break;
-
-        case 'agent_update':
-          // Update the last system message with progress
-          updateLastMessage(`🔄 ${message.data?.message || message.message || 'Research in progress...'}`);
-          break;
-
-        case 'agent_completed':
-          // Mark the current step as completed
-          updateLastMessage(`✅ ${message.data?.message || message.message || 'Research step completed'}`);
-          break;
-
         case 'chat_response':
-          // Handle streaming chat responses
+          // Handle complete chat responses
           if (message.data?.content || message.content) {
             const content = message.data?.content || message.content;
             addMessage('assistant', content, 'research_result');
@@ -183,21 +169,12 @@ const ResearchChatbot = ({
 
         case 'stream_response':
         case 'stream':
-          // Handle streaming responses (partial content)
-          console.log('🔍 DEBUG: Processing stream message:', message);
+          // Handle streaming responses (only actual research content)
+          const content = message.data?.content || message.content || message.data?.message || message.message;
           
-          // Extract content from various possible locations
-          let content = null;
-          if (message.data?.content || message.content) {
-            content = message.data?.content || message.content;
-          } else if (message.data?.message || message.message) {
-            content = message.data?.message || message.message;
-          } else if (message.data?.text || message.text) {
-            content = message.data?.text || message.text;
-          }
-          
-          if (content) {
-            console.log('🔍 DEBUG: Content to append:', content);
+          if (content && typeof content === 'string') {
+            console.log('🔍 DEBUG: Processing stream content:', content);
+            
             setMessages((prev) => {
               const newMessages = [...prev];
               const lastMessage = newMessages[newMessages.length - 1];
@@ -214,7 +191,7 @@ const ResearchChatbot = ({
                   message: content,
                   messageType: 'research_result',
                   timestamp: new Date(),
-                  isStreaming: true, // Mark as streaming
+                  isStreaming: true,
                 };
                 newMessages.push(newMessage);
               }
@@ -226,7 +203,7 @@ const ResearchChatbot = ({
             if (streamingTimeoutRef.current) {
               clearTimeout(streamingTimeoutRef.current);
             }
-            streamingTimeoutRef.current = setTimeout(markStreamingComplete, 2000); // 2 second timeout
+            streamingTimeoutRef.current = setTimeout(markStreamingComplete, 2000);
             
             // Scroll to bottom after update
             setTimeout(scrollToBottom, 100);
@@ -266,21 +243,11 @@ const ResearchChatbot = ({
           setIsLoading(false);
           break;
 
-        case 'cost_update':
-          // Handle cost updates (optional - could be displayed in UI)
-          logger.info('Research cost update:', message.data);
-          break;
-
-                default:
-          // Handle other message types or generic responses
-          console.log('🔍 DEBUG: Unhandled message type:', message.type, message);
-          logger.info('Unhandled message type:', message.type, message);
-          
-          // Check if this is a streaming chunk with role and content structure
-          if (message.role && message.content) {
+        default:
+          // Handle role/content chunks (OpenAI streaming format)
+          if (message.role && message.content && typeof message.content === 'string') {
             console.log('🔍 DEBUG: Processing role/content chunk:', message);
             
-            // Always treat role/content chunks as streaming content
             setMessages((prev) => {
               const newMessages = [...prev];
               const lastMessage = newMessages[newMessages.length - 1];
@@ -309,68 +276,10 @@ const ResearchChatbot = ({
             if (streamingTimeoutRef.current) {
               clearTimeout(streamingTimeoutRef.current);
             }
-            streamingTimeoutRef.current = setTimeout(markStreamingComplete, 2000); // 2 second timeout
+            streamingTimeoutRef.current = setTimeout(markStreamingComplete, 2000);
             
             // Scroll to bottom after update
             setTimeout(scrollToBottom, 100);
-          } else {
-            // Try to extract content from various possible locations
-            let content = null;
-            if (message.data?.content || message.content) {
-              content = message.data?.content || message.content;
-            } else if (message.data?.message || message.message) {
-              content = message.data?.message || message.message;
-            } else if (message.data?.text || message.text) {
-              content = message.data?.text || message.text;
-            }
-            
-            if (content) {
-              // Check if this looks like a streaming response (single character or word)
-              const isStreamingChunk = content.length <= 5 && !content.includes(' ');
-              
-              if (isStreamingChunk) {
-                // Handle as streaming content
-                setMessages((prev) => {
-                  const newMessages = [...prev];
-                  const lastMessage = newMessages[newMessages.length - 1];
-                  
-                  if (lastMessage && lastMessage.sender === 'assistant' && lastMessage.messageType === 'research_result') {
-                    // Append to existing streaming message
-                    lastMessage.message += content;
-                    lastMessage.timestamp = new Date();
-                  } else {
-                    // Create new streaming message
-                    const newMessage = {
-                      id: Date.now() + Math.random(),
-                      sender: 'assistant',
-                      message: content,
-                      messageType: 'research_result',
-                      timestamp: new Date(),
-                      isStreaming: true,
-                    };
-                    newMessages.push(newMessage);
-                  }
-                  
-                  return newMessages;
-                });
-                
-                // Clear existing timeout and set new one
-                if (streamingTimeoutRef.current) {
-                  clearTimeout(streamingTimeoutRef.current);
-                }
-                streamingTimeoutRef.current = setTimeout(markStreamingComplete, 2000); // 2 second timeout
-                
-                // Scroll to bottom after update
-                setTimeout(scrollToBottom, 100);
-              } else {
-                // Handle as complete message
-                addMessage('assistant', content, 'research_result');
-                setIsLoading(false);
-              }
-            } else if (message.message) {
-              // Fallback for messages with just a message field
-              addMessage('system', message.message);
-            }
           }
           break;
       }
@@ -769,8 +678,8 @@ const ResearchChatbot = ({
           border-radius: 12px;
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
           width: 100%;
-          height: 500px;
-          max-height: 70vh;
+          height: 700px;
+          max-height: 85vh;
           display: flex;
           flex-direction: column;
           overflow: hidden;
@@ -1185,8 +1094,8 @@ const ResearchChatbot = ({
 
           .research-chatbot-container {
             width: 100%;
-            height: 400px;
-            max-height: 60vh;
+            height: 600px;
+            max-height: 80vh;
             border-radius: 8px;
           }
 
