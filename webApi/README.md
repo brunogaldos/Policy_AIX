@@ -1,15 +1,30 @@
 # Live Web Research Example - ExpressJS API
 
-# Requirements
+## 🚀 Quick Start
+
+**For complete setup instructions, see [SETUP_GUIDE.md](./SETUP_GUIDE.md)**
+
+### Requirements
 - OPENAI API KEY
 - GOOGLE custom search setup without scoping
-- Redis running on localhost (optional for persistance of research conversations)
+- Redis running on localhost (optional for persistence of research conversations)
+- PostgreSQL database
+- Weaviate vector database (optional)
 
-## Start the Server
-```
+### Quick Start
+```bash
+# Install dependencies (includes Puppeteer version fixes)
 npm install
-GOOGLE_SEARCH_API_KEY=<KEY> GOOGLE_SEARCH_API_CX_ID=<ID> OPENAI_API_KEY=<KEY> DISABLE_FORCE_HTTPS=true npm run watch-start
+
+# Copy environment file
+cp .env.example_FINAL .env
+# Edit .env with your API keys
+
+# Start the server
+./start.sh
 ```
+
+**Note**: This project includes fixes for Puppeteer version conflicts and TypeScript compilation errors. See SETUP_GUIDE.md for detailed information.
 # websearch_AI
 
 
