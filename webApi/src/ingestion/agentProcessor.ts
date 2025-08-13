@@ -23,7 +23,7 @@ import { PsRagDocumentVectorStore } from "@policysynth/agents/rag/vectorstore/ra
 import { PsRagChunkVectorStore } from "@policysynth/agents/rag/vectorstore/ragChunk.js";
 import { isArray } from "util";
 
-export class RebootingDemocracyIngestionProcessor extends IngestionAgentProcessor {
+export class SkillsFirstIngestionProcessor extends IngestionAgentProcessor {
   dataLayoutPath: string;
   cachedFiles: string[] = [];
   fileMetadataPath: string = "./src/ingestion/cache/fileMetadata.json";

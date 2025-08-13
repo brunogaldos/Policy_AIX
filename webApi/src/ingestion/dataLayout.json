@@ -1,52 +1,52 @@
 {
   "jsonUrls": [
-    "https://raw.githubusercontent.com/owid/owid-datasets/master/datasets/Peru%20Democracy%20Index/Peru%20Democracy%20Index.json",
-    "https://raw.githubusercontent.com/datasets/population/master/data/population.json"
+    "https://raw.githubusercontent.com/owid/owid-datasets/master/datasets/Education%20Statistics/Education%20Statistics.json",
+    "https://raw.githubusercontent.com/datasets/employment/master/data/employment.json"
   ],
   "documentUrls": [
-    "https://content.thegovlab.com/items/reboot_democracy_resources/1867?fields=*.*,event_series.general_events_series_id.*",
-    "https://www.idea.int/sites/default/files/publications/country-profile-peru.pdf",
-    "https://www.transparency.org/en/countries/peru"
+    "https://www.oecd.org/education/skills-first-policy.html",
+    "https://www.worldbank.org/en/topic/education/publication/skills-for-the-future",
+    "https://www.ilo.org/global/topics/skills-knowledge-and-employability/lang--en/index.htm"
   ],
   "categories": [
-    "Case Studies",
-    "Events",
-    "Blogs/Articles/Podcasts",
-    "Democracy Project Website"
+    "Skills Development",
+    "Education Policy",
+    "Employment Training",
+    "Skills First Research"
   ],
-  "aboutProject": "The Rebooting Democracy chatbot has rich information about collective intelligence, AI, and democracy. It can provide you with case studies, news, articles, and resources. It can also provide you with recommendations on the basis of your preferences. It can also provide you with documents and URLs for further reading.",
+  "aboutProject": "The Skills First Research Tool chatbot has rich information about skills development, education policy, and employment training. It can provide you with case studies, research papers, policy documents, and resources. It can also provide you with recommendations on the basis of your preferences. It can also provide you with documents and URLs for further reading.",
   "examples": {
-    "Case Studies": [
+    "Skills Development": [
       {
-        "title": "Participatory Budgeting in Lima",
-        "url": "https://www.uclg-cisdp.org/en/observatory/participatory-budgeting-lima",
-        "description": "An initiative in Lima where citizens directly participate in deciding budget priorities for their districts."
+        "title": "Digital Skills Training Programs",
+        "url": "https://www.itu.int/en/ITU-D/Digital-Inclusion/Youth-and-Children/Pages/Digital-Skills.aspx",
+        "description": "International programs focused on developing digital literacy and technical skills for the modern workforce."
       },
       {
-        "title": "Indigenous Community Consultation in the Peruvian Amazon",
-        "url": "https://www.culturalsurvival.org/publications/cultural-survival-quarterly/free-prior-and-informed-consent-indigenous-peoples-peru",
-        "description": "A case study on the application of free, prior, and informed consent in extractive projects."
+        "title": "Vocational Training Initiatives",
+        "url": "https://www.ilo.org/global/topics/skills-knowledge-and-employability/vocational-training/lang--en/index.htm",
+        "description": "A comprehensive overview of vocational training programs and their impact on employment outcomes."
       }
     ],
-    "Events": [
+    "Education Policy": [
       {
-        "title": "Peru Democracy Dialogue 2023",
-        "url": "https://www.ndi.org/our-stories/peru-democracy-dialogues",
-        "description": "A national forum to discuss democratic reforms, citizen engagement, and anti-corruption strategies."
+        "title": "Skills-First Education Reform",
+        "url": "https://www.oecd.org/education/skills-first-policy.html",
+        "description": "OECD's approach to reforming education systems to prioritize practical skills development."
       }
     ],
-    "Blogs/Articles/Podcasts": [
+    "Employment Training": [
       {
-        "title": "Digital Tools in Peru's Civic Participation",
-        "url": "https://blogs.iadb.org/administracion-publica/en/digital-tools-in-perus-civic-participation/",
-        "description": "An overview of how digital platforms are enhancing public involvement in governance in Peru."
+        "title": "Workforce Development Programs",
+        "url": "https://www.worldbank.org/en/topic/socialprotection/publication/active-labor-market-programs",
+        "description": "Analysis of active labor market programs and their effectiveness in improving employment outcomes."
       }
     ],
-    "Democracy Project Website": [
+    "Skills First Research": [
       {
-        "title": "Transparencia Peru",
-        "url": "https://www.transparencia.org.pe/",
-        "description": "A non-profit dedicated to strengthening democracy and transparency in Peru."
+        "title": "Skills Gap Analysis",
+        "url": "https://www.mckinsey.com/industries/public-and-social-sector/our-insights/defining-the-skills-citizens-will-need-in-the-future-world-of-work",
+        "description": "Research on identifying and addressing skills gaps in the evolving job market."
       }
     ]
   }

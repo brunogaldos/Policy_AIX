@@ -1,6 +1,6 @@
-import { RebootingDemocracyIngestionProcessor } from "./agentProcessor.js";
+import { SkillsFirstIngestionProcessor } from "./agentProcessor.js";
 
-export class RebootingDemocracyIngestionProcessorWorker extends RebootingDemocracyIngestionProcessor {
+export class SkillsFirstIngestionProcessorWorker extends SkillsFirstIngestionProcessor {
     // Your class implementation here.
     // If you need specific functionality for RebootingDemocracyIngestionProcessor, add it here.
 }
@@ -8,7 +8,7 @@ export class RebootingDemocracyIngestionProcessorWorker extends RebootingDemocra
 // Asynchronous main function to run the script
 async function main() {
     try {
-        const processor = new RebootingDemocracyIngestionProcessor();
+        const processor = new SkillsFirstIngestionProcessorWorker();
         await processor.processDataLayout();
         console.log("Data layout processing completed successfully.");
 process.exit(0);

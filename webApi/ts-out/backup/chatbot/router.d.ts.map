@@ -1,0 +1,1 @@
+{"version":3,"file":"router.d.ts","sourceRoot":"","sources":["../../../backup/chatbot/router.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,oBAAoB,EAAE,MAAM,kCAAkC,CAAC;AAExE,qBAAa,WAAY,SAAQ,oBAAoB;IAC7C,cAAc,CAClB,YAAY,EAAE,MAAM,EACpB,UAAU,EAAE,qBAAqB,EACjC,WAAW,EAAE,MAAM,GAClB,OAAO,CAAC,GAAG,CAAC;CAYhB"}

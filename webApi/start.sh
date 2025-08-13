@@ -46,6 +46,7 @@ fi
 : "${GOOGLE_SEARCH_API_CX_ID:?Missing GOOGLE_SEARCH_API_CX_ID in .env}"
 : "${OPENAI_API_KEY:?Missing OPENAI_API_KEY in .env}"
 : "${DISABLE_FORCE_HTTPS:?Missing DISABLE_FORCE_HTTPS in .env}"
+: "${WEAVIATE_API_KEY:?Missing WEAVIATE_API_KEY in .env}"
 
 # Run npm with variables already in the environment
 cd ..

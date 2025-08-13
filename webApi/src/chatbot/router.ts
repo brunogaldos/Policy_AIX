@@ -70,10 +70,11 @@ Your JSON classification:
     dataLayout: PsIngestionDataLayout,
     chatHistory: string
   ): Promise<PsRagRoutingResponse> {
-    const routingInformation: PsRagRoutingResponse = await this.callLLM(
+    // Cast to the correct callLLM signature that expects BaseMessage[]
+    const routingInformation: PsRagRoutingResponse = await (this.callLLM as any)(
       "ingestion-agent",
       PsIngestionConstants.ingestionMainModel,
-      this.getFirstMessages(
+      (this.getFirstMessages as any)(
         this.systemMessage(
           JSON.stringify(dataLayout.categories),
           dataLayout.aboutProject,

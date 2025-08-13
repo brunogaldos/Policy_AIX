@@ -1,10 +1,10 @@
 import { PsBaseChatBot } from "@policysynth/api/base/chat/baseChatBot.js";
-export declare class RebootingDemocracyChatBot extends PsBaseChatBot {
+export declare class SkillsFirstChatBot extends PsBaseChatBot {
     persistMemory: boolean;
     mainSreamingSystemPrompt: string;
     mainStreamingUserPrompt: (latestQuestion: string, context: string) => string;
-    sendSourceDocuments(document: PsSimpleDocumentSource[]): void;
-    rebootingDemocracyConversation(chatLog: PsSimpleChatLog[], dataLayout: PsIngestionDataLayout): Promise<void>;
-    updateUrls(searchContext: []): Promise<[]>;
+    sendSourceDocuments(document: any[]): void;
+    skillsFirstConversation(chatLog: PsSimpleChatLog[], dataLayout: PsIngestionDataLayout): Promise<void>;
+    updateUrls(searchContext: any): Promise<any>;
 }
 //# sourceMappingURL=chatBot.d.ts.map

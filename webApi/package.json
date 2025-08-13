@@ -15,7 +15,12 @@
     "@policysynth/webapp": "^1.2.1",
     "@types/html-to-text": "^9.0.4",
     "cors": "^2.8.5",
-    "html-to-text": "^9.0.5"
+    "html-to-text": "^9.0.5",
+    "weaviate-ts-client": "^1.6.0",
+    "node-fetch": "^3.3.2",
+    "puppeteer": "^22.4.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
   },
   "scripts": {
     "start": "nodemon -e ts ts-out/server.js",
@@ -26,7 +31,11 @@
     "copyInLocalDeps": "npm run copyInLocalAgents;npm run copyInLocalApi;",
     "dev:debug": "nodemon --config nodemon.json --inspect-brk ./ts-out/server.js",
     "build": "tsc --project ./ --outDir ./ts-out",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "createWeaviateRagDocument": "npm run build;cp -R src/vectorstore/schemas ts-out/vectorstore/;node ts-out/vectorstore/tools/createRagDocument.js",
+    "createWeaviateRagChunk": "npm run build;cp -R src/vectorstore/schemas ts-out/vectorstore/;node ts-out/vectorstore/tools/createRagChunk.js",
+    "destroyWeaviateRagChunk": "node ts-out/vectorstore/tools/destroyRagChunk.js",
+    "destroyWeaviateRagDocument": "node ts-out/vectorstore/tools/destroyRagDocument.js"
   },
   "devDependencies": {
     "@tsconfig/node18": "^18.2.4",
