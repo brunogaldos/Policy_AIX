@@ -1,11 +1,11 @@
 import { PsBaseChatBot } from "@policysynth/api/base/chat/baseChatBot.js";
 import { PsRagRouter } from "./router.js";
 import { PsRagVectorSearch } from "./vectorSearch.js";
-export class RebootingDemocracyChatBot extends PsBaseChatBot {
+export class SkillsFirstChatBot extends PsBaseChatBot {
     constructor() {
         super(...arguments);
         this.persistMemory = true;
-        this.mainSreamingSystemPrompt = `You are the Rebooting Democracy chatbot a friendly AI that helps users find information from a large database of documents.
+        this.mainSreamingSystemPrompt = `You are the Skills First Research Tool chatbot a friendly AI that helps users find information from a large database of documents.
 
 Instructions:
 - The user will ask a question, we will search a large database in a vector store and bring information connected to the user question into your <CONTEXT_TO_ANSWER_USERS_QUESTION_FROM> to provide a thoughtful answer from.
@@ -33,10 +33,16 @@ Your thoughtful answer in markdown:
     }
     sendSourceDocuments(document) {
         document.forEach((d, i) => {
-            if (d.contentType.includes("json")) {
-                const refurls = JSON.parse(d.allReferencesWithUrls);
-                if (refurls.length > 0)
-                    document[i].url = refurls[0].url;
+            if (d.contentType && d.contentType.includes("json")) {
+                try {
+                    const refurls = JSON.parse(d.allReferencesWithUrls);
+                    if (refurls.length > 0 && refurls[0].url) {
+                        document[i].url = refurls[0].url;
+                    }
+                }
+                catch (error) {
+                    console.error("Error parsing allReferencesWithUrls:", error);
+                }
             }
         });
         const botMessage = {
@@ -54,7 +60,7 @@ Your thoughtful answer in markdown:
             console.error("No wsClientSocket found");
         }
     }
-    async rebootingDemocracyConversation(chatLog, dataLayout) {
+    async skillsFirstConversation(chatLog, dataLayout) {
         this.setChatLog(chatLog);
         const userLastMessage = chatLog[chatLog.length - 1].message;
         console.log(`userLastMessage: ${userLastMessage}`);
@@ -63,12 +69,12 @@ Your thoughtful answer in markdown:
         this.sendAgentStart("Thinking...");
         const router = new PsRagRouter();
         const routingData = await router.getRoutingData(userLastMessage, dataLayout, JSON.stringify(chatLogWithoutLastUserMessage));
-        this.sendAgentStart("Searching Rebooting Democracy...");
+        this.sendAgentStart("Searching Skills First Research...");
         const vectorSearch = new PsRagVectorSearch();
         const searchContextRaw = await vectorSearch.search(userLastMessage, routingData, dataLayout);
         const searchContext = await this.updateUrls(searchContextRaw);
         console.log("search_context", searchContext);
-        console.log("In Rebooting Democracy conversation");
+        console.log("In Skills First conversation");
         let messages = chatLogWithoutLastUserMessage.map((message) => {
             return {
                 role: message.sender,
@@ -108,17 +114,22 @@ Your thoughtful answer in markdown:
         documents.forEach((document, index) => {
             if (document.contentType && document.contentType.includes("json")) {
                 console.log("Original URL:", document.url);
-                // Parse the JSON string of allReferencesWithUrls
-                const refUrls = JSON.parse(document.allReferencesWithUrls);
-                // Check if there are any URLs available to update
-                if (refUrls.length > 0) {
-                    // Store the old URL before updating
-                    const oldUrl = document.url;
-                    // Update the document's URL to the first reference URL
-                    // documents[index].url = refUrls[0].url;
-                    // Replace the old URL in the responseText with the new URL
-                    updatedResponseText = updatedResponseText.replace(oldUrl, refUrls[0].url);
-                    console.log("Updated URL:", documents[index].url);
+                try {
+                    // Parse the JSON string of allReferencesWithUrls
+                    const refUrls = JSON.parse(document.allReferencesWithUrls);
+                    // Check if there are any URLs available to update
+                    if (refUrls.length > 0 && refUrls[0].url) {
+                        // Store the old URL before updating
+                        const oldUrl = document.url;
+                        // Update the document's URL to the first reference URL
+                        // documents[index].url = refUrls[0].url;
+                        // Replace the old URL in the responseText with the new URL
+                        updatedResponseText = updatedResponseText.replace(oldUrl, refUrls[0].url);
+                        console.log("Updated URL:", documents[index].url);
+                    }
+                }
+                catch (error) {
+                    console.error("Error parsing allReferencesWithUrls in updateUrls:", error);
                 }
             }
         });

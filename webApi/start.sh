@@ -27,9 +27,9 @@ docker compose up -d
 sleep 5
 
 # Load variables from .env file (if it exists)
-if [[ -f .env ]]; then
+if [[ -f ../.env ]]; then
   set -a
-  source .env
+  source ../.env
   set +a
 else
   echo "⚠️  .env file not found."
@@ -46,6 +46,7 @@ fi
 : "${GOOGLE_SEARCH_API_CX_ID:?Missing GOOGLE_SEARCH_API_CX_ID in .env}"
 : "${OPENAI_API_KEY:?Missing OPENAI_API_KEY in .env}"
 : "${DISABLE_FORCE_HTTPS:?Missing DISABLE_FORCE_HTTPS in .env}"
+: "${WEAVIATE_API_KEY:?Missing WEAVIATE_API_KEY in .env}"
 
 # Run npm with variables already in the environment
 cd ..

@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export class PsRagChunkVectorStore extends PolicySynthAgentBase {
     static getWeaviateKey() {
-        const key = process.env.WEAVIATE_APIKEY || ""; // Provide a default empty string if the key is undefined
+        const key = process.env.WEAVIATE_API_KEY || ""; // Provide a default empty string if the key is undefined
         console.log(`Weaviate API Key: ${key ? 'Retrieved successfully' : 'Not found or is empty'}`);
         return key;
     }

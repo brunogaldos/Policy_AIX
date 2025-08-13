@@ -62,6 +62,7 @@ Your JSON classification:
 `);
     }
     async getRoutingData(userQuestion, dataLayout, chatHistory) {
+        // Cast to the correct callLLM signature that expects BaseMessage[]
         const routingInformation = await this.callLLM("ingestion-agent", PsIngestionConstants.ingestionMainModel, this.getFirstMessages(this.systemMessage(JSON.stringify(dataLayout.categories), dataLayout.aboutProject, chatHistory), this.userMessage(userQuestion)));
         console.log(`Routing information: ${JSON.stringify(routingInformation, null, 2)}`);
         return routingInformation;

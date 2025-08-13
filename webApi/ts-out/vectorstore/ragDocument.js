@@ -13,7 +13,7 @@ export class PsRagDocumentVectorStore extends PolicySynthAgentBase {
         this.minQualityEloRatingForChunk = 920;
     }
     static getWeaviateKey() {
-        const key = process.env.WEAVIATE_APIKEY || ""; // Provide a default empty string if the key is undefined
+        const key = process.env.WEAVIATE_API_KEY || ""; // Provide a default empty string if the key is undefined
         console.log(`Weaviate API Key: ${key ? 'Retrieved successfully' : 'Not found or is empty'}`);
         return key;
     }
