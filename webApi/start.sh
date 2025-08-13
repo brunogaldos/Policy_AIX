@@ -27,9 +27,9 @@ docker compose up -d
 sleep 5
 
 # Load variables from .env file (if it exists)
-if [[ -f .env ]]; then
+if [[ -f ../.env ]]; then
   set -a
-  source .env
+  source ../.env
   set +a
 else
   echo "⚠️  .env file not found."

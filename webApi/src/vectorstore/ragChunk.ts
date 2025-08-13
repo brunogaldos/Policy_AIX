@@ -1,5 +1,4 @@
-import weaviate from "weaviate-ts-client";
-import { WeaviateClient } from "weaviate-ts-client";
+import weaviate, { WeaviateClient, ApiKey } from "weaviate-ts-client";
 import { PolicySynthAgentBase } from "@policysynth/agents/baseAgent.js";
 
 import { PsConstants } from "@policysynth/agents/constants.js";
@@ -22,17 +21,17 @@ export class PsRagChunkVectorStore extends PolicySynthAgentBase {
 
      static weaviateKey =  PsRagChunkVectorStore.getWeaviateKey();
 
-     static client: WeaviateClient = weaviate.client({
+     static client: WeaviateClient = (weaviate as any).client({
        scheme: process.env.WEAVIATE_HTTP_SCHEME || "http",
        host: process.env.WEAVIATE_HOST || "localhost:8080",
-       apiKey: new weaviate.ApiKey(PsRagChunkVectorStore.weaviateKey),
+       apiKey: new (weaviate as any).ApiKey(PsRagChunkVectorStore.weaviateKey),
        headers: {
          'X-OpenAI-Api-Key': process.env.OPENAI_API_KEY,
        },
      });
 
      private static getWeaviateKey(): string {
-      const key = process.env.WEAVIATE_APIKEY || "";  // Provide a default empty string if the key is undefined
+      const key = process.env.WEAVIATE_API_KEY || "";  // Provide a default empty string if the key is undefined
       console.log(`Weaviate API Key: ${key ? 'Retrieved successfully' : 'Not found or is empty'}`);
       return key;
     }

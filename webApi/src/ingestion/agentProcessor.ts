@@ -431,7 +431,7 @@ export class SkillsFirstIngestionProcessor extends IngestionAgentProcessor {
       return acc;
     }, {});
 
-    return Object.values(urlCounts).filter((count) => count > 1).length;
+    return Object.values(urlCounts).filter((count) => (count as number) > 1).length;
   }
 
   async classifyDocuments(allDocumentSourcesWithChunks: PsRagDocumentSource[]) {

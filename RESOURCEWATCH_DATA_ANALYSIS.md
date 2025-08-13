@@ -176,3 +176,5 @@ AND ST_INTERSECTS(ST_SetSRID(ST_GeomFromGeoJSON('{"type":"Point","coordinates":[
 The ResourceWatch NO2 dataset provides a rich source of air quality data that can be integrated into your chatbot. The data is well-structured, globally comprehensive, and includes both spatial and temporal dimensions. The API endpoints provide easy access to both metadata and actual data values, making it suitable for interactive chatbot responses about air quality conditions worldwide.
 
 
+
+
