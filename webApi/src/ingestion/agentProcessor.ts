@@ -38,7 +38,7 @@ export class SkillsFirstIngestionProcessor extends IngestionAgentProcessor {
 
   // constructor(dataLayoutPath: string = "file://src/ingestion/dataLayout.json") {
   constructor(
-    dataLayoutPath: string = "https://content.thegovlab.com/flows/trigger/a84e387c-9a82-4bb2-b41f-22780c3826a7"
+    dataLayoutPath: string = "file://src/ingestion/dataLayout.json"
   ) {
     super();
     this.dataLayoutPath = dataLayoutPath;

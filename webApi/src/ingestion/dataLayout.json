@@ -1,53 +1,19 @@
 {
   "jsonUrls": [
-    "https://raw.githubusercontent.com/owid/owid-datasets/master/datasets/Education%20Statistics/Education%20Statistics.json",
-    "https://raw.githubusercontent.com/datasets/employment/master/data/employment.json"
+    "https://api.resourcewatch.org/v1/dataset/b75d8398-34f2-447d-832d-ea570451995a",
+    "https://api.resourcewatch.org/v1/dataset/b75d8398-34f2-447d-832d-ea570451995a/layer",
+    "https://api.resourcewatch.org/v1/dataset/b75d8398-34f2-447d-832d-ea570451995a/widget",
+    "https://api.resourcewatch.org/v1/query/b75d8398-34f2-447d-832d-ea570451995a?sql=SELECT * FROM projects/resource-watch-gee/cit_035_tropomi_atmospheric_chemistry_model_30day_avg/NO2 LIMIT 100",
+    "https://api.resourcewatch.org/v1/query/b75d8398-34f2-447d-832d-ea570451995a?sql=SELECT * FROM projects/resource-watch-gee/cit_035_tropomi_atmospheric_chemistry_model_30day_avg/NO2 WHERE system:time_start > 1754000000000 LIMIT 50"
   ],
   "documentUrls": [
-    "https://www.oecd.org/education/skills-first-policy.html",
-    "https://www.worldbank.org/en/topic/education/publication/skills-for-the-future",
-    "https://www.ilo.org/global/topics/skills-knowledge-and-employability/lang--en/index.htm"
+    
   ],
   "categories": [
-    "Skills Development",
-    "Education Policy",
-    "Employment Training",
-    "Skills First Research"
+    "Climate Change",
+    "Sustainability",
+    "Geospatial Data",
+    "Temporal Data"
   ],
-  "aboutProject": "The Skills First Research Tool chatbot has rich information about skills development, education policy, and employment training. It can provide you with case studies, research papers, policy documents, and resources. It can also provide you with recommendations on the basis of your preferences. It can also provide you with documents and URLs for further reading.",
-  "examples": {
-    "Skills Development": [
-      {
-        "title": "Digital Skills Training Programs",
-        "url": "https://www.itu.int/en/ITU-D/Digital-Inclusion/Youth-and-Children/Pages/Digital-Skills.aspx",
-        "description": "International programs focused on developing digital literacy and technical skills for the modern workforce."
-      },
-      {
-        "title": "Vocational Training Initiatives",
-        "url": "https://www.ilo.org/global/topics/skills-knowledge-and-employability/vocational-training/lang--en/index.htm",
-        "description": "A comprehensive overview of vocational training programs and their impact on employment outcomes."
-      }
-    ],
-    "Education Policy": [
-      {
-        "title": "Skills-First Education Reform",
-        "url": "https://www.oecd.org/education/skills-first-policy.html",
-        "description": "OECD's approach to reforming education systems to prioritize practical skills development."
-      }
-    ],
-    "Employment Training": [
-      {
-        "title": "Workforce Development Programs",
-        "url": "https://www.worldbank.org/en/topic/socialprotection/publication/active-labor-market-programs",
-        "description": "Analysis of active labor market programs and their effectiveness in improving employment outcomes."
-      }
-    ],
-    "Skills First Research": [
-      {
-        "title": "Skills Gap Analysis",
-        "url": "https://www.mckinsey.com/industries/public-and-social-sector/our-insights/defining-the-skills-citizens-will-need-in-the-future-world-of-work",
-        "description": "Research on identifying and addressing skills gaps in the evolving job market."
-      }
-    ]
-  }
+  "aboutProject": "The websearch chatbot has rich information about sustainability, policies and AI. It can provide you with case studies, news, articles, and resources. It can also provide you with recommendations on the basis of your preferences. It can also provide you with documents and URLs for further reading. It now includes real-time environmental data from Resource Watch, including NO₂ satellite measurements with numerical values, city/country data, coordinates, and temporal information for comprehensive environmental analysis."
 }

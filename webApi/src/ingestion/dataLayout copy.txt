@@ -8,7 +8,7 @@
     "Case Studies",
     "Events",
     "Blogs/Articles/Podcasts",
-    "Democracy Project Website"
+    "Policy Project Website"
   ],
-  "aboutProject": "The Rebooting Democracy chatbot has rich information about collective intelligence, AI, and democracy. It can provide you with case studies, news, articles, and resources. It can also provide you with recommendations on the basis of your preferences. It can also provide you with documents and URLs for further reading."
+  "aboutProject": "The websearch chatbot has rich information about sustainability, policies and AI. It can provide you with case studies, news, articles, and resources. It can also provide you with recommendations on the basis of your preferences. It can also provide you with documents and URLs for further reading."
 }

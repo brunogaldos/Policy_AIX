@@ -1,14 +1,16 @@
 import { PsBaseChatBot } from "@policysynth/api/base/chat/baseChatBot.js";
 import { PsRagRouter } from "./router.js";
 import { PsRagVectorSearch } from "./vectorSearch.js";
-export class SkillsFirstChatBot extends PsBaseChatBot {
-    constructor() {
-        super(...arguments);
+import { ResourceWatchSimpleIntegration } from "../services/resourceWatchSimpleIntegration.js";
+export class EnhancedSkillsFirstChatBot extends PsBaseChatBot {
+    constructor(wsClientId, wsClients, memoryId) {
+        super(wsClientId, wsClients, memoryId);
         this.persistMemory = true;
-        this.mainSreamingSystemPrompt = `You are the Skills First Research Tool chatbot a friendly AI that helps users find information from a large database of documents.
+        this.mainSreamingSystemPrompt = `You are the Skills First Research Tool chatbot, a friendly AI that helps users find information from a large database of documents about skills development, workforce training, and environmental factors affecting employment.
 
 Instructions:
 - The user will ask a question, we will search a large database in a vector store and bring information connected to the user question into your <CONTEXT_TO_ANSWER_USERS_QUESTION_FROM> to provide a thoughtful answer from.
+- If environmental context is provided, consider how environmental factors (air quality, climate change, etc.) impact skills development and workforce training.
 - If not enough information is available, you can ask the user for more information.
 - Never provide information that is not backed by your context or is common knowledge.
 - Look carefully at all in your context before you present the information to the user.
@@ -19,10 +21,15 @@ Instructions:
 - If there are inline links in the actual document chunks, you can provide those to the user in a markdown link format.
 - Use markdown to format your answers, always use formatting so the response comes alive to the user.
 - Keep your answers short and to the point except when the user asks for detail.
+- When environmental data is available, integrate it naturally into your skills development recommendations.
 `;
-        this.mainStreamingUserPrompt = (latestQuestion, context) => `<CONTEXT_TO_ANSWER_USERS_QUESTION_FROM>
+        this.mainStreamingUserPrompt = (latestQuestion, context, environmentalContext) => `<CONTEXT_TO_ANSWER_USERS_QUESTION_FROM>
 ${context}
 </CONTEXT_TO_ANSWER_USERS_QUESTION_FROM>
+
+${environmentalContext ? `<ENVIRONMENTAL_CONTEXT>
+${environmentalContext}
+</ENVIRONMENTAL_CONTEXT>` : ''}
 
 <LATEST_USER_QUESTION>
 ${latestQuestion}
@@ -30,6 +37,7 @@ ${latestQuestion}
 
 Your thoughtful answer in markdown:
 `;
+        this.resourceWatchIntegration = new ResourceWatchSimpleIntegration();
     }
     sendSourceDocuments(document) {
         document.forEach((d, i) => {
@@ -60,80 +68,74 @@ Your thoughtful answer in markdown:
             console.error("No wsClientSocket found");
         }
     }
-    async skillsFirstConversation(chatLog, dataLayout) {
+    async enhancedSkillsFirstConversation(chatLog, dataLayout) {
         this.setChatLog(chatLog);
         const userLastMessage = chatLog[chatLog.length - 1].message;
         console.log(`userLastMessage: ${userLastMessage}`);
         const chatLogWithoutLastUserMessage = chatLog.slice(0, -1);
         console.log(`chatLogWithoutLastUserMessage: ${JSON.stringify(chatLogWithoutLastUserMessage, null, 2)}`);
+        // Check for environmental context
+        let environmentalContext = null;
+        try {
+            const envContext = await this.resourceWatchIntegration.getEnvironmentalContext(userLastMessage);
+            if (envContext) {
+                environmentalContext = envContext.summary;
+                console.log(`Environmental context detected: ${envContext.category}`);
+                // Send environmental context to user
+                this.sendAgentStart(`🌍 Detected environmental context: ${envContext.category}`);
+            }
+        }
+        catch (error) {
+            console.error('Error getting environmental context:', error);
+        }
         this.sendAgentStart("Thinking...");
         const router = new PsRagRouter();
         const routingData = await router.getRoutingData(userLastMessage, dataLayout, JSON.stringify(chatLogWithoutLastUserMessage));
         this.sendAgentStart("Searching Skills First Research...");
         const vectorSearch = new PsRagVectorSearch();
         const searchContextRaw = await vectorSearch.search(userLastMessage, routingData, dataLayout);
-        const searchContext = await this.updateUrls(searchContextRaw);
-        console.log("search_context", searchContext);
-        console.log("In Skills First conversation");
-        let messages = chatLogWithoutLastUserMessage.map((message) => {
-            return {
-                role: message.sender,
-                content: message.message,
-            };
-        });
-        const systemMessage = {
-            role: "system",
-            content: this.mainSreamingSystemPrompt,
-        };
-        messages.unshift(systemMessage);
-        const finalUserQuestionText = `Original user question: ${userLastMessage} \nRewritten user question (for vector search): ${routingData.rewrittenUserQuestionVectorDatabaseSearch}`;
-        const userMessage = {
-            role: "user",
-            content: this.mainStreamingUserPrompt(finalUserQuestionText, searchContext.responseText),
-        };
-        messages.push(userMessage);
-        console.log(`Messages to chatbot: ${JSON.stringify(messages, null, 2)}`);
+        this.sendAgentStart("Analyzing environmental factors...");
+        // Enhance the search context with environmental data if relevant
+        let enhancedContext = searchContextRaw;
+        if (environmentalContext) {
+            enhancedContext = `${searchContextRaw}
+
+**Current Environmental Context:**
+${environmentalContext}
+
+*This environmental data can help inform skills development strategies and workforce training approaches.*`;
+        }
+        this.sendSourceDocuments(searchContextRaw);
+        this.sendAgentStart("Generating response...");
+        // Use the enhanced prompt with environmental context
+        const userPrompt = this.mainStreamingUserPrompt(userLastMessage, enhancedContext, environmentalContext);
+        const messages = [
+            {
+                role: "system",
+                content: this.mainSreamingSystemPrompt,
+            },
+            {
+                role: "user",
+                content: userPrompt,
+            },
+        ];
         try {
             const stream = await this.openaiClient.chat.completions.create({
-                model: "gpt-4-turbo",
+                model: "gpt-4-0125-preview",
                 messages,
                 max_tokens: 4000,
-                temperature: 0.0,
+                temperature: 0.7,
                 stream: true,
             });
-            this.sendSourceDocuments(searchContext.documents);
             await this.streamWebSocketResponses(stream);
         }
-        catch (err) {
-            console.error(`Error in Skillfirst chatbot: ${err}`);
+        catch (error) {
+            console.error("Error in enhanced conversation:", error);
+            this.sendAgentStart("Error generating response");
         }
     }
-    async updateUrls(searchContext) {
-        const documents = searchContext.documents;
-        let updatedResponseText = searchContext.responseText;
-        documents.forEach((document, index) => {
-            if (document.contentType && document.contentType.includes("json")) {
-                console.log("Original URL:", document.url);
-                try {
-                    // Parse the JSON string of allReferencesWithUrls
-                    const refUrls = JSON.parse(document.allReferencesWithUrls);
-                    // Check if there are any URLs available to update
-                    if (refUrls.length > 0 && refUrls[0].url) {
-                        // Store the old URL before updating
-                        const oldUrl = document.url;
-                        // Update the document's URL to the first reference URL
-                        // documents[index].url = refUrls[0].url;
-                        // Replace the old URL in the responseText with the new URL
-                        updatedResponseText = updatedResponseText.replace(oldUrl, refUrls[0].url);
-                        console.log("Updated URL:", documents[index].url);
-                    }
-                }
-                catch (error) {
-                    console.error("Error parsing allReferencesWithUrls in updateUrls:", error);
-                }
-            }
-        });
-        searchContext.responseText = updatedResponseText;
-        return searchContext;
+    // Keep the original method for backward compatibility
+    async skillsFirstConversation(chatLog, dataLayout) {
+        return this.enhancedSkillsFirstConversation(chatLog, dataLayout);
     }
 }

@@ -143,7 +143,7 @@ Your thoughtful answer in markdown:
       this.sendSourceDocuments(searchContext.documents);
       await this.streamWebSocketResponses(stream);
     } catch (err) {
-      console.error(`Error in Rebooting Democracy chatbot: ${err}`);
+      console.error(`Error in Skillfirst chatbot: ${err}`);
     }
   }
 

@@ -3,7 +3,6 @@ import { WebResearchRagChatBot } from "../chatbot/chatBot.js";
 export class RagChatController extends BaseController {
     constructor(wsClients) {
         super(wsClients);
-        this.path = "/api/rag_chat";
         this.getChatLog = async (req, res) => {
             const memoryId = req.params.memoryId;
             let chatLog;
@@ -24,6 +23,7 @@ export class RagChatController extends BaseController {
             catch (error) {
                 console.log(error);
                 res.sendStatus(500);
+                return;
             }
             if (chatLog) {
                 res.send({ chatLog, totalCosts });
@@ -51,6 +51,7 @@ export class RagChatController extends BaseController {
             catch (error) {
                 console.log(error);
                 res.sendStatus(500);
+                return;
             }
             console.log(`RagChatController for id ${wsClientId} initialized chatLog of length ${chatLog?.length}`);
             if (saveChatLog) {
@@ -60,7 +61,7 @@ export class RagChatController extends BaseController {
                 res.sendStatus(200);
             }
         };
-        this.initializeRoutes();
+        this.path = "/api/rag_chat";
     }
     async initializeRoutes() {
         this.router.put(this.path + "/", this.ragChat);
