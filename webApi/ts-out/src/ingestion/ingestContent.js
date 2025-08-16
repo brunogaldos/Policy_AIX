@@ -1,10 +1,10 @@
 import { IngestionAgentProcessor } from "./agentProcessor.js";
-export class RebootingDemocracyIngestionProcessor extends IngestionAgentProcessor {
+export class SkillsFirstIngestionProcessor extends IngestionAgentProcessor {
 }
 // Asynchronous main function to run the script
 async function main() {
     try {
-        const processor = new RebootingDemocracyIngestionProcessor();
+        const processor = new SkillsFirstIngestionProcessor();
         await processor.processDataLayout();
         console.log("Data layout processing completed successfully.");
     }

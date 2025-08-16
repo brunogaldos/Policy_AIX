@@ -89,7 +89,7 @@ export class SkillsFirstIngestionProcessor extends IngestionAgentProcessor {
           browserPage
         );
         await this.saveFileMetadata();
-        const disableJsonUrls = true;
+        const disableJsonUrls = false;
         if (!disableJsonUrls) {
           await this.processJsonUrls(this.dataLayout.jsonUrls, browserPage);
           await this.saveFileMetadata();
