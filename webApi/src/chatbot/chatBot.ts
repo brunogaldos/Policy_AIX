@@ -85,7 +85,16 @@ Your thoughtful answer in markdown:
     );
 
     this.sendAgentStart("Thinking...");
-    const router = new PsRagRouter();
+    
+    // Create memory object for the router
+    const routerMemory = {
+      groupId: Date.now(),
+      stages: {},
+      totalCost: 0,
+      agentId: 1
+    };
+    
+    const router = new PsRagRouter(routerMemory);
     const routingData = await router.getRoutingData(
       userLastMessage,
       dataLayout,
@@ -93,7 +102,16 @@ Your thoughtful answer in markdown:
     );
 
     this.sendAgentStart("Searching policy Research...");
-    const vectorSearch = new PsRagVectorSearch();
+    
+    // Create memory object for the vector search
+    const vectorSearchMemory = {
+      groupId: Date.now(),
+      stages: {},
+      totalCost: 0,
+      agentId: 1
+    };
+    
+    const vectorSearch = new PsRagVectorSearch(vectorSearchMemory);
     const searchContextRaw = await vectorSearch.search(
       userLastMessage,
       routingData,

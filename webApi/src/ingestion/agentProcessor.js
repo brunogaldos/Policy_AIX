@@ -78,6 +78,15 @@ export class SkillsFirstIngestionProcessor extends IngestionAgentProcessor {
             }, "");
         };
         this.dataLayoutPath = dataLayoutPath;
+
+        // Create memory object for the agents
+        const memory = {
+            groupId: Date.now(),
+            stages: {},
+            totalCost: 0,
+            agentId: 1
+        };
+
         this.loadFileMetadata()
             .then(() => {
             console.log("Metadata loaded");
@@ -85,11 +94,13 @@ export class SkillsFirstIngestionProcessor extends IngestionAgentProcessor {
             .catch((err) => {
             console.error("Failed to load file metadata:", err);
         });
-        this.cleanupAgent = new DocumentCleanupAgent();
-        this.splitAgent = new DocumentTreeSplitAgent();
-        this.chunkCompressor = new IngestionChunkCompressorAgent();
-        this.docAnalysisAgent = new DocumentAnalyzerAgent();
-        this.chunkAnalysisAgent = new IngestionChunkAnalzyerAgent();
+
+        // Pass memory to all agents
+        this.cleanupAgent = new DocumentCleanupAgent(memory);
+        this.splitAgent = new DocumentTreeSplitAgent(memory);
+        this.chunkCompressor = new IngestionChunkCompressorAgent(memory);
+        this.docAnalysisAgent = new DocumentAnalyzerAgent(memory);
+        this.chunkAnalysisAgent = new IngestionChunkAnalzyerAgent(memory);
     }
     async processDataLayout() {
         await this.loadFileMetadata(); // Load existing metadata to compare against
@@ -313,10 +324,28 @@ export class SkillsFirstIngestionProcessor extends IngestionAgentProcessor {
     }
     async classifyDocuments(allDocumentSourcesWithChunks) {
         console.log("Classifying all documents");
-        const classifier = new DocumentClassifierAgent();
+        
+        // Create memory object for the classifier
+        const classifierMemory = {
+            groupId: Date.now(),
+            stages: {},
+            totalCost: 0,
+            agentId: 1
+        };
+        
+        const classifier = new DocumentClassifierAgent(classifierMemory);
         await classifier.classifyAllDocuments(allDocumentSourcesWithChunks, this.dataLayout);
         await this.saveFileMetadata();
-        const ranker = new IngestionDocumentRanker();
+        
+        // Create memory object for the document ranker
+        const rankerMemory = {
+            groupId: Date.now(),
+            stages: {},
+            totalCost: 0,
+            agentId: 1
+        };
+        
+        const ranker = new IngestionDocumentRanker(rankerMemory);
         console.log("Ranking by relevance");
         const relevanceRules = "Rank the two documents based on the relevance to the project";
         await ranker.rankDocuments(allDocumentSourcesWithChunks, relevanceRules, this.dataLayout.aboutProject, "relevanceEloRating");
@@ -343,7 +372,16 @@ export class SkillsFirstIngestionProcessor extends IngestionAgentProcessor {
     async processSource(source) {
         const fileId = source.fileId;
         const cleanedUpData = source.cleanedDocument || "";
-        const ranker = new IngestionDocumentRanker();
+        
+        // Create memory object for the document ranker
+        const rankerMemory = {
+            groupId: Date.now(),
+            stages: {},
+            totalCost: 0,
+            agentId: 1
+        };
+        
+        const ranker = new IngestionDocumentRanker(rankerMemory);
     }
     async processFiles(files) {
         for (const filePath of files) {
@@ -502,7 +540,15 @@ export class SkillsFirstIngestionProcessor extends IngestionAgentProcessor {
         //    await this.saveFileMetadata();
     }
     async rankChunks(metadata) {
-        const ranker = new IngestionChunkRanker();
+        // Create memory object for the chunk ranker
+        const memory = {
+            groupId: Date.now(),
+            stages: {},
+            totalCost: 0,
+            agentId: 1
+        };
+        
+        const ranker = new IngestionChunkRanker(memory);
         const flattenedChunks = metadata.chunks.reduce((acc, chunk) => acc.concat(chunk, chunk.subChunks || []), []);
         console.log("Ranking by relevance");
         const relevanceRules = "Rank the two chunks based on the relevance to the document";

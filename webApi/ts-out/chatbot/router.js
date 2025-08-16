@@ -1,10 +1,8 @@
-import { PsIngestionConstants } from "@policysynth/agents/rag/ingestion/ingestionConstants.js";
-import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { BaseIngestionAgent } from "@policysynth/agents/rag/ingestion/baseAgent.js";
 export class PsRagRouter extends BaseIngestionAgent {
     constructor() {
         super(...arguments);
-        this.systemMessageFull = (schema, about, chatHistory) => new SystemMessage(`You are an expert user question analyzer for a RAG based chatbot. We will use the information to decide what documents to retrieve for the user through a vector database search.
+        this.systemMessageFull = (schema, about, chatHistory) => this.createSystemMessage(`You are an expert user question analyzer for a RAG based chatbot. We will use the information to decide what documents to retrieve for the user through a vector database search.
 
 Instructions:
 - Use the available categories to classify the question the user will provide you with in the LATEST_QUESTION_FROM_USER tag
@@ -34,7 +32,7 @@ JSON Output:
   rewrittenUserQuestionVectorDatabaseSearch: string;
 }
 `);
-        this.systemMessage = (schema, about, chatHistory) => new SystemMessage(`You are an expert user question analyzer for a RAG based chatbot. We will use the information to decide what documents to retrieve for the user through a vector database search.
+        this.systemMessage = (schema, about, chatHistory) => this.createSystemMessage(`You are an expert user question analyzer for a RAG based chatbot. We will use the information to decide what documents to retrieve for the user through a vector database search.
 
 Instructions:
 - Always keep a track of what topic you are discussing with the user from your chat history and include that topic in the "rewrittenUserQuestionVectorDatabaseSearch" JSON field.
@@ -56,14 +54,14 @@ JSON Output:
 rewrittenUserQuestionVectorDatabaseSearch: string;
 }
 `);
-        this.userMessage = (question) => new HumanMessage(`<LATEST_QUESTION_FROM_USER>${question}</LATEST_QUESTION_FROM_USER>
+        this.userMessage = (question) => this.createHumanMessage(`<LATEST_QUESTION_FROM_USER>${question}</LATEST_QUESTION_FROM_USER>
 
 Your JSON classification:
 `);
     }
     async getRoutingData(userQuestion, dataLayout, chatHistory) {
-        // Cast to the correct callLLM signature that expects BaseMessage[]
-        const routingInformation = await this.callLLM("ingestion-agent", PsIngestionConstants.ingestionMainModel, this.getFirstMessages(this.systemMessage(JSON.stringify(dataLayout.categories), dataLayout.aboutProject, chatHistory), this.userMessage(userQuestion)));
+        // Fix the callLLM signature - messages should be the second parameter
+        const routingInformation = await this.callLLM("ingestion-agent", this.getFirstMessages(this.systemMessage(JSON.stringify(dataLayout.categories), dataLayout.aboutProject, chatHistory), this.userMessage(userQuestion)));
         console.log(`Routing information: ${JSON.stringify(routingInformation, null, 2)}`);
         return routingInformation;
     }

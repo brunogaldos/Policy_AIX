@@ -20,7 +20,7 @@ export class LiveResearchChatBot extends PsBaseChatBot {
   `;
         // For directing the LLMs to focus on the most relevant parts of each web page
         this.jsonWebPageResearchSchema = `
-    //MOST IMPORTANT INSTRUCTIONS: Act as a policy research assistant. From the query, identify laws, barriers, and opportunities in the area that affect sustainable policies for the common good, providing insights useful for decision-makers.
+    //MOST IMPORTANT INSTRUCTIONS: You are a researchers for the Skills First project and we are looking for any information that can help us identify law or regulations that are barriers to Skills First policies in the area or city from the query.
     {
       potentialSourcesOfInformationAboutBarriersToSkillsFirstPolicies: string[],
       potentialDescriptionOfBarriersToSkillsFirstPolicies: string[],

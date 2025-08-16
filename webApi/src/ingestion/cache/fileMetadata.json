@@ -1,0 +1,224 @@
+{
+  "ff24994cc3617f8fc52089708a2e1c99": {
+    "url": "http://localhost:3001/city-data-index.csv",
+    "fileId": "ff24994cc3617f8fc52089708a2e1c99",
+    "contentType": "text/plain; charset=utf-8",
+    "filePath": "src/ingestion/cache/ff24994cc3617f8fc52089708a2e1c99/city-data-index.csv.txt",
+    "lastModified": "2025-08-16T19:45:14.809Z",
+    "lastModifiedOnServer": "",
+    "size": 2600,
+    "hash": "67b6495f9326c1a7d2021d5f4f55b90af7c76b58d6809220ffb3ede33a3f9357",
+    "title": "Global Cities NO2 Concentration Data",
+    "shortDescription": "Detailed NO2 concentration data across numerous global cities.",
+    "description": "This dataset comprises an extensive list of global cities including Medellín, Cali, Barranquilla, Cartagena, Bucaramanga, Pereira, Manizales, Mexico City, São Paulo, Buenos Aires, Lima, Santiago, Caracas, Quito, La Paz, New York, London, Tokyo, Paris, Beijing, Moscow, Los Angeles, Chicago, Mumbai, Cairo, Seoul, Jakarta, Delhi, Shanghai, Istanbul, Bangkok, Lagos, and Kinshasa. It includes their respective countries, regions, coordinates, and NO2 concentrations.",
+    "fullDescriptionOfAllContents": "The dataset includes cities like Medellín, Cali, Barranquilla, Cartagena, Bucaramanga, Pereira, Manizales from Colombia, major cities like Mexico City, São Paulo, Buenos Aires, Lima, Santiago, Caracas, Quito, La Paz, New York, London, Tokyo, Paris, Beijing, Moscow, Los Angeles, Chicago, Mumbai, Cairo, Seoul, Jakarta, Delhi, Shanghai, Istanbul, Bangkok, Lagos, Kinshasa, and many others, detailing their country, specific region, geographical coordinates (latitude and longitude), and the nitrogen dioxide (NO2) concentration levels in their atmosphere.",
+    "documentMetaData": {
+      "color-scheme": "light dark"
+    },
+    "allReferencesWithUrls": [],
+    "allOtherReferences": [],
+    "allImageUrls": [],
+    "compressedFullDescriptionOfAllContents": "The dataset features cities from Colombia such as Medellín, Cali, and Barranquilla, and major international cities like New York, Tokyo, and London, detailing their nations, regions, geographical coordinates, and NO2 levels.",
+    "cleanedDocument": "City,Country,Region,Latitude,Longitude,NO2 Concentration\nMedellín,Colombia,Andean,6.2442N,75.5812W,0.00005287683832672508\nCali,Colombia,Pacific,3.4516N,76.5320W,0.00005408222751911359\nBarranquilla,Colombia,Caribbean,10.9685N,74.7813W,0.00003307695648305236\nCartagena,Colombia,Caribbean,10.3932N,75.4792W,0.00003540827804483048\nBucaramanga,Colombia,Andean,7.1258N,73.1290W,0.000024795050975012625\nPereira,Colombia,Andean,4.8143N,75.6946W,0.00001603397984899616\nManizales,Colombia,Andean,5.0689N,75.5174W,0.000021088215980001284\nMexico City,Mexico,North America,19.4326N,99.1332W,0.00015807887206112776\nSão Paulo,Brazil,South America,23.5505S,46.6333W,0.00022406450608824193\nBuenos Aires,Argentina,South America,34.6118S,58.3960W,0.00015453262150193006\nLima,Peru,South America,12.0464S,77.0428W,0.00015974674588693273\nSantiago,Chile,South America,33.4489S,70.6693W,0.0006111542349260093\nCaracas,Venezuela,South America,10.4806N,66.9036W,0.000043007381929922926\nQuito,Ecuador,South America,0.2299S,78.5249W,0.00003405252841404021\nLa Paz,Bolivia,South America,16.4897S,68.1193W,0.000047821710471239845\nNew York,United States,North America,40.7128N,74.0060W,0.00012852552322888334\nLondon,United Kingdom,Europe,51.5074N,0.1278W,0.00008777661927527068\nTokyo,Japan,Asia,35.6762N,139.6503E,0.00009439394421809944\nParis,France,Europe,48.8566N,2.3522E,0.00008408808171214001\nBeijing,China,Asia,39.9042N,116.4074E,0.00007799815937306964\nMoscow,Russia,Europe/Asia,55.7558N,37.6176E,0.00024072472196452348\nLos Angeles,United States,North America,34.0522N,118.2437W,0.00011485329844309273\nChicago,United States,North America,41.8781N,87.6298W,0.00008068719685972504\nMumbai,India,Asia,19.0760N,72.8777E,0.00002915104697750016\nCairo,Egypt,Africa,30.0444N,31.2357E,0.00020896666307795096\nSeoul,South Korea,Asia,37.5665N,126.9780E,0.00011224220170241877\nJakarta,Indonesia,Asia,6.2088S,106.8456E,0.00012597957925070108\nDelhi,India,Asia,28.7041N,77.1025E,0.000059845545175333555\nShanghai,China,Asia,31.2304N,121.4737E,0.00009702806926614362\nIstanbul,Turkey,Europe/Asia,41.0082N,28.9784E,0.00006667501808902234\nBangkok,Thailand,Asia,13.7563N,100.5018E,0.00010080249608226114\nLagos,Nigeria,Africa,6.5244N,3.3792E,0.00003703854025943128\nKinshasa,Democratic Republic of the Congo,Africa,4.4419S,15.2663E,0.000042235966436732594",
+    "chunks": [
+      {
+        "chunkIndex": 0,
+        "chapterIndex": 1,
+        "title": "Air Quality Data for Colombian Cities",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [],
+        "shortSummary": "Table of Colombian cities detailing regional classification, coordinates, and NO2 air pollution levels.",
+        "fullSummary": "The text provides a table listing various cities in Colombia along with their respective country, regional classification, geographical coordinates (latitude and longitude), and the concentration of nitrogen dioxide (NO2) in the atmosphere. Each city is associated with specific values for these parameters, indicating the environmental air quality in terms of NO2 concentration for different regions of Colombia.",
+        "compressedContent": "City,Country,Region,Lat,Long,NO2\nMedellín,Colombia,Andean,6.2442N,75.5812W,0.0000529\nCali,Colombia,Pacific,3.4516N,76.5320W,0.0000541\nBarranquilla,Colombia,Caribbean,10.9685N,74.7813W,0.0000331\nCartagena,Colombia,Caribbean,10.3932N,75.4792W,0.0000354\nBucaramanga,Colombia,Andean,7.1258N,73.1290W,0.0000248\nPereira,Colombia,Andean,4.8143N,75.6946W,0.0000160\nManizales,Colombia,Andean,5.0689N,75.5174W,0.0000211",
+        "metaData": {
+          "DataType": "Table",
+          "Subject": "Environmental Data",
+          "Focus": "NO2 Concentration",
+          "GeographicScope": "Colombia",
+          "Entries": "7",
+          "Columns": "6"
+        },
+        "uncompressedContent": "City,Country,Region,Latitude,Longitude,NO2 Concentration\nMedellín,Colombia,Andean,6.2442N,75.5812W,0.00005287683832672508\nCali,Colombia,Pacific,3.4516N,76.5320W,0.00005408222751911359\nBarranquilla,Colombia,Caribbean,10.9685N,74.7813W,0.00003307695648305236\nCartagena,Colombia,Caribbean,10.3932N,75.4792W,0.00003540827804483048\nBucaramanga,Colombia,Andean,7.1258N,73.1290W,0.000024795050975012625\nPereira,Colombia,Andean,4.8143N,75.6946W,0.00001603397984899616\nManizales,Colombia,Andean,5.0689N,75.5174W,0.000021088215980001284",
+        "subChunks": [],
+        "relevanceEloRating": 1117.7725659451805,
+        "substanceEloRating": 1075.0313465292072,
+        "qualityEloRating": 1071.2482001856706
+      },
+      {
+        "chunkIndex": 1,
+        "chapterIndex": 2,
+        "title": "Geographical Information of Mexico City",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [
+          4
+        ],
+        "shortSummary": "Geographical data of Mexico City, Mexico.",
+        "fullSummary": "The text provides geographical information about Mexico City, including its name, country, continent, latitude, longitude, and a numerical value possibly representing an area or density.",
+        "compressedContent": "Mexico City, Mexico, North America, 19.4326N, 99.1332W, 0.000158",
+        "metaData": {
+          "City": "Mexico City",
+          "Country": "Mexico",
+          "Continent": "North America",
+          "Latitude": "19.4326N",
+          "Longitude": "99.1332W",
+          "NumericValue": "0.00015807887206112776"
+        },
+        "uncompressedContent": "Mexico City,Mexico,North America,19.4326N,99.1332W,0.00015807887206112776",
+        "subChunks": [],
+        "relevanceEloRating": 882.2698742249348,
+        "substanceEloRating": 889.4984665213121,
+        "qualityEloRating": 882.2698742249348
+      },
+      {
+        "chunkIndex": 2,
+        "chapterIndex": 3,
+        "title": "Geographical and Statistical Data of Major Cities in the Americas",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [
+          2
+        ],
+        "shortSummary": "List of major cities in the Americas with geographical coordinates and a statistical value.",
+        "fullSummary": "This text provides a list of major cities across North and South America, including their names, countries, continental location, geographical coordinates (latitude and longitude), and an associated statistical value. The cities listed are São Paulo, Buenos Aires, Lima, Santiago, Caracas, Quito, La Paz, and New York.",
+        "compressedContent": "São Paulo,Brazil,23.5505S,46.6333W,0.0002240645\nBuenos Aires,Argentina,34.6118S,58.3960W,0.0001545326\nLima,Peru,12.0464S,77.0428W,0.0001597467\nSantiago,Chile,33.4489S,70.6693W,0.0006111542\nCaracas,Venezuela,10.4806N,66.9036W,0.00004300738\nQuito,Ecuador,0.2299S,78.5249W,0.00003405253\nLa Paz,Bolivia,16.4897S,68.1193W,0.00004782171\nNew York,United States,40.7128N,74.0060W,0.0001285255",
+        "metaData": {
+          "TotalCities": "8",
+          "ContinentsCovered": "North America, South America",
+          "CountriesCovered": "Brazil, Argentina, Peru, Chile, Venezuela, Ecuador, Bolivia, United States",
+          "DataFields": "City, Country, Continent, Latitude, Longitude, Statistical Value"
+        },
+        "uncompressedContent": "São Paulo,Brazil,South America,23.5505S,46.6333W,0.00022406450608824193\nBuenos Aires,Argentina,South America,34.6118S,58.3960W,0.00015453262150193006\nLima,Peru,South America,12.0464S,77.0428W,0.00015974674588693273\nSantiago,Chile,South America,33.4489S,70.6693W,0.0006111542349260093\nCaracas,Venezuela,South America,10.4806N,66.9036W,0.000043007381929922926\nQuito,Ecuador,South America,0.2299S,78.5249W,0.00003405252841404021\nLa Paz,Bolivia,South America,16.4897S,68.1193W,0.000047821710471239845\nNew York,United States,North America,40.7128N,74.0060W,0.00012852552322888334",
+        "subChunks": [],
+        "relevanceEloRating": 1075.4280317639589,
+        "substanceEloRating": 974.5719173642849,
+        "qualityEloRating": 980.3416009687031
+      },
+      {
+        "chunkIndex": 3,
+        "chapterIndex": 4,
+        "title": "Geographical Information of London",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [
+          2
+        ],
+        "shortSummary": "Geographical data for London with coordinates.",
+        "fullSummary": "The text provides geographical and locational data for London, including its designation within the United Kingdom and Europe, and specific coordinates with latitude and longitude.",
+        "compressedContent": "London, UK, Europe, 51.5074N, 0.1278W, 0.00008777661927527068",
+        "metaData": {
+          "Location": "London",
+          "Country": "United Kingdom",
+          "Continent": "Europe",
+          "Latitude": "51.5074N",
+          "Longitude": "0.1278W",
+          "AdditionalData": "0.00008777661927527068"
+        },
+        "uncompressedContent": "London,United Kingdom,Europe,51.5074N,0.1278W,0.00008777661927527068",
+        "subChunks": [],
+        "relevanceEloRating": 929.558775592713,
+        "substanceEloRating": 927.9855472533366,
+        "qualityEloRating": 929.6342169466986
+      },
+      {
+        "chunkIndex": 4,
+        "chapterIndex": 5,
+        "title": "Global City Data Overview",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [
+          4
+        ],
+        "shortSummary": "Data listing of major cities with geographic and demographic details.",
+        "fullSummary": "The text provides a list of major cities along with their respective country, continent, geographic coordinates (latitude and longitude), and a decimal value that possibly represents a population-related statistic. The cities listed are Tokyo, Paris, Beijing, Moscow, Los Angeles, Chicago, and Mumbai.",
+        "compressedContent": "Tokyo,Japan,Asia,35.6762N,139.6503E,0.00009439\nParis,France,Europe,48.8566N,2.3522E,0.00008409\nBeijing,China,Asia,39.9042N,116.4074E,0.00007800\nMoscow,Russia,Europe/Asia,55.7558N,37.6176E,0.00024072\nLos Angeles,United States,North America,34.0522N,118.2437W,0.00011485\nChicago,United States,North America,41.8781N,87.6298W,0.00008069\nMumbai,India,Asia,19.0760N,72.8777E,0.00002915",
+        "metaData": {
+          "Cities": "Tokyo, Paris, Beijing, Moscow, Los Angeles, Chicago, Mumbai",
+          "Countries": "Japan, France, China, Russia, United States, India",
+          "Continents": "Asia, Europe, North America",
+          "Coordinates": "Latitudes - 35.6762N, 48.8566N, 39.9042N, 55.7558N, 34.0522N, 41.8781N, 19.0760N; Longitudes - 139.6503E, 2.3522E, 116.4074E, 37.6176E, 118.2437W, 87.6298W, 72.8777E"
+        },
+        "uncompressedContent": "Tokyo,Japan,Asia,35.6762N,139.6503E,0.00009439394421809944\nParis,France,Europe,48.8566N,2.3522E,0.00008408808171214001\nBeijing,China,Asia,39.9042N,116.4074E,0.00007799815937306964\nMoscow,Russia,Europe/Asia,55.7558N,37.6176E,0.00024072472196452348\nLos Angeles,United States,North America,34.0522N,118.2437W,0.00011485329844309273\nChicago,United States,North America,41.8781N,87.6298W,0.00008068719685972504\nMumbai,India,Asia,19.0760N,72.8777E,0.00002915104697750016",
+        "subChunks": [],
+        "relevanceEloRating": 976.0422116559838,
+        "substanceEloRating": 1025.2451121605297,
+        "qualityEloRating": 1073.541461813897
+      },
+      {
+        "chunkIndex": 5,
+        "chapterIndex": 6,
+        "title": "Global City Coordinates and Metrics",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [
+          5
+        ],
+        "shortSummary": "List of major cities with geographic coordinates and a numerical metric.",
+        "fullSummary": "The provided text contains a list of major cities along with their respective geographic coordinates (latitude and longitude) and a numerical value which could represent a specific data metric for each city. Cities listed are from various continents including Africa, Asia, and Europe/Asia. Specific cities mentioned are Cairo, Seoul, Jakarta, Delhi, Shanghai, Istanbul, Bangkok, Lagos, and Kinshasa.",
+        "compressedContent": "Cairo,Egypt,Africa,30.0444N,31.2357E,0.00020896666307795096\nSeoul,South Korea,Asia,37.5665N,126.9780E,0.00011224220170241877\nJakarta,Indonesia,Asia,6.2088S,106.8456E,0.00012597957925070108\nDelhi,India,Asia,28.7041N,77.1025E,0.000059845545175333555\nShanghai,China,Asia,31.2304N,121.4737E,0.00009702806926614362\nIstanbul,Turkey,Europe/Asia,41.0082N,28.9784E,0.00006667501808902234\nBangkok,Thailand,Asia,13.7563N,100.5018E,0.00010080249608226114\nLagos,Nigeria,Africa,6.5244N,3.3792E,0.00003703854025943128\nKinshasa,Democratic Republic of the Congo,Africa,4.4419S,15.2663E,0.000042235966436732594",
+        "metaData": {
+          "citiesCount": "9",
+          "continentsIncluded": "Africa, Asia, Europe/Asia",
+          "sampleCity": "Cairo",
+          "sampleLatitude": "30.0444N",
+          "sampleLongitude": "31.2357E",
+          "sampleMetric": "0.00020896666307795096"
+        },
+        "uncompressedContent": "Cairo,Egypt,Africa,30.0444N,31.2357E,0.00020896666307795096\nSeoul,South Korea,Asia,37.5665N,126.9780E,0.00011224220170241877\nJakarta,Indonesia,Asia,6.2088S,106.8456E,0.00012597957925070108\nDelhi,India,Asia,28.7041N,77.1025E,0.000059845545175333555\nShanghai,China,Asia,31.2304N,121.4737E,0.00009702806926614362\nIstanbul,Turkey,Europe/Asia,41.0082N,28.9784E,0.00006667501808902234\nBangkok,Thailand,Asia,13.7563N,100.5018E,0.00010080249608226114\nLagos,Nigeria,Africa,6.5244N,3.3792E,0.00003703854025943128\nKinshasa,Democratic Republic of the Congo,Africa,4.4419S,15.2663E,0.000042235966436732594",
+        "subChunks": [],
+        "relevanceEloRating": 1026.9498452759674,
+        "substanceEloRating": 1117.9011733623463,
+        "qualityEloRating": 1075.4280317639589
+      }
+    ],
+    "cachedChunkStrategy": [
+      {
+        "chapterIndex": 1,
+        "chapterTitle": "Introduction and Table Format Explanation",
+        "chapterStartLineNumber": 1,
+        "importantContextChapterIndexes": [],
+        "chunkData": "City,Country,Region,Latitude,Longitude,NO2 Concentration\nMedellín,Colombia,Andean,6.2442N,75.5812W,0.00005287683832672508\nCali,Colombia,Pacific,3.4516N,76.5320W,0.00005408222751911359\nBarranquilla,Colombia,Caribbean,10.9685N,74.7813W,0.00003307695648305236\nCartagena,Colombia,Caribbean,10.3932N,75.4792W,0.00003540827804483048\nBucaramanga,Colombia,Andean,7.1258N,73.1290W,0.000024795050975012625\nPereira,Colombia,Andean,4.8143N,75.6946W,0.00001603397984899616\nManizales,Colombia,Andean,5.0689N,75.5174W,0.000021088215980001284"
+      },
+      {
+        "chapterIndex": 2,
+        "chapterTitle": "North America",
+        "chapterStartLineNumber": 9,
+        "importantContextChapterIndexes": [
+          4
+        ],
+        "chunkData": "Mexico City,Mexico,North America,19.4326N,99.1332W,0.00015807887206112776"
+      },
+      {
+        "chapterIndex": 3,
+        "chapterTitle": "South America",
+        "chapterStartLineNumber": 10,
+        "importantContextChapterIndexes": [
+          2
+        ],
+        "chunkData": "São Paulo,Brazil,South America,23.5505S,46.6333W,0.00022406450608824193\nBuenos Aires,Argentina,South America,34.6118S,58.3960W,0.00015453262150193006\nLima,Peru,South America,12.0464S,77.0428W,0.00015974674588693273\nSantiago,Chile,South America,33.4489S,70.6693W,0.0006111542349260093\nCaracas,Venezuela,South America,10.4806N,66.9036W,0.000043007381929922926\nQuito,Ecuador,South America,0.2299S,78.5249W,0.00003405252841404021\nLa Paz,Bolivia,South America,16.4897S,68.1193W,0.000047821710471239845\nNew York,United States,North America,40.7128N,74.0060W,0.00012852552322888334"
+      },
+      {
+        "chapterIndex": 4,
+        "chapterTitle": "Europe and Europe/Asia",
+        "chapterStartLineNumber": 18,
+        "importantContextChapterIndexes": [
+          2
+        ],
+        "chunkData": "London,United Kingdom,Europe,51.5074N,0.1278W,0.00008777661927527068"
+      },
+      {
+        "chapterIndex": 5,
+        "chapterTitle": "Asia",
+        "chapterStartLineNumber": 19,
+        "importantContextChapterIndexes": [
+          4
+        ],
+        "chunkData": "Tokyo,Japan,Asia,35.6762N,139.6503E,0.00009439394421809944\nParis,France,Europe,48.8566N,2.3522E,0.00008408808171214001\nBeijing,China,Asia,39.9042N,116.4074E,0.00007799815937306964\nMoscow,Russia,Europe/Asia,55.7558N,37.6176E,0.00024072472196452348\nLos Angeles,United States,North America,34.0522N,118.2437W,0.00011485329844309273\nChicago,United States,North America,41.8781N,87.6298W,0.00008068719685972504\nMumbai,India,Asia,19.0760N,72.8777E,0.00002915104697750016"
+      },
+      {
+        "chapterIndex": 6,
+        "chapterTitle": "Africa",
+        "chapterStartLineNumber": 26,
+        "importantContextChapterIndexes": [
+          5
+        ],
+        "chunkData": "Cairo,Egypt,Africa,30.0444N,31.2357E,0.00020896666307795096\nSeoul,South Korea,Asia,37.5665N,126.9780E,0.00011224220170241877\nJakarta,Indonesia,Asia,6.2088S,106.8456E,0.00012597957925070108\nDelhi,India,Asia,28.7041N,77.1025E,0.000059845545175333555\nShanghai,China,Asia,31.2304N,121.4737E,0.00009702806926614362\nIstanbul,Turkey,Europe/Asia,41.0082N,28.9784E,0.00006667501808902234\nBangkok,Thailand,Asia,13.7563N,100.5018E,0.00010080249608226114\nLagos,Nigeria,Africa,6.5244N,3.3792E,0.00003703854025943128\nKinshasa,Democratic Republic of the Congo,Africa,4.4419S,15.2663E,0.000042235966436732594"
+      }
+    ]
+  }
+}
