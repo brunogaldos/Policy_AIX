@@ -3,7 +3,7 @@ import WebSocket from 'ws';
 async function testChatbot() {
     console.log('🔌 Connecting to chatbot WebSocket...');
     
-    const ws = new WebSocket('ws://localhost:9080/ws');
+    const ws = new WebSocket('ws://localhost:5029/ws');
     //const ws = new WebSocket('ws://localhost:5029/ws');
     let clientId = null;
     
@@ -68,8 +68,8 @@ async function sendChatMessage(clientId) {
     console.log('📤 Sending chat message via HTTP API...');
     
     try {
-        //const response = await fetch('http://localhost:5029/api/rd_chat/', {
-        const response = await fetch('http://localhost:9080/api/rd_chat/', {
+        const response = await fetch('http://localhost:5029/api/rd_chat/', {
+        //const response = await fetch('http://localhost:9080/api/rd_chat/', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

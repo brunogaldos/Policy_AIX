@@ -2,12 +2,16 @@ import { AnalyticsController } from '@policysynth/api/controllers/analyticsContr
 import { PolicySynthApiApp } from '@policysynth/api/app.js';
 import { LiveResearchChatController } from './controllers/liveResearchChatController.js';
 import { ChatController } from './controllers/chatController.js';
+import { PolicyResearchController } from './controllers/policyResearchController.js';
+
 const app = new PolicySynthApiApp(
   [
     AnalyticsController,
-    ChatController
+    ChatController,
+    LiveResearchChatController,
+    PolicyResearchController
   ],
-9080,
+5029,
 );
 
 app.listen();
