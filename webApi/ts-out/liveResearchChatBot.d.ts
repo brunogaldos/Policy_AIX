@@ -5,10 +5,14 @@ export declare class LiveResearchChatBot extends PsBaseChatBot {
     percentOfQueriesToSearch: number;
     percentOfResultsToScan: number;
     persistMemory: boolean;
+    silentMode: boolean;
     constructor(wsClientId: string, wsClients: Map<string, WebSocket>, memoryId?: string);
     summarySystemPrompt: string;
     jsonWebPageResearchSchema: string;
     renderFollowupSystemPrompt(): string;
+    sendAgentStart(message: string): void;
+    sendAgentCompleted(message: string, final?: boolean): void;
+    sendAgentUpdate(message: string): void;
     doLiveResearch(question: string): Promise<void>;
     renderResultsToUser(research: object[], question: string): Promise<void>;
     researchConversation: (chatLog: PsSimpleChatLog[], numberOfSelectQueries: number, percentOfTopQueriesToSearch: number, percentOfTopResultsToScan: number) => Promise<void>;

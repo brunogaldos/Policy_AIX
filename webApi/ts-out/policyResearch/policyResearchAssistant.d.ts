@@ -4,29 +4,46 @@ export declare class PolicyResearchAssistant extends PsBaseChatBot {
     persistMemory: boolean;
     private wsClients;
     private capturedResponses;
+    private isLiveResearchActive;
     constructor(wsClientId: string, wsClients: Map<string, WebSocket>, memoryId?: string);
     mainSystemPrompt: string;
-    userPromptTemplate: (userQuestion: string, no2Data: string, policyResearch: string) => string;
+    userPromptTemplate: (userQuestion: string, ragData: string, policyResearch: string) => string;
     /**
      * Main method to process a city policy research request
      */
     processCityPolicyRequest(userQuestion: string, dataLayout: any): Promise<void>;
     /**
+     * Get bot response from memory
+     */
+    private getBotResponseFromMemory;
+    /**
      * Extract city name from user question
      */
-    private extractCityName;
+    private extractLocationOrTopic;
     /**
-     * Get NO₂ data from the RAG bot via API call
+     * Call SkillsFirstChatBot and get its response
      */
-    private getNO2DataFromRAG;
+    private callSkillsFirstChatBotAndCaptureResponse;
     /**
-     * Generate research queries based on NO₂ data
+     * Extract time context from user question
      */
-    private generateResearchQueries;
+    private extractTimeContext;
     /**
-     * Perform live research using the research bot via API call
+     * Extract key themes from user question for targeted research
      */
-    private performLiveResearch;
+    private extractThemesFromQuestion;
+    /**
+     * Call LiveResearchChatBot via API but prevent frontend responses
+     */
+    private callLiveResearchChatBotAndCaptureResponse;
+    /**
+     * Create a contextualized research question that incorporates RAG data
+     */
+    private createContextualizedResearchQuestion;
+    /**
+     * Extract the main topic from user question for simple research
+     */
+    private extractMainTopic;
     /**
      * Synthesize the results and provide final response
      */

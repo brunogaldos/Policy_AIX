@@ -66,16 +66,14 @@ async analyze() {
 
   const ranker = new StageOneRanker();
   ranker.rankInstructions =
-    "Rank the potential sources of information about barriers to Skills First policies.\
-   Those barriers are specifically around needing university degrees where skills would be enough.\
-   Where laws and regululation puts in place barriers to implementing Skills First policies if different government departments want to.";
+    "Rank the potential sources of information about laws, barriers, and opportunities in the area or city that affect sustainable policies for the common good.\
+   Where laws and regululation puts in place barriers to implementing those policies if different government departments want to.";
   await ranker.rankItems(uniqueSources);
   const rankedSources = ranker.getOrderedListOfItems(-1) as string[];
 
   ranker.rankInstructions =
-    "Rank the potential descriptions of barriers to Skills First policies.\
-   Those barriers are specifically around needing university degrees where skills would be enough.\
-   Where laws and regululation puts in place barriers to implementing Skills First policies if different government departments want to.";
+  "Rank the potential sources of information about laws, barriers, and opportunities in the area or city that affect sustainable policies for the common good.\
+  Where laws and regululation puts in place barriers to implementing those policies if different government departments want to.";
   await ranker.rankItems(uniqueDescriptions);
   const rankedDescriptions = ranker.getOrderedListOfItems(-1) as string[];
 

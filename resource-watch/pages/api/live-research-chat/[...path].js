@@ -8,7 +8,8 @@ export default async function handler(req, res) {
   // Construct the target URL
   const targetPath = Array.isArray(path) ? path.join('/') : path || '';
   const baseUrl = 'http://localhost:5029';
-  const targetUrl = `${baseUrl}/api/live_research_chat/${targetPath}`;
+  //const targetUrl = `${baseUrl}/api/live_research_chat/${targetPath}`;
+  const targetUrl = `${baseUrl}/api/policy_research/${targetPath}`;
   
   console.log(`🔄 Proxying ${method} request to: ${targetUrl}`);
   console.log(`📋 Path: ${targetPath}, Query:`, query);

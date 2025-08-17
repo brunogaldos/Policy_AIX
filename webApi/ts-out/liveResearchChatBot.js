@@ -15,12 +15,13 @@ export class LiveResearchChatBot extends PsBaseChatBot {
         this.percentOfQueriesToSearch = 0.25;
         this.percentOfResultsToScan = 0.25;
         this.persistMemory = true;
+        this.silentMode = false; // Add silent mode to prevent WebSocket responses
         this.summarySystemPrompt = `Please analyse those sources step by step and provide a summary of the most relevant information.
     Provide links to the original webpages, if they are relevant, in markdown format as citations.
   `;
         // For directing the LLMs to focus on the most relevant parts of each web page
         this.jsonWebPageResearchSchema = `
-    //MOST IMPORTANT INSTRUCTIONS: You are a researchers for the Skills First project and we are looking for any information that can help us identify law or regulations that are barriers to Skills First policies in the area or city from the query.
+    //MOST IMPORTANT INSTRUCTIONS: Act as a policy research assistant. From the query, identify laws, barriers, and opportunities in the area that affect sustainable policies for the common good, providing insights useful for decision-makers.
     {
       potentialSourcesOfInformationAboutBarriersToSkillsFirstPolicies: string[],
       potentialDescriptionOfBarriersToSkillsFirstPolicies: string[],
@@ -73,6 +74,24 @@ export class LiveResearchChatBot extends PsBaseChatBot {
     }
     renderFollowupSystemPrompt() {
         return `Please provide thoughtful answers to the users followup questions.`;
+    }
+    // Override sendAgentStart to respect silent mode
+    sendAgentStart(message) {
+        if (!this.silentMode) {
+            super.sendAgentStart(message);
+        }
+    }
+    // Override sendAgentCompleted to respect silent mode
+    sendAgentCompleted(message, final) {
+        if (!this.silentMode) {
+            super.sendAgentCompleted(message, final);
+        }
+    }
+    // Override sendAgentUpdate to respect silent mode
+    sendAgentUpdate(message) {
+        if (!this.silentMode) {
+            super.sendAgentUpdate(message);
+        }
     }
     async doLiveResearch(question) {
         try {

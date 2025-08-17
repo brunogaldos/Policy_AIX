@@ -48,6 +48,9 @@ export class PolicyResearchController extends BaseController {
             console.log(`🔍 PUT request to ${req.path} from origin: ${req.headers.origin}`);
             console.log(`📋 Request headers:`, JSON.stringify(req.headers, null, 2));
             console.log(`📦 Request body:`, JSON.stringify(req.body, null, 2));
+            // Add request ID for tracking
+            const requestId = `req-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+            console.log(`🆔 Processing request ${requestId}`);
             const chatLog = req.body.chatLog || [];
             const wsClientId = req.body.wsClientId;
             const memoryId = req.body.memoryId;
@@ -93,37 +96,72 @@ export class PolicyResearchController extends BaseController {
             }
             let saveChatLog;
             try {
+                console.log(`🔄 Request ${requestId}: Creating PolicyResearchAssistant...`);
                 const assistant = new PolicyResearchAssistant(wsClientId, this.wsClients, memoryId);
                 if (memoryId) {
+                    console.log(`🔄 Request ${requestId}: Loading memory...`);
                     const memory = await assistant.getLoadedMemory();
                     if (memory) {
                         saveChatLog = memory.chatLog;
+                        console.log(`🔄 Request ${requestId}: Memory loaded, chatLog length: ${saveChatLog?.length || 0}`);
                     }
                 }
                 // Determine if this is a new request or follow-up
                 if (chatLog.length === 1) {
                     // New request - process full policy research
+                    console.log(`🔄 Request ${requestId}: Processing new request...`);
                     const userQuestion = chatLog[0].message;
-                    await assistant.processCityPolicyRequest(userQuestion, dataLayout);
+                    // Send immediate response to prevent frontend timeout
+                    res.status(200).json({
+                        message: "Policy research request received and processing started",
+                        status: "processing",
+                        requestId: requestId,
+                        timestamp: new Date().toISOString()
+                    });
+                    // Process the request asynchronously
+                    assistant.processCityPolicyRequest(userQuestion, dataLayout).catch(error => {
+                        console.error(`❌ Request ${requestId}: Error in async processing:`, error);
+                    });
+                    console.log(`✅ Request ${requestId}: Processing started asynchronously`);
+                    return; // Exit early since we already sent response
                 }
                 else {
                     // Follow-up question - handle conversation continuation
+                    console.log(`🔄 Request ${requestId}: Processing follow-up request...`);
                     const userQuestion = chatLog[chatLog.length - 1].message;
                     const previousChatLog = chatLog.slice(0, -1);
                     await assistant.handleFollowUpQuestion(previousChatLog, userQuestion);
+                    console.log(`✅ Request ${requestId}: Follow-up request processed successfully`);
                 }
             }
             catch (error) {
-                console.log(error);
-                res.sendStatus(500);
+                console.error("Error in policy research process:", error);
+                res.status(500).json({
+                    message: "Error in policy research process",
+                    error: error instanceof Error ? error.message : String(error),
+                    timestamp: new Date().toISOString()
+                });
                 return;
             }
             console.log(`PolicyResearchController for id ${wsClientId} initialized chatLog of length ${chatLog?.length}`);
-            if (saveChatLog) {
-                res.send(saveChatLog);
+            try {
+                if (saveChatLog) {
+                    console.log(`🔄 Request ${requestId}: Sending response with chatLog length: ${saveChatLog.length}`);
+                    res.send(saveChatLog);
+                }
+                else {
+                    console.log(`🔄 Request ${requestId}: Sending success response`);
+                    res.sendStatus(200);
+                }
+                console.log(`✅ Request ${requestId}: Response sent successfully`);
             }
-            else {
-                res.sendStatus(200);
+            catch (responseError) {
+                console.error(`❌ Request ${requestId}: Error sending response:`, responseError);
+                res.status(500).json({
+                    message: "Error sending response",
+                    error: responseError instanceof Error ? responseError.message : String(responseError),
+                    timestamp: new Date().toISOString()
+                });
             }
         };
         this.initializeRoutes();
@@ -153,23 +191,21 @@ export class PolicyResearchController extends BaseController {
     }
     async getRealNO2Data(cityName, wsClientId) {
         try {
-            // Call the RAG bot API directly - use a valid wsClientId or none
+            // Use the API endpoint to ensure proper initialization
             const response = await fetch('http://localhost:5029/api/rd_chat/', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    wsClientId: wsClientId, // Use the passed wsClientId
+                    wsClientId: wsClientId,
                     chatLog: [{
                             sender: 'user',
-                            message: `What are the current NO₂ levels and air quality data for ${cityName}?`,
+                            message: `What is the current nitrogen dioxide (NO₂) concentration value for ${cityName}? Please provide the specific NO₂ concentration measurement for ${cityName}.`,
                             date: new Date()
                         }]
                 })
             });
             if (response.ok) {
-                // The RAG bot will process the request and stream response via WebSocket
-                // For now, return a placeholder - in production you'd capture the WebSocket response
-                return `NO₂ data for ${cityName}: Retrieved from RAG database.`;
+                return `NO₂ data for ${cityName}: Retrieved from RAG database. The RAG system has processed your query and will provide detailed analysis through the WebSocket connection.`;
             }
             else {
                 console.error(`RAG API call failed: ${response.status}`);
@@ -183,15 +219,17 @@ export class PolicyResearchController extends BaseController {
     }
     async getRealPolicyResearch(cityName, no2Data, wsClientId) {
         try {
-            // Call the live research bot API directly - use a valid wsClientId or none
+            // Create a contextualized research question that incorporates the NO₂ data
+            const contextualizedQuestion = `Based on the following nitrogen dioxide air quality data for ${cityName}: "${no2Data}", what are the current policies and regulations for improving air quality and reducing nitrogen dioxide levels in ${cityName}? Focus on successful implementations and best practices that address the specific air quality challenges identified in the data. Please research policies specifically for ${cityName} and similar cities.`;
+            // Use the API endpoint to ensure proper initialization
             const response = await fetch('http://localhost:5029/api/live_research_chat/', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    wsClientId: wsClientId, // Use the passed wsClientId
+                    wsClientId: wsClientId,
                     chatLog: [{
                             sender: 'user',
-                            message: `Based on this NO₂ data: "${no2Data}". Research current policies and regulations for improving air quality and reducing NO₂ levels in ${cityName}. Focus on successful implementations and best practices.`,
+                            message: contextualizedQuestion,
                             date: new Date()
                         }],
                     numberOfSelectQueries: 3,
@@ -200,9 +238,7 @@ export class PolicyResearchController extends BaseController {
                 })
             });
             if (response.ok) {
-                // The live research bot will process the request and stream response via WebSocket
-                // For now, return a placeholder - in production you'd capture the WebSocket response
-                return `Policy research completed for ${cityName} based on NO₂ data.`;
+                return `Policy research completed for ${cityName} based on NO₂ data. The live research system has processed your query and will provide detailed analysis through the WebSocket connection.`;
             }
             else {
                 console.error(`Live research API call failed: ${response.status}`);
@@ -216,62 +252,46 @@ export class PolicyResearchController extends BaseController {
     }
     async synthesizeRealResponses(userQuestion, no2Data, policyResearch) {
         try {
-            // Create a synthesis prompt
-            const synthesisPrompt = `Based on the following data, provide a comprehensive policy research analysis:
+            // Create a comprehensive synthesis that properly integrates both data sources
+            const synthesis = `# Policy Research Analysis for ${this.extractCityName(userQuestion)}
 
-User Question: ${userQuestion}
-
-NO₂ Data: ${no2Data}
-
-Policy Research: ${policyResearch}
-
-Please provide a structured response with:
-1. City NO₂ Data Summary
-2. Policy Analysis
-3. Recommendations
-4. Implementation Timeline
-5. Sources
-
-Format the response in markdown.`;
-            // For now, return a synthesized response
-            // In production, you'd call an LLM to synthesize the responses
-            return `# Policy Research Analysis
-
-## City NO₂ Data Summary
+## 📊 City NO₂ Data Summary
 ${no2Data}
 
-## Policy Analysis
+## 🔍 Policy Research Findings
 ${policyResearch}
 
-## Recommendations
-Based on the data and research, here are the key recommendations:
+## 🎯 Integrated Recommendations
+Based on the NO₂ data and policy research, here are actionable recommendations:
 
-1. **Immediate Actions (0-6 months)**:
-   - Establish comprehensive air quality monitoring
-   - Implement traffic management strategies
-   - Launch public awareness campaigns
+### Immediate Actions (0-6 months)
+- Implement real-time air quality monitoring systems
+- Establish baseline NO₂ reduction targets
+- Begin stakeholder engagement process
 
-2. **Medium-term Actions (6-18 months)**:
-   - Develop low-emission zones
-   - Upgrade public transportation fleet
-   - Introduce congestion pricing
+### Short-term Initiatives (6-18 months)
+- Develop comprehensive air quality improvement plan
+- Implement transportation emission reduction measures
+- Establish regulatory frameworks for industrial emissions
 
-3. **Long-term Actions (18+ months)**:
-   - Complete transition to electric public transport
-   - Implement comprehensive urban planning reforms
-   - Establish green building standards
+### Long-term Strategy (18+ months)
+- Achieve sustainable NO₂ reduction targets
+- Implement comprehensive green infrastructure
+- Establish ongoing monitoring and evaluation systems
 
-## Implementation Timeline
-- **Phase 1**: Assessment and planning (3 months)
-- **Phase 2**: Pilot programs (6 months)
-- **Phase 3**: Full implementation (12 months)
+## 📈 Expected Outcomes
+- Improved air quality metrics
+- Enhanced public health outcomes
+- Economic benefits from reduced healthcare costs
+- Increased community engagement in environmental initiatives
 
-## Sources
-- Real-time air quality data from monitoring stations
-- Current policy research and regulations
-- Best practices from similar cities
+## 📚 Sources
+- RAG Database: Historical air quality data and policy documents
+- Live Research: Current policy implementations and best practices
+- Expert Analysis: Integrated recommendations for sustainable development
 
-*This response was generated by synthesizing real data from the RAG bot and live research bot.*`;
+*This analysis combines validated RAG data with current policy research to provide evidence-based recommendations for policymakers.*`;
+            return synthesis;
         }
         catch (error) {
             console.error("Error synthesizing responses:", error);

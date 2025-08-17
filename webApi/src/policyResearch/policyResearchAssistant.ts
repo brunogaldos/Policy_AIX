@@ -8,6 +8,7 @@ export class PolicyResearchAssistant extends PsBaseChatBot {
   persistMemory = true;
   private wsClients: Map<string, WebSocket>;
   private capturedResponses: Map<string, string> = new Map();
+  private isLiveResearchActive: boolean = false;
 
   constructor(
     wsClientId: string,
@@ -19,44 +20,34 @@ export class PolicyResearchAssistant extends PsBaseChatBot {
   }
 
   // Main system prompt for the integrated assistant
-  mainSystemPrompt = `You are an expert policy research assistant that helps governments and policymakers make informed decisions based on air quality data and policy research.
+  mainSystemPrompt = `You are an expert policy research assistant that helps governments and policymakers make informed decisions based on data and policy research.
 
 Your capabilities:
-1. Access NO₂ (nitrogen dioxide) data for cities from a comprehensive database
-2. Research current policies, laws, and regulations that could help cities implement green policies
-3. Provide tailored recommendations based on specific city's air quality situation
+1. Access data for locations from a comprehensive database
+2. Research current policies, laws, and regulations that could help implement sustainable policies
+3. Give accurate sources for the policies and regulations you find
 
 Instructions:
-- Always provide both the NO₂ data AND policy recommendations in your responses
-- Use markdown formatting for clear, professional presentation
-- Include specific policy recommendations with rationale
-- Provide source citations for both data and policy information
-- Be optimistic but realistic about implementation timelines
-- Focus on actionable, evidence-based recommendations
 
-Format your responses with:
-1. **City NO₂ Data Summary** - Current levels and trends
-2. **Policy Analysis** - Relevant policies and their effectiveness
-3. **Recommendations** - Specific actions the city should take
-4. **Implementation Timeline** - Realistic steps and timeframes
-5. **Sources** - Citations for data and policy information
-`;
+- Be professional and accurate
+- Provide sources for the policies and regulations you find
+- Provide links to the original webpages, if they are relevant, in markdown format as citations`;
 
   // User prompt template
-  userPromptTemplate = (userQuestion: string, no2Data: string, policyResearch: string) => `
+  userPromptTemplate = (userQuestion: string, ragData: string, policyResearch: string) => `
 <USER_QUESTION>
 ${userQuestion}
 </USER_QUESTION>
 
-<NO2_DATA_CONTEXT>
-${no2Data}
-</NO2_DATA_CONTEXT>
+<RAG_DATA_CONTEXT>
+${ragData}
+</RAG_DATA_CONTEXT>
 
 <POLICY_RESEARCH_CONTEXT>
 ${policyResearch}
 </POLICY_RESEARCH_CONTEXT>
 
-Please provide a comprehensive analysis and recommendations based on the above data and research.
+Please provide a comprehensive analysis and recommendations based on the above data and research. The RAG system provides data values from its database, while the live research system provides policy analysis and recommendations. Synthesize both sources into actionable insights for policymakers.
 `;
 
   /**
@@ -67,30 +58,42 @@ Please provide a comprehensive analysis and recommendations based on the above d
     dataLayout: any
   ): Promise<void> {
     try {
-      this.sendAgentStart("Analyzing city data and researching policies...");
+      this.sendAgentStart("Analyzing data and researching policies...");
 
-      // Step 1: Extract city name from user question
-      const cityName = this.extractCityName(userQuestion);
-      console.log(`Processing request for city: ${cityName}`);
+      // Step 1: Process the user's question
+      console.log(`Processing request: ${userQuestion}`);
 
-      // Step 2: Get NO₂ data from RAG bot
-      this.sendAgentStart("Retrieving NO₂ data from database...");
-      const no2Data = await this.getNO2DataFromRAG(cityName, dataLayout);
-      this.sendAgentCompleted("NO₂ data retrieved successfully");
+      // Step 2: Call SkillsFirstChatBot with a data-focused question
+      this.sendAgentStart("Retrieving data from database...");
+      console.log('🚀 Starting SkillsFirstChatBot...');
+      const dataQuestion = `For this question: "${userQuestion}", provide ONLY the raw data values, measurements, or facts. NO analysis, NO recommendations, NO policy suggestions, NO conclusions. Just the data.`;
+      const skillsFirstResponse = await this.callSkillsFirstChatBotAndCaptureResponse(dataQuestion);
+      console.log('✅ SkillsFirstChatBot completed with response length:', skillsFirstResponse.length);
+      this.sendAgentCompleted("Data retrieved successfully");
 
-      // Step 3: Generate research queries based on NO₂ data
-      this.sendAgentStart("Generating research queries...");
-      const researchQueries = this.generateResearchQueries(cityName, no2Data);
-      this.sendAgentCompleted("Research queries generated");
-
-      // Step 4: Perform live research
+      // Step 3: Use the SkillsFirstChatBot response as input for LiveResearchChatBot
       this.sendAgentStart("Researching current policies and regulations...");
-      const policyResearch = await this.performLiveResearch(researchQueries);
+      console.log('🔍 SkillsFirstChatBot response captured:', skillsFirstResponse);
+      console.log('🔍 Starting LiveResearchChatBot with data length:', skillsFirstResponse.length);
+      
+      // Add a longer delay to ensure SkillsFirstChatBot is completely finished
+      console.log('⏳ Waiting for SkillsFirstChatBot to complete...');
+      await new Promise(resolve => setTimeout(resolve, 10000));
+      console.log('✅ SkillsFirstChatBot should be completely finished');
+      
+      console.log('🚀 Starting LiveResearchChatBot...');
+      const liveResearchResponse = await this.callLiveResearchChatBotAndCaptureResponse(userQuestion, skillsFirstResponse);
+      console.log('✅ LiveResearchChatBot completed with response length:', liveResearchResponse.length);
+      console.log('📄 LiveResearchChatBot response preview:', liveResearchResponse.substring(0, 200));
       this.sendAgentCompleted("Policy research completed");
 
-      // Step 5: Synthesize and provide final response
+      // Step 4: Synthesize and provide final response
       this.sendAgentStart("Synthesizing recommendations...");
-      await this.synthesizeAndRespond(userQuestion, no2Data, policyResearch);
+      
+      // Add a delay to ensure LiveResearchChatBot response is complete
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      
+      await this.synthesizeAndRespond(userQuestion, skillsFirstResponse, liveResearchResponse);
       this.sendAgentCompleted("Analysis complete");
 
     } catch (error) {
@@ -101,129 +104,293 @@ Please provide a comprehensive analysis and recommendations based on the above d
   }
 
   /**
-   * Extract city name from user question
+   * Get bot response from memory
    */
-  private extractCityName(userQuestion: string): string {
-    // Simple extraction - can be enhanced with NLP
-    const cityPatterns = [
-      /(?:for|in|about|regarding)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/i,
-      /([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\s+(?:NO₂|NO2|nitrogen dioxide)/i,
-      /([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\s+(?:levels|data|policies)/i
-    ];
-
-    for (const pattern of cityPatterns) {
-      const match = userQuestion.match(pattern);
-      if (match && match[1]) {
-        return match[1].trim();
+  private async getBotResponseFromMemory(memoryId: string): Promise<string> {
+    try {
+      // Import Redis client
+      const { createClient } = await import('redis');
+      const client = createClient();
+      await client.connect();
+      
+      // Get the memory data from Redis
+      const memoryKey = `ps-chatbot-memory-${memoryId}`;
+      console.log(`🔍 Looking for memory key: ${memoryKey}`);
+      const memoryData = await client.get(memoryKey);
+      await client.disconnect();
+      
+      if (memoryData) {
+        console.log(`✅ Found memory data for ${memoryId}`);
+        const parsed = JSON.parse(memoryData);
+        if (parsed.chatLog && parsed.chatLog.length > 0) {
+          // Get the last bot response
+          const lastBotMessage = parsed.chatLog
+            .filter((msg: any) => msg.sender === 'bot')
+            .pop();
+          
+          if (lastBotMessage) {
+            console.log(`📤 Returning bot message (first 100 chars): ${lastBotMessage.message.substring(0, 100)}...`);
+            return lastBotMessage.message;
+          }
+        }
+      } else {
+        console.log(`❌ No memory data found for ${memoryId}`);
       }
+      
+      return "No response found in memory";
+    } catch (error) {
+      console.error("Error getting bot response from memory:", error);
+      return "Error retrieving response from memory";
     }
-
-    // Fallback: extract any capitalized words that might be city names
-    const words = userQuestion.split(' ');
-    const potentialCities = words.filter(word => 
-      word.length > 2 && 
-      word[0] === word[0].toUpperCase() && 
-      !['The', 'What', 'How', 'When', 'Where', 'Why', 'Give', 'Show', 'Tell'].includes(word)
-    );
-
-    return potentialCities[0] || 'Unknown City';
   }
 
   /**
-   * Get NO₂ data from the RAG bot via API call
+   * Extract city name from user question
    */
-  private async getNO2DataFromRAG(cityName: string, dataLayout: any): Promise<string> {
+  private extractLocationOrTopic(userQuestion: string): string {
+    // Generic extraction of location or topic from the question
+    // This is a basic fallback - the actual data will come from RAG
+    const words = userQuestion.split(' ');
+    const locationWords = words.filter(word => 
+      word.length > 2 && /^[A-Z]/.test(word)
+    );
+    
+    if (locationWords.length > 0) {
+      return locationWords.slice(0, 2).join(' '); // Take first two capitalized words
+    }
+    
+    // Generic fallback
+    return "the specified location";
+  }
+
+
+
+  /**
+   * Call SkillsFirstChatBot and get its response
+   */
+  private async callSkillsFirstChatBotAndCaptureResponse(userQuestion: string): Promise<string> {
     try {
-      // Call the existing RAG bot API endpoint
+      console.log('🔧 SkillsFirstChatBot: Method called, isLiveResearchActive =', this.isLiveResearchActive);
+      
+
+      
+      console.log('🔧 SkillsFirstChatBot: Creating memory ID...');
+      // Create a unique memory ID for this conversation
+      const memoryId = `policy-research-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      console.log('🔧 SkillsFirstChatBot: Memory ID created:', memoryId);
+      
+      console.log('🔧 SkillsFirstChatBot: Sending API request...');
+      // Send the chat message via HTTP API
       const response = await fetch('http://localhost:5029/api/rd_chat/', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          wsClientId: this.wsClientId,
           chatLog: [{
-            sender: "user",
-            message: `What are the current NO₂ levels and air quality data for ${cityName}?`,
-            date: new Date()
+            sender: 'user',
+            message: userQuestion
           }],
-          memoryId: this.memoryId
+          wsClientId: this.wsClientId,
+          memoryId: memoryId
         })
       });
 
-      if (response.ok) {
-        // The RAG bot will stream the response via WebSocket
-        // For now, return a placeholder - in production, you'd capture the WebSocket response
-        return `NO₂ data for ${cityName}: Retrieved from database. Current levels and trends available.`;
-      } else {
-        console.error(`RAG API call failed: ${response.status}`);
-        return `NO₂ data for ${cityName}: Data retrieval in progress.`;
+      if (!response.ok) {
+        throw new Error(`SkillsFirstChatBot API call failed: ${response.status}`);
       }
+      console.log('🔧 SkillsFirstChatBot: API request successful');
+
+      console.log('🔧 SkillsFirstChatBot: Waiting for processing...');
+      // Wait for the bot to process and get the response from memory
+      await new Promise(resolve => setTimeout(resolve, 8000));
+      
+      console.log('🔧 SkillsFirstChatBot: Retrieving response from memory...');
+      // Get the response from the bot's memory
+      const botResponse = await this.getBotResponseFromMemory(memoryId);
+      
+      console.log('🔧 SkillsFirstChatBot: Response retrieved, length:', botResponse.length);
+      return botResponse || "Data retrieved from database";
       
     } catch (error) {
-      console.error("Error getting NO₂ data:", error);
-      return `NO₂ data for ${cityName}: Data retrieval in progress.`;
+      console.error("Error calling SkillsFirstChatBot:", error);
+      return "Error retrieving data from SkillsFirstChatBot";
     }
   }
 
-  /**
-   * Generate research queries based on NO₂ data
-   */
-  private generateResearchQueries(cityName: string, no2Data: string): string[] {
-    const baseQueries = [
-      `green policy implementation ${cityName} air quality`,
-      `NO₂ reduction policies ${cityName} urban planning`,
-      `environmental regulations ${cityName} transportation`,
-      `air quality improvement policies ${cityName}`,
-      `sustainable urban development ${cityName} NO₂ levels`,
-      `public transportation policies ${cityName} air pollution`,
-      `industrial emission regulations ${cityName}`,
-      `clean energy policies ${cityName} government`,
-      `urban mobility solutions ${cityName} air quality`,
-      `environmental protection laws ${cityName} implementation`
-    ];
 
-    return baseQueries;
+
+  /**
+   * Extract time context from user question
+   */
+  private extractTimeContext(userQuestion: string): string {
+    const lowerQuestion = userQuestion.toLowerCase();
+    
+    if (lowerQuestion.includes('recent') || lowerQuestion.includes('current') || lowerQuestion.includes('latest')) {
+      return 'recent';
+    }
+    if (lowerQuestion.includes('trend') || lowerQuestion.includes('change') || lowerQuestion.includes('improvement')) {
+      return 'long-term trends';
+    }
+    if (lowerQuestion.includes('historical') || lowerQuestion.includes('past')) {
+      return 'historical';
+    }
+    
+    return 'current and recent';
+  }
+
+
+
+  /**
+   * Extract key themes from user question for targeted research
+   */
+  private extractThemesFromQuestion(userQuestion: string): string[] {
+    const themes: string[] = [];
+    const lowerQuestion = userQuestion.toLowerCase();
+
+    // Transportation-related themes
+    if (lowerQuestion.includes('transport') || lowerQuestion.includes('vehicle') || lowerQuestion.includes('traffic')) {
+      themes.push('transportation policies', 'vehicle emissions', 'public transit');
+    }
+
+    // Industrial themes
+    if (lowerQuestion.includes('industrial') || lowerQuestion.includes('factory') || lowerQuestion.includes('manufacturing')) {
+      themes.push('industrial emissions', 'factory regulations', 'manufacturing policies');
+    }
+
+    // Energy themes
+    if (lowerQuestion.includes('energy') || lowerQuestion.includes('renewable') || lowerQuestion.includes('clean energy')) {
+      themes.push('clean energy policies', 'renewable energy', 'energy efficiency');
+    }
+
+    // Urban planning themes
+    if (lowerQuestion.includes('urban') || lowerQuestion.includes('planning') || lowerQuestion.includes('development')) {
+      themes.push('urban planning', 'sustainable development', 'city planning');
+    }
+
+    // Health themes
+    if (lowerQuestion.includes('health') || lowerQuestion.includes('medical') || lowerQuestion.includes('respiratory')) {
+      themes.push('public health policies', 'air quality health impacts', 'respiratory health');
+    }
+
+    // Economic themes
+    if (lowerQuestion.includes('economic') || lowerQuestion.includes('cost') || lowerQuestion.includes('investment')) {
+      themes.push('economic impact', 'policy cost analysis', 'investment strategies');
+    }
+
+    // If no specific themes found, add general air quality themes
+    if (themes.length === 0) {
+      themes.push('air quality policies', 'pollution control', 'environmental regulations');
+    }
+
+    return themes;
   }
 
   /**
-   * Perform live research using the research bot via API call
+   * Call LiveResearchChatBot via API but prevent frontend responses
    */
-  private async performLiveResearch(researchQueries: string[]): Promise<string> {
+  private async callLiveResearchChatBotAndCaptureResponse(userQuestion: string, skillsFirstResponse: string): Promise<string> {
     try {
-      // Call the existing live research bot API endpoint
+      console.log('🔧 LiveResearchChatBot: API call method');
+      
+      // Create a unique memory ID for this conversation
+      const memoryId = `live-research-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      console.log('🔧 LiveResearchChatBot: Memory ID created:', memoryId);
+      
+      // Use the SkillsFirstChatBot response as the research question
+      const researchQuestion = `Based on this data: "${skillsFirstResponse}", research current policies and regulations that could address this situation. Provide comprehensive policy recommendations.`;
+      
+      console.log('🔧 LiveResearchChatBot: Sending API request...');
+      // Send the chat message via HTTP API
       const response = await fetch('http://localhost:5029/api/live_research_chat/', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          wsClientId: this.wsClientId,
           chatLog: [{
-            sender: "user",
-            message: `Research current policies and regulations for improving air quality and reducing NO₂ levels in urban areas. Focus on successful implementations and best practices.`,
-            date: new Date()
+            sender: 'user',
+            message: researchQuestion
           }],
-          memoryId: this.memoryId,
+          wsClientId: this.wsClientId,
+          memoryId: memoryId,
           numberOfSelectQueries: 5,
           percentOfTopQueriesToSearch: 0.25,
           percentOfTopResultsToScan: 0.25
         })
       });
 
-      if (response.ok) {
-        // The research bot will stream the response via WebSocket
-        // For now, return a placeholder - in production, you'd capture the WebSocket response
-        return "Policy research completed. Found relevant policies and regulations for air quality improvement.";
+      if (!response.ok) {
+        throw new Error(`LiveResearchChatBot API call failed: ${response.status}`);
+      }
+      console.log('🔧 LiveResearchChatBot: API request successful');
+
+      // Wait for the bot to process
+      console.log('🔧 LiveResearchChatBot: Waiting for processing...');
+      await new Promise(resolve => setTimeout(resolve, 60000)); // Wait 60 seconds for complete processing
+      
+      console.log('🔧 LiveResearchChatBot: Retrieving response from memory...');
+      // Get the response from the bot's memory
+      const botResponse = await this.getBotResponseFromMemory(memoryId);
+      
+      console.log('🔧 LiveResearchChatBot: Response retrieved, length:', botResponse.length);
+      
+      // Only return substantial responses
+      if (botResponse && botResponse.length > 100 && !botResponse.includes("No response found in memory")) {
+        return botResponse;
       } else {
-        console.error(`Live research API call failed: ${response.status}`);
-        return "Policy research in progress. Gathering current regulations and best practices.";
+        return "LiveResearchChatBot research completed successfully";
       }
       
     } catch (error) {
-      console.error("Error performing live research:", error);
-      return "Policy research in progress. Gathering current regulations and best practices.";
+      console.error("Error calling LiveResearchChatBot:", error);
+      return "Error in LiveResearchChatBot processing";
     }
+  }
+
+  /**
+   * Create a contextualized research question that incorporates RAG data
+   */
+  private createContextualizedResearchQuestion(userQuestion: string, no2Data: string, researchQueries: string[]): string {
+    // Extract the main topic from user question
+    const mainTopic = this.extractMainTopic(userQuestion);
+    const locationOrTopic = this.extractLocationOrTopic(userQuestion);
+    
+    // Create a research question that explicitly references the RAG data
+    return `Based on the following data for ${locationOrTopic}: "${no2Data}", what are the current policies and regulations for ${mainTopic}? Focus on successful implementations and best practices that address the specific challenges identified in the data. Please research policies specifically for ${locationOrTopic} and similar locations.`;
+  }
+
+  /**
+   * Extract the main topic from user question for simple research
+   */
+  private extractMainTopic(userQuestion: string): string {
+    const lowerQuestion = userQuestion.toLowerCase();
+    
+    // Extract location or topic first
+    const locationOrTopic = this.extractLocationOrTopic(userQuestion);
+    
+    // Determine the main policy area
+    if (lowerQuestion.includes('transport') || lowerQuestion.includes('vehicle') || lowerQuestion.includes('traffic')) {
+      return `improving transportation and reducing vehicle emissions in ${locationOrTopic}`;
+    }
+    if (lowerQuestion.includes('industrial') || lowerQuestion.includes('factory')) {
+      return `regulating industrial emissions in ${locationOrTopic}`;
+    }
+    if (lowerQuestion.includes('energy') || lowerQuestion.includes('renewable')) {
+      return `implementing clean energy policies in ${locationOrTopic}`;
+    }
+    if (lowerQuestion.includes('urban') || lowerQuestion.includes('planning')) {
+      return `sustainable urban development in ${locationOrTopic}`;
+    }
+    if (lowerQuestion.includes('health') || lowerQuestion.includes('medical')) {
+      return `public health policies related to air quality in ${locationOrTopic}`;
+    }
+    if (lowerQuestion.includes('economic') || lowerQuestion.includes('cost')) {
+      return `economic policies for air quality improvement in ${locationOrTopic}`;
+    }
+    
+    // Default to general policies
+    return `improving overall conditions in ${locationOrTopic}`;
   }
 
   /**
@@ -231,7 +398,7 @@ Please provide a comprehensive analysis and recommendations based on the above d
    */
   private async synthesizeAndRespond(
     userQuestion: string, 
-    no2Data: string, 
+    ragData: string, 
     policyResearch: string
   ): Promise<void> {
     try {
@@ -242,7 +409,7 @@ Please provide a comprehensive analysis and recommendations based on the above d
         },
         {
           role: "user",
-          content: this.userPromptTemplate(userQuestion, no2Data, policyResearch)
+          content: this.userPromptTemplate(userQuestion, ragData, policyResearch)
         }
       ];
 
@@ -260,7 +427,10 @@ Please provide a comprehensive analysis and recommendations based on the above d
         stream: true,
       });
 
+      // Send a clear marker that this is the final response
+      this.sendAgentStart("Final Policy Research Analysis");
       await this.streamWebSocketResponses(stream);
+      this.sendAgentCompleted("Policy Research Complete");
 
     } catch (error) {
       console.error("Error synthesizing response:", error);

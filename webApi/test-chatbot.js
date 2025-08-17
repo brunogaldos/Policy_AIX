@@ -78,7 +78,7 @@ async function sendChatMessage(clientId) {
                 chatLog: [
                     {
                         sender: 'user',
-                        message: '"Give only the NO₂ data for Cali, Colombia and compared it with the NO₂ data for Santiago, Chile'
+                        message: 'Give only the NO₂ value for Santiago, Chile'
                     }
                 ],
                 wsClientId: clientId
