@@ -40,6 +40,17 @@ const ResearchChatbot = ({
   const [cursorPosition, setCursorPosition] = useState(0);
   const [allDatasets, setAllDatasets] = useState([]);
   const [selectedDatasetIndex, setSelectedDatasetIndex] = useState(0);
+  const [selectedDatasets, setSelectedDatasets] = useState([]);
+
+  // Function to remove a dataset from selection
+  const removeDataset = useCallback((datasetToRemove) => {
+    setSelectedDatasets(prev => prev.filter(dataset => dataset.id !== datasetToRemove.id));
+    
+    // Also remove from input message
+    const datasetName = datasetToRemove.name;
+    const newValue = inputMessage.replace(new RegExp(`@${datasetName}\\s*`, 'g'), '');
+    setInputMessage(newValue);
+  }, [inputMessage]);
 
   // Refs
   const messagesEndRef = useRef(null);
@@ -48,7 +59,7 @@ const ResearchChatbot = ({
   const streamingTimeoutRef = useRef(null);
 
   // Default info message
-  const defaultInfoMessage = "I'm your helpful web research assistant. You can mention datasets with @datasetName (e.g., @climate, @population).";
+  const defaultInfoMessage = "I'm your helpful AI assistant. You can mention datasets with @datasetName (e.g., @climate, @population).";
   const textInputLabel = 'Please state your research question.';
 
   // Fetch all datasets when component mounts
@@ -408,6 +419,7 @@ const ResearchChatbot = ({
 
     const userMessage = inputMessage.trim();
     setInputMessage('');
+    setSelectedDatasets([]); // Clear selected datasets
     setIsLoading(true);
 
     // Process @datasetName mentions before sending the message
@@ -552,6 +564,10 @@ const ResearchChatbot = ({
     const datasetName = dataset.slug || dataset.name;
     const newValue = beforeAt + '@' + datasetName + afterDataset;
     setInputMessage(newValue);
+    
+    // Add to selected datasets for visual indication
+    setSelectedDatasets(prev => [...prev, { name: datasetName, id: dataset.id }]);
+    
     setShowDatasetDropdown(false);
     
     // Focus back on input
@@ -833,7 +849,7 @@ const ResearchChatbot = ({
 
           <div className="research-chatbot-input-wrapper">
             <div style={{ position: 'relative', flex: 1 }}>
-              <textarea
+                            <textarea
                 ref={inputRef}
                 value={inputMessage}
                 onChange={handleInputChange}
@@ -841,9 +857,74 @@ const ResearchChatbot = ({
                 placeholder={isConnected ? textInputLabel : 'Connecting...'}
                 disabled={!isConnected || isLoading || isInitializing}
                 className="research-chatbot-input"
-                rows="2"
-                maxLength={1000}
+                style={{ 
+                  minHeight: '140px',
+                  maxHeight: '200px',
+                  overflowY: 'auto'
+                }}
               />
+              
+              {/* Selected datasets indicator - cursor-like style */}
+              {selectedDatasets.length > 0 && (
+                <div style={{
+                  marginTop: '8px',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '6px'
+                }}>
+                  {selectedDatasets.map((dataset, index) => (
+                    <span key={index} style={{ 
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      padding: '2px 6px',
+                      background: 'rgba(255, 255, 255, 0.15)',
+                      color: '#FFFFFF',
+                      borderRadius: '4px',
+                      fontSize: '10px',
+                      fontFamily: 'Inter, sans-serif',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      cursor: 'default',
+                      gap: '4px'
+                    }}>
+                      @{dataset.name}
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          removeDataset(dataset);
+                        }}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          color: 'rgba(255, 255, 255, 0.7)',
+                          cursor: 'pointer',
+                          fontSize: '8px',
+                          padding: '0',
+                          marginLeft: '2px',
+                          lineHeight: '1',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '12px',
+                          height: '12px',
+                          borderRadius: '50%',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.background = 'rgba(255, 255, 255, 0.2)';
+                          e.target.style.color = '#FFFFFF';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.background = 'none';
+                          e.target.style.color = 'rgba(255, 255, 255, 0.7)';
+                        }}
+                        title="Remove dataset"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
               
               {/* Dataset autocomplete dropdown */}
               {showDatasetDropdown && (
@@ -904,15 +985,13 @@ const ResearchChatbot = ({
         </div>
       </div>
 
-// ... existing code ...
-
       <style jsx>{`
         .research-chatbot-dropdown {
           position: fixed;
           top: 75px; /* Start directly under the header */
           right: 8px; /* Small margin from right edge */
           z-index: 9999;
-          width: 400px;
+          width: calc(400px + 30px); /* Extend 30px further to the left (35px - 5px) */
           max-width: calc(100vw - 16px); /* Account for 8px margin on each side */
         }
 
@@ -921,8 +1000,8 @@ const ResearchChatbot = ({
           border-radius: 12px;
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
           width: 100%;
-          height: 700px;
-          max-height: 85vh;
+          height: calc(700px - 95px); /* Reduce height by 95px (90px + 5px) */
+          max-height: calc(85vh - 95px); /* Reduce max height by 95px (90px + 5px) */
           display: flex;
           flex-direction: column;
           overflow: hidden;
@@ -1085,7 +1164,7 @@ const ResearchChatbot = ({
         }
 
         .research-chatbot-input-container {
-          padding: 20px 24px;
+          padding: 16px 24px 12px 24px; /* Reduced padding to minimize margins */
           border-top: 1px solid #FFFFFF; // White border like header
           background: #242628; // Main content area background color
         }
@@ -1123,30 +1202,38 @@ const ResearchChatbot = ({
           gap: 6px; // Reduced gap to bring input closer to button
           align-items: flex-end; // Aligns both elements to the same bottom baseline
           width: 100%; // Ensure full width usage
+          margin-bottom: 4px; // Minimal margin above status bar
         }
 
         .research-chatbot-input {
           width: 100%; // Ensure full width
-          min-height: 120px; // Much larger height for better usability
-          padding: 20px 24px; // Increased padding for better spacing
+          min-height: 140px; // Increased height for more comfortable typing
+          padding: 16px 20px; // Reduced padding to minimize margins
           border: 1px solid #FFFFFF; // White border like header
           border-radius: 6px; // Slightly rounded like Climate TRACE
           background: rgba(255, 255, 255, 0.08); // Slightly darker background for better contrast
           color: #FFFFFF; // Pure white like header
-          font-size: 12px; // Smaller font size to match dropdown
+          font-size: 14px; // Increased font size for better readability
           font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
           font-weight: 300; // Light weight like Climate TRACE
-          resize: none;
           outline: none;
           transition: all 0.2s ease;
           line-height: 1.4; // Better line height for readability
           box-sizing: border-box; // Include padding in width calculation
+          word-wrap: break-word;
+          white-space: pre-wrap;
         }
+
+
 
         .research-chatbot-input:focus {
           border-color: #FFFFFF; // White border like header
           background: rgba(255, 255, 255, 0.15); // Slightly more visible on focus
         }
+
+
+
+
 
         .research-chatbot-input:disabled {
           opacity: 0.6;
@@ -1212,13 +1299,13 @@ const ResearchChatbot = ({
           padding: 8px 12px; // Smaller padding for less dominant appearance
           border-radius: 4px; // Smaller radius for minimalistic look
           cursor: pointer;
-          font-size: 16px; // Smaller font size
+          font-size: 18px; // Slightly increased font size for better visibility
           transition: all 0.2s ease;
           display: flex;
           align-items: center;
           justify-content: center;
-          min-width: 40px; // Smaller width
-          height: 40px; // Smaller height to be less dominant
+          min-width: 44px; // Slightly larger width to match increased height
+          height: 44px; // Slightly larger height to match input area
           font-weight: 300; // Light weight for minimalistic look
           align-self: flex-end; // Ensure it aligns to bottom
         }
@@ -1236,21 +1323,22 @@ const ResearchChatbot = ({
         .research-chatbot-status {
           display: flex;
           align-items: center;
-          gap: 8px;
-          margin-top: 12px;
-          font-size: 12px;
+          gap: 4px;
+          margin-top: 4px;
+          font-size: 8px;
           color: #FFFFFF; // Pure white like header
           font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
           font-weight: 300; // Light weight like Climate TRACE
+          padding: 2px 0;
         }
 
         .research-chatbot-status-indicator {
-          font-size: 12px;
+          font-size: 8px;
         }
 
         .research-chatbot-status-text {
           text-transform: uppercase; // Uppercase like Climate TRACE
-          letter-spacing: 0.3px; // Letter spacing like Climate TRACE
+          letter-spacing: 0.2px; // Reduced letter spacing for smaller font
         }
 
         .research-chatbot-message-time {
@@ -1402,8 +1490,6 @@ const ResearchChatbot = ({
           }
         }
       `}</style>
-
-// ... existing code ...
     </div>
   );
 };
