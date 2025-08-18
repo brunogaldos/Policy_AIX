@@ -21,7 +21,6 @@ function ExploreDiscover(props) {
   const [config, setConfig] = useState(null);
   const [highlightedDatasets, setHighlightedDatasets] = useState({ loading: true, list: [] });
   const [recentUpdatedDatasets, setRecentUpdatedDatasets] = useState({ loading: true, list: [] });
-  const [recentlyAddedDatasets, setRecentlyAddedDatasets] = useState({ loading: true, list: [] });
 
   useEffect(() => {
     fetchExploreConfig()
@@ -51,16 +50,7 @@ function ExploreDiscover(props) {
           .then((data) => setRecentUpdatedDatasets({ loading: false, list: data }))
           .catch((err) => toastr.error('Error loading recently updated datasets', err));
 
-        // ----- Recently added datasets --------
-        fetchDatasets({
-          'page[size]': 4,
-          published: true,
-          sort: '-createdAt',
-          includes: 'layer,metadata,widget',
-          env: process.env.NEXT_PUBLIC_ENVS_SHOW,
-        })
-          .then((data) => setRecentlyAddedDatasets({ loading: false, list: data }))
-          .catch((err) => toastr.error('Error loading recently added datasets', err));
+
       })
       .catch((error) => toastr.error('Error loading Explore configuration', error));
   }, []);
@@ -129,36 +119,7 @@ function ExploreDiscover(props) {
           />
         )}
       </div>
-      <div className="recently-added discover-section">
-        <div className="header">
-          <h4>{config && config.explore.discover.subtitles['recently-added-datasets']}</h4>
-          <div
-            className="header-button"
-            role="button"
-            tabIndex={-1}
-            onClick={() => {
-              setSidebarSection(EXPLORE_SECTIONS.ALL_DATA);
-              setSortSelected('createdAt');
-              setSortIsUserSelected();
-              props.fetchDatasets();
-            }}
-            onKeyPress={() => {
-              setSidebarSection(EXPLORE_SECTIONS.ALL_DATA);
-              setSortSelected('createdAt');
-              setSortIsUserSelected();
-              props.fetchDatasets();
-            }}
-          >
-            SEE ALL DATA
-          </div>
-        </div>
-        <DatasetList
-          loading={recentlyAddedDatasets.loading}
-          numberOfPlaceholders={4}
-          list={recentlyAddedDatasets.list}
-          actions={<ExploreDatasetsActions />}
-        />
-      </div>
+
       <div className="recent-updated discover-section">
         <div className="header">
           <h4>{config && config.explore.discover.subtitles['recently-updated-datasets']}</h4>

@@ -1,14 +1,14 @@
 .c-page-explore {
   display: flex;
-  height: calc(100vh - #{$header-main-height});
+  min-height: calc(100vh - #{$header-main-height}); // Changed from fixed height to min-height
 
   .explore-sidebar {
     display: flex;
   }
 
   .explore-sidebar-content {
-    min-width: 330px;
-    max-width: 330px;
+    min-width: 340px; // Reduced from 330px to match menu width reduction
+    max-width: 340px; // Reduced from 330px to match menu width reduction
   }
 
   .clear-polygon-container {
@@ -24,11 +24,37 @@
   background: rgba(30, 30, 30, 0.85);
   backdrop-filter: blur(8px);
   border-radius: 12px;
-  padding: 16px;
   color: #fff;
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  min-height: 100vh; // Extends to full viewport height
+  box-sizing: border-box; /* Ensures padding doesn't shrink the element */
+  overflow-y: auto; // Enable vertical scrolling
+  max-height: 100vh; // Limit height to viewport to enable scrolling
+  
+  /* Custom scrollbar styling to match UI theme */
+  &::-webkit-scrollbar {
+    width: 12px; // Increased from 8px to 12px for better usability
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(250, 183, 46, 0.6); // Using the #fab72e color with transparency
+    border-radius: 4px;
+    
+    &:hover {
+      background: rgba(250, 183, 46, 0.8); // Darker on hover
+    }
+  }
+  
+  /* Firefox scrollbar styling */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(250, 183, 46, 0.6) rgba(255, 255, 255, 0.1);
 }
 
 /* Floating AI Assistant button */

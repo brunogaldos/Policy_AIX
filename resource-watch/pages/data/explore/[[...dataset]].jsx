@@ -62,7 +62,7 @@ class ExplorePage extends PureComponent {
               dataset: lg.dataset,
               opacity: lg.opacity || 1,
               visible: lg.visible,
-              layer: lg.layers.find((l) => l.active === true).id,
+              layer: lg.layers.find((l) => l.active === true)?.id || lg.layers[0]?.id,
             })),
           ),
         ),
@@ -115,7 +115,7 @@ class ExplorePage extends PureComponent {
           dataset: lg.dataset,
           opacity: lg.opacity || 1,
           visible: lg.visible,
-          layer: lg.layers.find((l) => l.active === true).id,
+          layer: lg.layers.find((l) => l.active === true)?.id || lg.layers[0]?.id,
         })),
       ),
     );
@@ -126,7 +126,7 @@ class ExplorePage extends PureComponent {
           dataset: lg.dataset,
           opacity: lg.opacity || 1,
           visible: lg.visible,
-          layer: lg.layers.find((l) => l.active === true).id,
+          layer: lg.layers.find((l) => l.active === true)?.id || lg.layers[0]?.id,
         })),
       ),
     );

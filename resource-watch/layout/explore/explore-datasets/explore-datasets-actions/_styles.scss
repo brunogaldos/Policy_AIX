@@ -2,6 +2,7 @@
 
 .c-explore-datasets-actions {
     display: flex;
+    background-color: white; // Ensure white background extends to bottom
 
     button {
         &:not(:last-child) {
