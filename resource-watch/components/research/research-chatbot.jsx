@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 // services
 import * as researchAPI from 'services/research-api';
+import { fetchDatasets } from 'services/dataset';
 
 // utils
 import { logger } from 'utils/logs';
+import Icon from 'components/ui/icon';
 
 /**
  * Research Chatbot Component
@@ -28,6 +31,26 @@ const ResearchChatbot = ({
   const [wsClientId, setWsClientId] = useState(null);
   const [connectionError, setConnectionError] = useState(null);
   const [isInitializing, setIsInitializing] = useState(false);
+  
+  // Dataset-related state
+  const [activeDatasets, setActiveDatasets] = useState([]);
+  const [datasetContext, setDatasetContext] = useState([]);
+  const [showDatasetDropdown, setShowDatasetDropdown] = useState(false);
+  const [filteredDatasets, setFilteredDatasets] = useState([]);
+  const [cursorPosition, setCursorPosition] = useState(0);
+  const [allDatasets, setAllDatasets] = useState([]);
+  const [selectedDatasetIndex, setSelectedDatasetIndex] = useState(0);
+  const [selectedDatasets, setSelectedDatasets] = useState([]);
+
+  // Function to remove a dataset from selection
+  const removeDataset = useCallback((datasetToRemove) => {
+    setSelectedDatasets(prev => prev.filter(dataset => dataset.id !== datasetToRemove.id));
+    
+    // Also remove from input message
+    const datasetName = datasetToRemove.name;
+    const newValue = inputMessage.replace(new RegExp(`@${datasetName}\\s*`, 'g'), '');
+    setInputMessage(newValue);
+  }, [inputMessage]);
 
   // Refs
   const messagesEndRef = useRef(null);
@@ -36,8 +59,42 @@ const ResearchChatbot = ({
   const streamingTimeoutRef = useRef(null);
 
   // Default info message
-  const defaultInfoMessage = "I'm your helpful web research assistant";
+  const defaultInfoMessage = "I'm your helpful AI assistant. You can mention datasets with @datasetName (e.g., @climate, @population).";
   const textInputLabel = 'Please state your research question.';
+
+  // Fetch all datasets when component mounts
+  useEffect(() => {
+    if (isOpen) {
+      fetchAllDatasets();
+    }
+  }, [isOpen]);
+
+  const fetchAllDatasets = async () => {
+    try {
+      logger.info('Fetching datasets for @ autocomplete...');
+      const datasets = await fetchDatasets({ 
+        'page[size]': 100,
+        includes: 'layer,metadata'
+      });
+      logger.info('Fetched datasets:', datasets?.length || 0);
+      setAllDatasets(datasets || []);
+    } catch (error) {
+      logger.error('Error fetching datasets:', error);
+    }
+  };
+
+  // Function to get dataset display name
+  const getDatasetDisplayName = (dataset) => {
+    return dataset.metadata?.[0]?.info?.name || dataset.name || dataset.slug;
+  };
+
+  // Function to get dataset search terms
+  const getDatasetSearchTerms = (dataset) => {
+    const displayName = getDatasetDisplayName(dataset);
+    const metadataName = dataset.metadata?.[0]?.info?.name || '';
+    const metadataDescription = dataset.metadata?.[0]?.info?.description || '';
+    return `${displayName} ${metadataName} ${metadataDescription} ${dataset.slug}`.toLowerCase();
+  };
 
   /**
    * Scroll to bottom of messages
@@ -321,6 +378,38 @@ const ResearchChatbot = ({
   );
 
   /**
+   * Handle dataset mention
+   */
+  const handleDatasetMention = useCallback(async (datasetName) => {
+    // Find dataset in the already fetched list
+    const dataset = allDatasets.find(ds => 
+      ds.slug === datasetName || 
+      ds.name === datasetName ||
+      getDatasetDisplayName(ds).toLowerCase().includes(datasetName.toLowerCase())
+    );
+    
+    if (!dataset) {
+      logger.warn(`Dataset "${datasetName}" not found`);
+      return;
+    }
+
+    // Check if dataset is already active
+    if (!activeDatasets.find(ds => ds.id === dataset.id)) {
+      const datasetWithActive = { ...dataset, active: true };
+      setActiveDatasets(prev => [...prev, datasetWithActive]);
+      
+      // Add dataset context
+      const contextMessage = `Dataset "${getDatasetDisplayName(dataset)}" has been added to the conversation context. This dataset contains information about ${getDatasetDisplayName(dataset).toLowerCase()}.`;
+      setDatasetContext(prev => [...prev, contextMessage]);
+      
+      // Add system message to inform user
+      addMessage('system', `📊 Dataset "${getDatasetDisplayName(dataset)}" has been added to the conversation and map.`);
+      
+      logger.info(`Dataset "${getDatasetDisplayName(dataset)}" added to context and map`);
+    }
+  }, [allDatasets, activeDatasets, getDatasetDisplayName, addMessage]);
+
+  /**
    * Send chat message
    */
   const sendChatMessage = useCallback(async () => {
@@ -330,7 +419,17 @@ const ResearchChatbot = ({
 
     const userMessage = inputMessage.trim();
     setInputMessage('');
+    setSelectedDatasets([]); // Clear selected datasets
     setIsLoading(true);
+
+    // Process @datasetName mentions before sending the message
+    const datasetMentions = userMessage.match(/@(\w+)/g);
+    if (datasetMentions) {
+      for (const mention of datasetMentions) {
+        const datasetName = mention.substring(1); // Remove @ symbol
+        await handleDatasetMention(datasetName);
+      }
+    }
 
     // Add user message to chat
     addMessage('user', userMessage);
@@ -411,7 +510,75 @@ const ResearchChatbot = ({
     numberOfSelectQueries,
     percentOfTopQueriesToSearch,
     percentOfTopResultsToScan,
+    handleDatasetMention,
   ]);
+
+  /**
+   * Handle input changes and show dataset autocomplete
+   */
+  const handleInputChange = useCallback(
+    (e) => {
+      const value = e.target.value;
+      setInputMessage(value);
+      
+      // Check if we're typing after an @ symbol
+      const lastAtSymbol = value.lastIndexOf('@');
+      
+      if (lastAtSymbol !== -1) {
+        const afterAt = value.substring(lastAtSymbol + 1);
+        const beforeAt = value.substring(0, lastAtSymbol);
+        
+        // Check if there's a space after @ (meaning we're not in a dataset name)
+        const hasSpaceAfterAt = /\s/.test(afterAt);
+        
+        if (!hasSpaceAfterAt) {
+          // Filter datasets based on what's typed after @
+          const filtered = allDatasets.filter(dataset => {
+            const searchTerms = getDatasetSearchTerms(dataset);
+            return searchTerms.includes(afterAt.toLowerCase());
+          }).slice(0, 10); // Limit to 10 results
+          
+          setFilteredDatasets(filtered);
+          setShowDatasetDropdown(filtered.length > 0);
+          setCursorPosition(lastAtSymbol);
+          setSelectedDatasetIndex(0);
+        } else {
+          setShowDatasetDropdown(false);
+        }
+      } else {
+        setShowDatasetDropdown(false);
+      }
+    },
+    [allDatasets, getDatasetSearchTerms],
+  );
+
+  /**
+   * Select a dataset from dropdown
+   */
+  const selectDataset = useCallback((dataset) => {
+    const beforeAt = inputMessage.substring(0, cursorPosition);
+    const afterAt = inputMessage.substring(cursorPosition + 1);
+    const spaceAfterAt = afterAt.indexOf(' ');
+    const afterDataset = spaceAfterAt !== -1 ? afterAt.substring(spaceAfterAt) : '';
+    
+    const datasetName = dataset.slug || dataset.name;
+    const newValue = beforeAt + '@' + datasetName + afterDataset;
+    setInputMessage(newValue);
+    
+    // Add to selected datasets for visual indication
+    setSelectedDatasets(prev => [...prev, { name: datasetName, id: dataset.id }]);
+    
+    setShowDatasetDropdown(false);
+    
+    // Focus back on input
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+        const newCursorPos = beforeAt.length + datasetName.length + 1; // +1 for @
+        inputRef.current.setSelectionRange(newCursorPos, newCursorPos);
+      }
+    }, 0);
+  }, [inputMessage, cursorPosition]);
 
   /**
    * Handle key press in input
@@ -420,10 +587,27 @@ const ResearchChatbot = ({
     (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
-        sendChatMessage();
+        if (showDatasetDropdown && filteredDatasets.length > 0) {
+          // Select the currently highlighted dataset
+          selectDataset(filteredDatasets[selectedDatasetIndex]);
+        } else {
+          sendChatMessage();
+        }
+      } else if (e.key === 'Escape') {
+        setShowDatasetDropdown(false);
+      } else if (e.key === 'ArrowDown' && showDatasetDropdown) {
+        e.preventDefault();
+        setSelectedDatasetIndex(prev => 
+          prev < filteredDatasets.length - 1 ? prev + 1 : 0
+        );
+      } else if (e.key === 'ArrowUp' && showDatasetDropdown) {
+        e.preventDefault();
+        setSelectedDatasetIndex(prev => 
+          prev > 0 ? prev - 1 : filteredDatasets.length - 1
+        );
       }
     },
-    [sendChatMessage],
+    [sendChatMessage, showDatasetDropdown, filteredDatasets, selectedDatasetIndex, selectDataset],
   );
 
   /**
@@ -483,33 +667,19 @@ const ResearchChatbot = ({
   return (
     <div className={`research-chatbot-dropdown ${className}`}>
       <div className="research-chatbot-container">
-        {/* Header */}
-        <div className="research-chatbot-header">
-          <div className="research-chatbot-title">
-            <span className="research-chatbot-icon">•</span>
-            <h3>AI Assistant</h3>
-          </div>
-          <div className="research-chatbot-header-actions">
-            {messages.length > 5 && (
-              <button
-                type="button"
-                className="research-chatbot-clear"
-                onClick={clearOldMessages}
-                aria-label="Clear chat history"
-                title="Clear old messages to reduce payload size"
-              >
-                🗑️ Clear
-              </button>
-            )}
+        {/* Floating Actions */}
+        <div className="research-chatbot-header-actions" style={{ position: 'absolute', top: '8px', right: '8px', zIndex: 10 }}>
+          {messages.length > 5 && (
             <button
               type="button"
-              className="research-chatbot-close"
-              onClick={onClose}
-              aria-label="Close research assistant"
+              className="research-chatbot-clear"
+              onClick={clearOldMessages}
+              aria-label="Clear chat history"
+              title="Clear old messages to reduce payload size"
             >
-              ×
+              🗑️ Clear
             </button>
-          </div>
+          )}
         </div>
 
         {/* Messages */}
@@ -613,6 +783,59 @@ const ResearchChatbot = ({
           <div ref={messagesEndRef} />
         </div>
 
+        {/* Active Datasets */}
+        {activeDatasets.length > 0 && (
+          <div className="research-chatbot-datasets" style={{
+            padding: '16px',
+            borderTop: '1px solid #E0E0E0',
+            background: '#f8f9fa',
+            maxHeight: '200px',
+            overflowY: 'auto'
+          }}>
+            <h4 style={{
+              margin: '0 0 12px 0',
+              fontSize: '14px',
+              fontWeight: '600',
+              color: '#FFFFFF'
+            }}>
+              🗺️ Active Datasets ({activeDatasets.length})
+            </h4>
+            {activeDatasets.map(dataset => (
+              <div
+                key={dataset.id}
+                style={{
+                  margin: '8px 0',
+                  padding: '12px',
+                  border: '1px solid #ddd',
+                  borderRadius: '6px',
+                  background: 'white',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+              >
+                <Icon name="icon-dataset" className="-small" style={{ color: '#007bff' }} />
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    fontWeight: '600',
+                    fontSize: '13px',
+                    color: '#FFFFFF'
+                  }}>
+                    {getDatasetDisplayName(dataset)}
+                  </div>
+                  <div style={{
+                    fontSize: '11px',
+                    color: '#FFFFFF',
+                    marginTop: '2px'
+                  }}>
+                    ID: {dataset.id} | Layer: {dataset.layer?.[0]?.id || 'N/A'}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
         {/* Input */}
         <div className="research-chatbot-input-container">
           {connectionError && (
@@ -625,17 +848,118 @@ const ResearchChatbot = ({
           )}
 
           <div className="research-chatbot-input-wrapper">
-            <textarea
-              ref={inputRef}
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder={isConnected ? textInputLabel : 'Connecting...'}
-              disabled={!isConnected || isLoading || isInitializing}
-              className="research-chatbot-input"
-              rows="2"
-              maxLength={1000}
-            />
+            <div style={{ position: 'relative', flex: 1 }}>
+                            <textarea
+                ref={inputRef}
+                value={inputMessage}
+                onChange={handleInputChange}
+                onKeyPress={handleKeyPress}
+                placeholder={isConnected ? textInputLabel : 'Connecting...'}
+                disabled={!isConnected || isLoading || isInitializing}
+                className="research-chatbot-input"
+                style={{ 
+                  minHeight: '140px',
+                  maxHeight: '200px',
+                  overflowY: 'auto'
+                }}
+              />
+              
+              {/* Selected datasets indicator - cursor-like style */}
+              {selectedDatasets.length > 0 && (
+                <div style={{
+                  marginTop: '8px',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '6px'
+                }}>
+                  {selectedDatasets.map((dataset, index) => (
+                    <span key={index} style={{ 
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      padding: '2px 6px',
+                      background: 'rgba(255, 255, 255, 0.15)',
+                      color: '#FFFFFF',
+                      borderRadius: '4px',
+                      fontSize: '10px',
+                      fontFamily: 'Inter, sans-serif',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      cursor: 'default',
+                      gap: '4px'
+                    }}>
+                      @{dataset.name}
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          removeDataset(dataset);
+                        }}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          color: 'rgba(255, 255, 255, 0.7)',
+                          cursor: 'pointer',
+                          fontSize: '8px',
+                          padding: '0',
+                          marginLeft: '2px',
+                          lineHeight: '1',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '12px',
+                          height: '12px',
+                          borderRadius: '50%',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.background = 'rgba(255, 255, 255, 0.2)';
+                          e.target.style.color = '#FFFFFF';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.background = 'none';
+                          e.target.style.color = 'rgba(255, 255, 255, 0.7)';
+                        }}
+                        title="Remove dataset"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+              
+              {/* Dataset autocomplete dropdown */}
+              {showDatasetDropdown && (
+                <div className="dataset-dropdown">
+                  <div style={{ 
+                    padding: '8px 12px', 
+                    fontSize: '11px', 
+                    fontWeight: '600',
+                    color: '#333', 
+                    borderBottom: '1px solid #eee',
+                    background: '#f8f9fa'
+                  }}>
+                    📊 Available datasets ({filteredDatasets.length})
+                  </div>
+                  {filteredDatasets.map((dataset, index) => (
+                    <div
+                      key={dataset.id}
+                      className={classnames('dataset-option', { '-active': selectedDatasetIndex === index })}
+                      onClick={() => selectDataset(dataset)}
+                      onMouseEnter={() => setSelectedDatasetIndex(index)}
+                    >
+                      <Icon name="icon-dataset" className="-small" style={{ color: '#007bff', fontSize: '12px' }} />
+                      <div style={{ flex: 1 }}>
+                        <div className="dataset-name">
+                          @{dataset.slug || dataset.name}
+                        </div>
+                        <div className="dataset-description">
+                          {getDatasetDisplayName(dataset)}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
             <button
               onClick={sendChatMessage}
               disabled={!isConnected || isLoading || !inputMessage.trim() || isInitializing}
@@ -661,60 +985,31 @@ const ResearchChatbot = ({
         </div>
       </div>
 
-// ... existing code ...
-
       <style jsx>{`
         .research-chatbot-dropdown {
           position: fixed;
-          top: 20px;
-          right: 20px;
+          top: 75px; /* Start directly under the header */
+          right: 8px; /* Small margin from right edge */
           z-index: 9999;
-          width: 400px;
-          max-width: calc(100vw - 40px);
+          width: calc(400px + 30px); /* Extend 30px further to the left (35px - 5px) */
+          max-width: calc(100vw - 16px); /* Account for 8px margin on each side */
         }
 
         .research-chatbot-container {
-          background: #40505A; // Dark teal-grey like Climate TRACE header
+          background: #242628; // Main content area background color
           border-radius: 12px;
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
           width: 100%;
-          height: 700px;
-          max-height: 85vh;
+          height: calc(700px - 95px); /* Reduce height by 95px (90px + 5px) */
+          max-height: calc(85vh - 95px); /* Reduce max height by 95px (90px + 5px) */
           display: flex;
           flex-direction: column;
           overflow: hidden;
           border: 1px solid #E0E0E0; // Light border like Climate TRACE
+          position: relative; // For absolute positioning of floating actions
         }
 
-        .research-chatbot-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 20px 24px;
-          border-bottom: 1px solid #E0E0E0; // Light border like Climate TRACE
-          background: #40505A; // Dark teal-grey like Climate TRACE
-        }
 
-        .research-chatbot-title {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .research-chatbot-icon {
-          font-size: 20px;
-          color: #FFFFFF; // Pure white like header
-        }
-
-        .research-chatbot-title h3 {
-          margin: 0;
-          font-size: 18px;
-          font-weight: 300; // Light weight like Climate TRACE
-          color: #FFFFFF; // Pure white like header
-          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-          text-transform: uppercase; // Uppercase like Climate TRACE
-          letter-spacing: 0.5px; // Letter spacing like Climate TRACE
-        }
 
         .research-chatbot-header-actions {
           display: flex;
@@ -774,7 +1069,7 @@ const ResearchChatbot = ({
           display: flex;
           flex-direction: column;
           gap: 16px;
-          background: #40505A; // Dark teal-grey like Climate TRACE
+          background: #242628; // Main content area background color
         }
 
         .research-chatbot-welcome {
@@ -869,9 +1164,9 @@ const ResearchChatbot = ({
         }
 
         .research-chatbot-input-container {
-          padding: 20px 24px;
+          padding: 16px 24px 12px 24px; /* Reduced padding to minimize margins */
           border-top: 1px solid #FFFFFF; // White border like header
-          background: #40505A; // Dark teal-grey like Climate TRACE
+          background: #242628; // Main content area background color
         }
 
         .research-chatbot-error {
@@ -904,29 +1199,41 @@ const ResearchChatbot = ({
 
         .research-chatbot-input-wrapper {
           display: flex;
-          gap: 8px;
-          align-items: flex-end;
+          gap: 6px; // Reduced gap to bring input closer to button
+          align-items: flex-end; // Aligns both elements to the same bottom baseline
+          width: 100%; // Ensure full width usage
+          margin-bottom: 4px; // Minimal margin above status bar
         }
 
         .research-chatbot-input {
-          flex: 1;
-          padding: 12px 16px;
+          width: 100%; // Ensure full width
+          min-height: 140px; // Increased height for more comfortable typing
+          padding: 16px 20px; // Reduced padding to minimize margins
           border: 1px solid #FFFFFF; // White border like header
           border-radius: 6px; // Slightly rounded like Climate TRACE
-          background: rgba(255, 255, 255, 0.1); // Subtle background like header
+          background: rgba(255, 255, 255, 0.08); // Slightly darker background for better contrast
           color: #FFFFFF; // Pure white like header
-          font-size: 14px;
+          font-size: 14px; // Increased font size for better readability
           font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
           font-weight: 300; // Light weight like Climate TRACE
-          resize: none;
           outline: none;
           transition: all 0.2s ease;
+          line-height: 1.4; // Better line height for readability
+          box-sizing: border-box; // Include padding in width calculation
+          word-wrap: break-word;
+          white-space: pre-wrap;
         }
+
+
 
         .research-chatbot-input:focus {
           border-color: #FFFFFF; // White border like header
           background: rgba(255, 255, 255, 0.15); // Slightly more visible on focus
         }
+
+
+
+
 
         .research-chatbot-input:disabled {
           opacity: 0.6;
@@ -937,20 +1244,70 @@ const ResearchChatbot = ({
           color: rgba(255, 255, 255, 0.6); // Subtle placeholder color
         }
 
+        /* Dataset dropdown styling */
+        .dataset-dropdown {
+          position: absolute;
+          bottom: 100%;
+          left: 0;
+          right: 0;
+          background: white;
+          border: 1px solid #ddd;
+          border-radius: 6px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          z-index: 1000;
+          max-height: 200px;
+          overflow-y: auto;
+          margin-bottom: 8px;
+        }
+
+        .dataset-option {
+          padding: 8px 12px;
+          cursor: pointer;
+          border-bottom: 1px solid #f0f0f0;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 12px; // Smaller font size
+          transition: background-color 0.2s ease;
+        }
+
+        .dataset-option:last-child {
+          border-bottom: none;
+        }
+
+        .dataset-option:hover,
+        .dataset-option.-active {
+          background-color: #f8f9fa;
+        }
+
+        .dataset-option .dataset-name {
+          font-weight: 600;
+          font-size: 12px; // Smaller font size
+          color: #333;
+        }
+
+        .dataset-option .dataset-description {
+          font-size: 11px; // Smaller font size
+          color: #666;
+          margin-top: 2px;
+        }
+
         .research-chatbot-send {
           background: transparent; // Minimalistic transparent background
           border: 1px solid #FFFFFF; // White border like header
           color: #FFFFFF; // Pure white like header
-          padding: 8px 12px;
+          padding: 8px 12px; // Smaller padding for less dominant appearance
           border-radius: 4px; // Smaller radius for minimalistic look
           cursor: pointer;
-          font-size: 18px;
+          font-size: 18px; // Slightly increased font size for better visibility
           transition: all 0.2s ease;
           display: flex;
           align-items: center;
           justify-content: center;
-          min-width: 40px;
+          min-width: 44px; // Slightly larger width to match increased height
+          height: 44px; // Slightly larger height to match input area
           font-weight: 300; // Light weight for minimalistic look
+          align-self: flex-end; // Ensure it aligns to bottom
         }
 
         .research-chatbot-send:hover:not(:disabled) {
@@ -966,21 +1323,22 @@ const ResearchChatbot = ({
         .research-chatbot-status {
           display: flex;
           align-items: center;
-          gap: 8px;
-          margin-top: 12px;
-          font-size: 12px;
+          gap: 4px;
+          margin-top: 4px;
+          font-size: 8px;
           color: #FFFFFF; // Pure white like header
           font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
           font-weight: 300; // Light weight like Climate TRACE
+          padding: 2px 0;
         }
 
         .research-chatbot-status-indicator {
-          font-size: 12px;
+          font-size: 8px;
         }
 
         .research-chatbot-status-text {
           text-transform: uppercase; // Uppercase like Climate TRACE
-          letter-spacing: 0.3px; // Letter spacing like Climate TRACE
+          letter-spacing: 0.2px; // Reduced letter spacing for smaller font
         }
 
         .research-chatbot-message-time {
@@ -1074,7 +1432,7 @@ const ResearchChatbot = ({
         /* Progress message styling */
         .research-chatbot-message-system .research-chatbot-message-content {
           background: rgba(224, 224, 224, 0.1); // Subtle background like Climate TRACE
-          color: #E0E0E0; // Light grey like Climate TRACE
+          color: #FFFFFF; // Pure white
           border-radius: 16px;
           font-style: italic;
           font-size: 13px;
@@ -1132,8 +1490,6 @@ const ResearchChatbot = ({
           }
         }
       `}</style>
-
-// ... existing code ...
     </div>
   );
 };

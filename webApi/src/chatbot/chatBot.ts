@@ -6,7 +6,7 @@ import { PsRagVectorSearch } from "./vectorSearch.js";
 export class SkillsFirstChatBot extends PsBaseChatBot {
   persistMemory = true;
 
-  mainSreamingSystemPrompt = `You are the Skills First Research Tool chatbot a friendly AI that helps users find information from a large database of documents.
+  mainSreamingSystemPrompt = `You are a policy research chatbot a friendly AI that helps users find information from a large database of documents.
 
 Instructions:
 - The user will ask a question, we will search a large database in a vector store and bring information connected to the user question into your <CONTEXT_TO_ANSWER_USERS_QUESTION_FROM> to provide a thoughtful answer from.
@@ -85,15 +85,33 @@ Your thoughtful answer in markdown:
     );
 
     this.sendAgentStart("Thinking...");
-    const router = new PsRagRouter();
+    
+    // Create memory object for the router
+    const routerMemory = {
+      groupId: Date.now(),
+      stages: {},
+      totalCost: 0,
+      agentId: 1
+    };
+    
+    const router = new PsRagRouter(routerMemory);
     const routingData = await router.getRoutingData(
       userLastMessage,
       dataLayout,
       JSON.stringify(chatLogWithoutLastUserMessage)
     );
 
-    this.sendAgentStart("Searching Skills First Research...");
-    const vectorSearch = new PsRagVectorSearch();
+    this.sendAgentStart("Searching policy Research...");
+    
+    // Create memory object for the vector search
+    const vectorSearchMemory = {
+      groupId: Date.now(),
+      stages: {},
+      totalCost: 0,
+      agentId: 1
+    };
+    
+    const vectorSearch = new PsRagVectorSearch(vectorSearchMemory);
     const searchContextRaw = await vectorSearch.search(
       userLastMessage,
       routingData,
@@ -102,7 +120,7 @@ Your thoughtful answer in markdown:
 
     const searchContext = await this.updateUrls(searchContextRaw);
     console.log("search_context", searchContext);
-    console.log("In Skills First conversation");
+    console.log("In policy research conversation");
     let messages: any[] = chatLogWithoutLastUserMessage.map(
       (message: PsSimpleChatLog) => {
         return {
@@ -132,6 +150,14 @@ Your thoughtful answer in markdown:
     messages.push(userMessage);
 
     console.log(`Messages to chatbot: ${JSON.stringify(messages, null, 2)}`);
+
+
+    if (!this.openaiClient) {
+      console.error("OpenAI client is not initialized. Check OPENAI_API_KEY environment variable.");
+      this.sendAgentStart("Error: OpenAI client not configured");
+      return;
+    }
+
     try {
       const stream = await this.openaiClient.chat.completions.create({
         model: "gpt-4-turbo",

@@ -78,6 +78,13 @@ export class SkillsFirstIngestionProcessor extends IngestionAgentProcessor {
             }, "");
         };
         this.dataLayoutPath = dataLayoutPath;
+        // Create memory object for the agents
+        const memory = {
+            groupId: Date.now(),
+            stages: {},
+            totalCost: 0,
+            agentId: 1
+        };
         this.loadFileMetadata()
             .then(() => {
             console.log("Metadata loaded");
@@ -85,11 +92,12 @@ export class SkillsFirstIngestionProcessor extends IngestionAgentProcessor {
             .catch((err) => {
             console.error("Failed to load file metadata:", err);
         });
-        this.cleanupAgent = new DocumentCleanupAgent();
-        this.splitAgent = new DocumentTreeSplitAgent();
-        this.chunkCompressor = new IngestionChunkCompressorAgent();
-        this.docAnalysisAgent = new DocumentAnalyzerAgent();
-        this.chunkAnalysisAgent = new IngestionChunkAnalzyerAgent();
+        // Pass memory to all agents
+        this.cleanupAgent = new DocumentCleanupAgent(memory);
+        this.splitAgent = new DocumentTreeSplitAgent(memory);
+        this.chunkCompressor = new IngestionChunkCompressorAgent(memory);
+        this.docAnalysisAgent = new DocumentAnalyzerAgent(memory);
+        this.chunkAnalysisAgent = new IngestionChunkAnalzyerAgent(memory);
     }
     async processDataLayout() {
         await this.loadFileMetadata(); // Load existing metadata to compare against
@@ -109,7 +117,7 @@ export class SkillsFirstIngestionProcessor extends IngestionAgentProcessor {
                 await browserPage.setUserAgent(PsConstants.currentUserAgent);
                 await this.downloadAndCache(this.dataLayout.documentUrls, false, browserPage);
                 await this.saveFileMetadata();
-                const disableJsonUrls = true;
+                const disableJsonUrls = false;
                 if (!disableJsonUrls) {
                     await this.processJsonUrls(this.dataLayout.jsonUrls, browserPage);
                     await this.saveFileMetadata();

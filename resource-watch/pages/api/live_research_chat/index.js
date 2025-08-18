@@ -5,7 +5,9 @@ export default async function handler(req, res) {
   const { method, body, query } = req;
   
   const baseUrl = 'http://localhost:5029';
-  const targetUrl = `${baseUrl}/api/live_research_chat/`;
+  //const targetUrl = `${baseUrl}/api/live_research_chat/`;
+  const targetUrl = `${baseUrl}/api/policy_research/`;
+  
   
   console.log(`🔄 Proxying ${method} request to: ${targetUrl}`);
   console.log(`📋 Body:`, body);
@@ -50,6 +52,15 @@ export default async function handler(req, res) {
     }
   }
 }
+
+
+
+
+
+
+
+
+
 
 
 

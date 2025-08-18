@@ -2,6 +2,8 @@ import { BaseController } from "@policysynth/api/controllers/baseController.js";
 import express from "express";
 import WebSocket from "ws";
 import { SkillsFirstChatBot } from "../chatbot/chatBot.js";
+import fs from "fs/promises";
+import path from "path";
 
 export class ChatController extends BaseController {
   public path = "/api/rd_chat";
