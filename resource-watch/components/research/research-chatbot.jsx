@@ -60,7 +60,7 @@ const ResearchChatbot = ({
 
   // Default info message
   const defaultInfoMessage = "I'm your helpful AI assistant. You can mention datasets with @datasetName (e.g., @climate, @population).";
-  const textInputLabel = 'Please state your research question.';
+  const textInputLabel = defaultInfoMessage;
 
   // Fetch all datasets when component mounts
   useEffect(() => {
@@ -194,11 +194,9 @@ const ResearchChatbot = ({
       setIsConnected(true);
 
       logger.info('Research chatbot WebSocket connected with client ID:', clientId);
-      addMessage('system', defaultInfoMessage);
     } catch (error) {
       logger.error('Failed to initialize WebSocket connection:', error);
       setConnectionError(error.message || 'Failed to connect to research service');
-      addMessage('system', 'Failed to connect to research service. Please try again.');
     } finally {
       setIsInitializing(false);
       isConnectingRef.current = false;
@@ -485,8 +483,7 @@ const ResearchChatbot = ({
         logger.warn('Large payload detected, consider reducing chat history');
       }
 
-      // Add initial research status message
-      addMessage('system', '🔄 Initiating research pipeline...');
+
 
       // Send conversation request to research API
       await researchAPI.conversation(simplifiedChatLog, {
@@ -498,7 +495,6 @@ const ResearchChatbot = ({
       logger.info('Research conversation request sent successfully');
     } catch (error) {
       logger.error('Error sending research conversation request:', error);
-      addMessage('system', `❌ Failed to send message: ${error.message}`);
       setIsLoading(false);
     }
   }, [
@@ -684,21 +680,7 @@ const ResearchChatbot = ({
 
         {/* Messages */}
         <div className="research-chatbot-messages">
-          {messages.length === 0 && !isInitializing && (
-            <div className="research-chatbot-welcome">
-              <div className="research-chatbot-welcome-icon">•</div>
-              <h4>Welcome to AI Assistant</h4>
-              <p>Ask me anything and I'll search the web to find comprehensive answers for you.</p>
-            </div>
-          )}
 
-          {isInitializing && (
-            <div className="research-chatbot-message research-chatbot-message-system">
-              <div className="research-chatbot-message-content">
-                🔄 Connecting to research service...
-              </div>
-            </div>
-          )}
 
           {messages.map((msg) => (
             <div
@@ -1065,48 +1047,19 @@ const ResearchChatbot = ({
         .research-chatbot-messages {
           flex: 1;
           overflow-y: auto;
-          padding: 24px;
+          padding: 20px;
           display: flex;
           flex-direction: column;
-          gap: 16px;
+          gap: 24px;
           background: #242628; // Main content area background color
         }
 
-        .research-chatbot-welcome {
-          text-align: center;
-          padding: 40px 20px;
-          color: #FFFFFF; // Pure white like header
-        }
 
-        .research-chatbot-welcome-icon {
-          font-size: 48px;
-          margin-bottom: 16px;
-          color: #FFFFFF; // Pure white like header
-        }
-
-        .research-chatbot-welcome h4 {
-          margin: 0 0 8px 0;
-          font-size: 20px;
-          font-weight: 300; // Light weight like Climate TRACE
-          color: #FFFFFF; // Pure white like header
-          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-          text-transform: uppercase; // Uppercase like Climate TRACE
-          letter-spacing: 0.5px; // Letter spacing like Climate TRACE
-        }
-
-        .research-chatbot-welcome p {
-          margin: 0;
-          font-size: 16px;
-          line-height: 1.5;
-          color: #FFFFFF; // Pure white like header
-          font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-          font-weight: 300; // Light weight like Climate TRACE
-        }
 
         .research-chatbot-message {
           display: flex;
           flex-direction: column;
-          margin-bottom: 4px;
+          width: 100%;
         }
 
         .research-chatbot-message-user {
@@ -1119,40 +1072,42 @@ const ResearchChatbot = ({
         }
 
         .research-chatbot-message-content {
-          max-width: 80%;
-          padding: 12px 16px;
-          border-radius: 12px;
+          max-width: 100%;
+          width: 100%;
+          padding: 16px 20px;
+          border-radius: 8px;
           font-size: 14px;
-          line-height: 1.5;
+          line-height: 1.6;
           word-wrap: break-word;
+          box-sizing: border-box;
         }
 
         .research-chatbot-message-user .research-chatbot-message-content {
-          background: rgba(255, 255, 255, 0.2); // Subtle background like header
-          color: #FFFFFF; // Pure white like header
-          border: 1px solid #FFFFFF; // White border like header
+          background: rgba(255, 255, 255, 0.15);
+          color: #FFFFFF;
+          border: 1px solid rgba(255, 255, 255, 0.2);
           font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-          font-weight: 300; // Light weight like Climate TRACE
+          font-weight: 400;
         }
 
         .research-chatbot-message-assistant .research-chatbot-message-content {
-          background: rgba(255, 255, 255, 0.1); // Subtle background like header
-          color: #FFFFFF; // Pure white like header
-          border: 1px solid #FFFFFF; // White border like header
+          background: rgba(255, 255, 255, 0.08);
+          color: #FFFFFF;
+          border: 1px solid rgba(255, 255, 255, 0.1);
           font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-          font-weight: 300; // Light weight like Climate TRACE
+          font-weight: 400;
         }
 
         .research-chatbot-message-system .research-chatbot-message-content {
-          background: rgba(255, 255, 255, 0.1); // Subtle background like header
-          color: #FFFFFF; // Pure white like header
-          border-radius: 16px;
+          background: rgba(255, 255, 255, 0.08);
+          color: #FFFFFF;
+          border-radius: 8px;
           font-style: italic;
           font-size: 13px;
-          border-left: 4px solid #FFFFFF; // White border like header
-          padding-left: 12px;
+          border-left: 4px solid rgba(255, 255, 255, 0.3);
+          padding-left: 16px;
           font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-          font-weight: 300; // Light weight like Climate TRACE
+          font-weight: 400;
         }
 
         .research-chatbot-message-error .research-chatbot-message-content {
