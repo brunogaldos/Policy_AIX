@@ -67,6 +67,7 @@
     border: 1px solid rgba(255, 255, 255, 0.3); // Light white border
     border-top: none;
     background-color: #45535C; // Updated background color to match header
+    backdrop-filter: blur(10px);
 
     .search-dropdown-list {
       padding: $space-1 * 2;

@@ -54,6 +54,7 @@ $min-width-sidebar-closed: 10px;
     z-index: 1;
     cursor: pointer;
     background-color: #45535C; // Updated background color to match header
+    backdrop-filter: blur(10px);
     border: none;
     border-radius: 0 2px 2px 0;
     transition: background $animation-time-2 $ease-in-out-sine;

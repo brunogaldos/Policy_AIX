@@ -12,6 +12,7 @@
     position: absolute;
     z-index: 999;
     background-color: #45535C; // Updated background color to match header
+    backdrop-filter: blur(10px);
     width: 100%;
     padding: (2 * $space) 0 (2 * $space) (2 * $space);
   }
@@ -26,7 +27,7 @@
       height: 45px;
       cursor: pointer;
       font-family: 'Inter', 'Roboto', 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
-      font-weight: 500; // Medium weight to match header
+      font-weight: 200; // Medium weight to match header
       text-transform: uppercase; // Uppercase to match header
       letter-spacing: 0.1em; // Exact letter spacing to match header
       color: #FFFFFF; // Updated color to match header text
