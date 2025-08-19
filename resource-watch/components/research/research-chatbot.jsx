@@ -6,7 +6,8 @@ import { useDispatch } from 'react-redux';
 // services
 import * as researchAPI from 'services/research-api';
 import { fetchDatasets } from 'services/dataset';
-
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm"
 // utils
 import { logger } from 'utils/logs';
 import Icon from 'components/ui/icon';
@@ -784,17 +785,7 @@ const ResearchChatbot = ({
       <div className="research-chatbot-container">
         {/* Floating Actions */}
         <div className="research-chatbot-header-actions" style={{ position: 'absolute', top: '8px', right: '8px', zIndex: 10 }}>
-          {messages.length > 5 && (
-            <button
-              type="button"
-              className="research-chatbot-clear"
-              onClick={clearOldMessages}
-              aria-label="Clear chat history"
-              title="Clear old messages to reduce payload size"
-            >
-              🗑️ Clear
-            </button>
-          )}
+
         </div>
 
         {/* Messages */}
@@ -811,7 +802,12 @@ const ResearchChatbot = ({
               <div className="research-chatbot-message-content">
                 {msg.messageType === 'research_result' ? (
                   <div className="research-chatbot-research-content">
-                    {/* Format research results with markdown-like styling */}
+                                
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}> 
+                      {msg.message}
+                    </ReactMarkdown>
+
+                    {/* Format research results with markdown-like styling 
                     {msg.message.split('\n').map((line, index) => {
                       // Handle markdown links
                       const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
@@ -854,7 +850,7 @@ const ResearchChatbot = ({
                           {parts.length > 0 ? parts : line}
                         </div>
                       );
-                    })}
+                    })} */}
                   </div>
                 ) : (
                   msg.message
@@ -863,6 +859,7 @@ const ResearchChatbot = ({
                   <span className="research-chatbot-streaming-indicator">▋</span>
                 )}
               </div>
+              
               <div className="research-chatbot-message-time">
                 {msg.timestamp?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </div>
@@ -1002,7 +999,7 @@ const ResearchChatbot = ({
       <style jsx>{`
         .research-chatbot-dropdown {
           position: fixed;
-          top: 75px; /* Start directly under the header */
+          top: 55px; /* Start directly under the header */
           right: 8px; /* Small margin from right edge */
           z-index: 9999;
           width: calc(400px + 30px); /* Extend 30px further to the left (35px - 5px) */
@@ -1015,8 +1012,8 @@ const ResearchChatbot = ({
           border-radius: 12px;
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
           width: 100%;
-          height: calc(100vh - 95px); /* Stretch panel close to bottom */
-          max-height: calc(100vh - 95px); /* Ensure it reaches near bottom */
+          height: calc(100vh - 75px); /* Stretch panel close to bottom */
+          max-height: calc(100vh - 75px); /* Ensure it reaches near bottom */
           display: flex;
           flex-direction: column;
           overflow: hidden;
@@ -1083,7 +1080,7 @@ const ResearchChatbot = ({
           padding: 20px;
           display: flex;
           flex-direction: column;
-          gap: 24px;
+          gap: 10px;
           background: rgba(30, 30, 30, 0.85);
           backdrop-filter: blur(8px);
         }

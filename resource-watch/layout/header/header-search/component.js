@@ -25,3 +25,4 @@ class HeaderSearch extends PureComponent {
 }
 
 export default HeaderSearch;
+
