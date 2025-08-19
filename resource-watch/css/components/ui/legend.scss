@@ -1,9 +1,10 @@
 .c-legend-map {
-  position: absolute;
-  bottom: 35px;
-  right: 30px;
-  width: 80%; // Limit the width for mobile devices
-  max-width: 400px;
+  position: fixed; // Place relative to viewport so it can sit under the left panels
+  bottom: 25px;
+  left: 100px; // Move to bottom-left corner
+  right: auto;
+  width: 340px; // Fit neatly within left corner space
+  max-width: 360px;
   background: $white;
   z-index: 9;
   border-radius: 4px;

@@ -56,6 +56,8 @@
     width: 100%;
     max-width: 170px;
     padding: 2 * $space 3 * $space 3 * $space 2 * $space;
+    background-color: white; // Ensure white background extends to bottom
+    border-radius: 0 4px 4px 0; // Match the card's border radius on the right side
 
     .source-date {
       display: flex;
@@ -65,7 +67,7 @@
       font-size: $font-size-tiny;
       font-weight: bold;
       line-height: 10px;
-      color: $dove-grey;
+      color: #fab72e; // Changed to match the new color scheme
 
       .source {
           text-overflow: ellipsis;
@@ -73,6 +75,11 @@
           overflow: hidden;
           margin-right: 4 * $space;
           max-width: 100px;
+          color: #fab72e; // Changed to match the new color scheme
+      }
+
+      .date {
+          color: #fab72e; // Changed to match the new color scheme
       }
     }
 
