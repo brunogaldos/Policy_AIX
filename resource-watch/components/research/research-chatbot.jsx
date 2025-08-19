@@ -45,42 +45,44 @@ const ResearchChatbot = ({
   const [allDatasets, setAllDatasets] = useState([]);
   const [selectedDatasetIndex, setSelectedDatasetIndex] = useState(0);
   const [selectedDatasets, setSelectedDatasets] = useState([]);
+  // Track delete/backspace presses to require multiple taps before removing tokens
+  const lastKeyRef = useRef(null);
+  const tokenDeleteCountsRef = useRef({});
 
   // Redux
   const dispatch = useDispatch();
 
   // Function to remove a dataset from selection - Enhanced to integrate with dataset widget functionality
-  const removeDataset = useCallback(async (datasetToRemove) => {
-    setSelectedDatasets(prev => prev.filter(dataset => dataset.id !== datasetToRemove.id));
+  const removeDataset = useCallback(async (selectedItem) => {
+    const datasetToRemove = selectedItem.dataset;
+    
+    setSelectedDatasets(prev => prev.filter(item => item.dataset.id !== datasetToRemove.id));
     
     // Also remove from active datasets
     setActiveDatasets(prev => prev.filter(dataset => dataset.id !== datasetToRemove.id));
     
     // Also remove from input message
-    const datasetName = datasetToRemove.name;
-    const newValue = inputMessage.replace(new RegExp(`@${datasetName}\\s*`, 'g'), '');
+    const shortName = selectedItem.shortName;
+    const newValue = inputMessage.replace(new RegExp(`@${shortName}\\s*`, 'g'), '');
     setInputMessage(newValue);
     
     // Deactivate the map for this dataset using the same functionality as the dataset widget
-    const dataset = allDatasets.find(ds => ds.id === datasetToRemove.id);
-    if (dataset && dataset.layer && dataset.layer.length > 0) {
+    if (datasetToRemove.layer && datasetToRemove.layer.length > 0) {
       // Use the same actions as the explore datasets widget
-      dispatch(toggleMapLayerGroup({ dataset, toggle: false }));
+      dispatch(toggleMapLayerGroup({ dataset: datasetToRemove, toggle: false }));
       dispatch(resetMapLayerGroupsInteraction());
       
       // Remove the layer from active layers (same as DatasetListItem component)
-      const defaultLayer = dataset.layer.find(l => l.default) || dataset.layer[0];
+      const defaultLayer = datasetToRemove.layer.find(l => l.default) || datasetToRemove.layer[0];
       if (defaultLayer) {
         // Import the action dynamically to avoid circular dependencies
         const { setMapLayerGroupActive } = await import('layout/explore/actions');
-        dispatch(setMapLayerGroupActive({ dataset: { id: dataset.id }, active: null }));
+        dispatch(setMapLayerGroupActive({ dataset: { id: datasetToRemove.id }, active: null }));
       }
       
-      logger.info('Map deactivated for dataset:', getDatasetDisplayName(dataset));
-      
-    
+      logger.info('Map deactivated for dataset:', getDatasetDisplayName(datasetToRemove));
     }
-  }, [inputMessage, allDatasets, dispatch]);
+  }, [inputMessage, dispatch]);
 
   // Refs
   const messagesEndRef = useRef(null);
@@ -101,40 +103,70 @@ const ResearchChatbot = ({
 
   const fetchAllDatasets = async () => {
     try {
-      logger.info('Fetching datasets for @ autocomplete...');
+      logger.info('Fetching datasets from API for @ autocomplete...');
       
-      // Try with simpler parameters first
-      const datasets = await fetchDatasets({ 
-        'page[size]': 50, // Start with a smaller number
+      // Fetch a reasonable number of datasets for autocomplete
+      const response = await fetchDatasets({ 
+        'page[size]': 365, // Fetch 400 datasets for autocomplete
+        //published: true,
+        status: 'saved',
         includes: 'layer,metadata'
       });
       
-      logger.info('Fetched datasets:', datasets?.length || 0);
-      setAllDatasets(datasets || []);
-    } catch (error) {
-      logger.error('Error fetching datasets:', error);
+      logger.info('Total datasets loaded:', response?.length || 0);
       
-      // Try fallback with minimal parameters
-      try {
-        const fallbackDatasets = await fetchDatasets({});
-        setAllDatasets(fallbackDatasets || []);
-      } catch (fallbackError) {
-        logger.error('Fallback dataset fetch also failed:', fallbackError);
+      // Debug: Log first few datasets to see their structure
+      if (response && response.length > 0) {
+        logger.info('Sample dataset structure:', {
+          id: response[0].id,
+          name: response[0].name,
+          metadata: response[0].metadata,
+          metadataLength: response[0].metadata?.length,
+          firstMetadata: response[0].metadata?.[0],
+          displayName: getDatasetDisplayName(response[0])
+        });
+        
+        // Log a few more datasets to see patterns
+        for (let i = 1; i < Math.min(5, response.length); i++) {
+          logger.info(`Dataset ${i}:`, {
+            name: response[i].name,
+            displayName: getDatasetDisplayName(response[i])
+          });
+        }
       }
+      
+      if (response && Array.isArray(response)) {
+        setAllDatasets(response);
+      } else {
+        logger.warn('Invalid response format, setting empty array');
+        setAllDatasets([]);
+      }
+    } catch (error) {
+      logger.error('Error fetching datasets from API:', error);
+      setAllDatasets([]);
     }
   };
 
-  // Function to get dataset display name
+  // Function to get dataset display name (metadata name only)
   const getDatasetDisplayName = (dataset) => {
-    return dataset.metadata?.[0]?.info?.name || dataset.name || dataset.slug;
+    // Try multiple metadata access patterns
+    if (dataset.metadata && dataset.metadata.length > 0 && dataset.metadata[0]?.info?.name) {
+      return dataset.metadata[0].info.name;
+    }
+    // Try direct metadata access (some datasets might have metadata at top level)
+    if (dataset.metadata?.info?.name) {
+      return dataset.metadata.info.name;
+    }
+    // Fallback to dataset name (but clean it up)
+    const cleanName = dataset.name || '';
+    // Remove common prefixes like "bio.017", "soc.068", etc.
+    return cleanName.replace(/^[a-z]+\.[0-9]+\.?[a-z]*\s*/, '');
   };
 
-  // Function to get dataset search terms
+  // Function to get dataset search terms (metadata name only)
   const getDatasetSearchTerms = (dataset) => {
     const displayName = getDatasetDisplayName(dataset);
-    const metadataName = dataset.metadata?.[0]?.info?.name || '';
-    const metadataDescription = dataset.metadata?.[0]?.info?.description || '';
-    return `${displayName} ${metadataName} ${metadataDescription} ${dataset.slug}`.toLowerCase();
+    return displayName.toLowerCase();
   };
 
   /**
@@ -412,16 +444,17 @@ const ResearchChatbot = ({
     [addMessage],
   );
 
+
+
   /**
    * Handle dataset mention - Enhanced to integrate with dataset widget functionality
    */
   const handleDatasetMention = useCallback(async (datasetName) => {
-    // Find dataset in the already fetched list
-    const dataset = allDatasets.find(ds => 
-      ds.slug === datasetName || 
-      ds.name === datasetName ||
-      getDatasetDisplayName(ds).toLowerCase().includes(datasetName.toLowerCase())
-    );
+    // Find dataset using the same search logic as the dropdown (includes metadata names)
+    const dataset = allDatasets.find(ds => {
+      const searchTerms = getDatasetSearchTerms(ds);
+      return searchTerms.includes(datasetName.toLowerCase());
+    });
     
     if (!dataset) {
       logger.warn(`Dataset "${datasetName}" not found`);
@@ -438,19 +471,11 @@ const ResearchChatbot = ({
       const contextMessage = `Dataset "${getDatasetDisplayName(dataset)}" has been added to the conversation context. This dataset contains information about ${getDatasetDisplayName(dataset).toLowerCase()}.`;
       setDatasetContext(prev => [...prev, contextMessage]);
       
-      // Activate the map for this dataset using the same functionality as the dataset widget
+      // Activate the map for this dataset using the exact same functionality as the "Add to map" button
       if (dataset.layer && dataset.layer.length > 0) {
-        // Use the same actions as the explore datasets widget
+        // Use the exact same actions as the explore datasets widget "Add to map" button
         dispatch(toggleMapLayerGroup({ dataset, toggle: true }));
         dispatch(resetMapLayerGroupsInteraction());
-        
-        // Set the default layer as active (same as DatasetListItem component)
-        const defaultLayer = dataset.layer.find(l => l.default) || dataset.layer[0];
-        if (defaultLayer) {
-          // Import the action dynamically to avoid circular dependencies
-          const { setMapLayerGroupActive } = await import('layout/explore/actions');
-          dispatch(setMapLayerGroupActive({ dataset: { id: dataset.id }, active: defaultLayer.id }));
-        }
         
         logger.info('Map activated for dataset:', getDatasetDisplayName(dataset));
       }
@@ -573,6 +598,25 @@ const ResearchChatbot = ({
       const value = e.target.value;
       setInputMessage(value);
       
+      // Detect manual token deletions in the input and deactivate corresponding map layers
+      // As soon as any character of a token label is deleted (token text no longer matches), deactivate
+      if (selectedDatasets.length > 0) {
+        const removedItems = selectedDatasets.filter((item) => {
+          const label = `@${item.shortName}`;
+          return !value.includes(label);
+        });
+        if (removedItems.length > 0) {
+          setSelectedDatasets((prev) => prev.filter((item) => value.includes(`@${item.shortName}`)));
+          setActiveDatasets((prev) => prev.filter((d) => !removedItems.some((ri) => ri.dataset.id === d.id)));
+          removedItems.forEach((ri) => {
+            if (ri.dataset?.layer && ri.dataset.layer.length > 0) {
+              dispatch(toggleMapLayerGroup({ dataset: ri.dataset, toggle: false }));
+              dispatch(resetMapLayerGroupsInteraction());
+            }
+          });
+        }
+      }
+      
       // Check if we're typing after an @ symbol
       const lastAtSymbol = value.lastIndexOf('@');
       
@@ -588,7 +632,7 @@ const ResearchChatbot = ({
           const filtered = allDatasets.filter(dataset => {
             const searchTerms = getDatasetSearchTerms(dataset);
             return searchTerms.includes(afterAt.toLowerCase());
-          }).slice(0, 10); // Limit to 10 results
+          }).slice(0, 365); // Limit to 400 results for better coverage
           
           setFilteredDatasets(filtered);
           setShowDatasetDropdown(filtered.length > 0);
@@ -601,7 +645,7 @@ const ResearchChatbot = ({
         setShowDatasetDropdown(false);
       }
     },
-    [allDatasets, getDatasetSearchTerms],
+    [allDatasets, getDatasetSearchTerms, selectedDatasets, dispatch],
   );
 
   /**
@@ -613,12 +657,14 @@ const ResearchChatbot = ({
     const spaceAfterAt = afterAt.indexOf(' ');
     const afterDataset = spaceAfterAt !== -1 ? afterAt.substring(spaceAfterAt) : '';
     
-    const datasetName = dataset.slug || dataset.name;
-    const newValue = beforeAt + '@' + datasetName + afterDataset;
+    // Use the metadata name as the identifier
+    const datasetName = getDatasetDisplayName(dataset);
+    const tokenLabel = datasetName; // no longer shorten; show full friendly name
+    const newValue = beforeAt + '@' + tokenLabel + afterDataset;
     setInputMessage(newValue);
     
-    // Add to selected datasets for visual indication
-    setSelectedDatasets(prev => [...prev, { name: datasetName, id: dataset.id }]);
+    // Add to selected datasets for visual indication (store full dataset object)
+    setSelectedDatasets(prev => [...prev, { dataset, shortName: tokenLabel }]);
     
     // Activate the map for this dataset using the same functionality as the dataset widget
     if (dataset.layer && dataset.layer.length > 0) {
@@ -643,7 +689,7 @@ const ResearchChatbot = ({
     setTimeout(() => {
       if (inputRef.current) {
         inputRef.current.focus();
-        const newCursorPos = beforeAt.length + datasetName.length + 1; // +1 for @
+        const newCursorPos = beforeAt.length + tokenLabel.length + 1; // +1 for @
         inputRef.current.setSelectionRange(newCursorPos, newCursorPos);
       }
     }, 0);
@@ -858,6 +904,7 @@ const ResearchChatbot = ({
                 value={inputMessage}
                 onChange={handleInputChange}
                 onKeyPress={handleKeyPress}
+                onKeyDown={undefined}
                 placeholder={isConnected ? textInputLabel : 'Connecting...'}
                 disabled={!isConnected || isLoading || isInitializing}
                 className="research-chatbot-input"
@@ -890,7 +937,7 @@ const ResearchChatbot = ({
 
               
               {/* Dataset autocomplete dropdown */}
-              {showDatasetDropdown && (
+              {showDatasetDropdown && filteredDatasets.length > 0 && (
                 <div className="dataset-dropdown">
                   <div style={{ 
                     padding: '8px 12px', 
@@ -900,13 +947,9 @@ const ResearchChatbot = ({
                     borderBottom: '1px solid #eee',
                     background: '#f8f9fa'
                   }}>
-                    📊 Available datasets ({filteredDatasets.length})
+                    Available datasets ({filteredDatasets.length})
                   </div>
                   {filteredDatasets.map((dataset, index) => {
-                    const datasetInfo = dataset.metadata?.[0]?.info;
-                    const sourceInfo = datasetInfo?.source || '';
-                    const lastUpdated = dataset.dataLastUpdated ? new Date(dataset.dataLastUpdated).toLocaleDateString() : '';
-                    
                     return (
                       <div
                         key={dataset.id}
@@ -914,26 +957,10 @@ const ResearchChatbot = ({
                         onClick={() => selectDataset(dataset)}
                         onMouseEnter={() => setSelectedDatasetIndex(index)}
                       >
-                        <Icon name="icon-dataset" className="-small" style={{ color: '#007bff', fontSize: '12px' }} />
                         <div style={{ flex: 1 }}>
                           <div className="dataset-name">
-                            @{dataset.slug || dataset.name}
-                          </div>
-                          <div className="dataset-description">
                             {getDatasetDisplayName(dataset)}
                           </div>
-                          {(sourceInfo || lastUpdated) && (
-                            <div className="dataset-meta" style={{ 
-                              fontSize: '10px', 
-                              color: '#888', 
-                              marginTop: '2px',
-                              display: 'flex',
-                              gap: '8px'
-                            }}>
-                              {sourceInfo && <span>📊 {sourceInfo}</span>}
-                              {lastUpdated && <span>🕒 {lastUpdated}</span>}
-                            </div>
-                          )}
                         </div>
                       </div>
                     );
@@ -947,19 +974,19 @@ const ResearchChatbot = ({
           {selectedDatasets.length > 0 && (
             <div className="research-chatbot-tokens-container">
               <div className="research-chatbot-tokens-list">
-                {selectedDatasets.map((dataset, index) => {
-                  // Extract first 10 non-numerical characters from dataset name
-                  const shortName = dataset.name.replace(/[0-9]/g, '').substring(0, 10);
+                {selectedDatasets.map((selectedItem, index) => {
+                  // Use the display name for tokens
+                  const shortName = selectedItem.shortName;
                   return (
                     <span key={index} className="research-chatbot-token">
                       @{shortName}
                       <button
                         onClick={(e) => {
                           e.preventDefault();
-                          removeDataset(dataset);
+                          removeDataset(selectedItem);
                         }}
                         className="research-chatbot-token-remove"
-                        title={`Remove ${dataset.name}`}
+                        title={`Remove ${getDatasetDisplayName(selectedItem.dataset)}`}
                       >
                         ×
                       </button>
@@ -988,8 +1015,8 @@ const ResearchChatbot = ({
           border-radius: 12px;
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
           width: 100%;
-          height: calc(700px - 95px); /* Reduce height by 95px (90px + 5px) */
-          max-height: calc(85vh - 95px); /* Reduce max height by 95px (90px + 5px) */
+          height: calc(100vh - 95px); /* Stretch panel close to bottom */
+          max-height: calc(100vh - 95px); /* Ensure it reaches near bottom */
           display: flex;
           flex-direction: column;
           overflow: hidden;
@@ -1083,7 +1110,7 @@ const ResearchChatbot = ({
           width: 100%;
           padding: 16px 20px;
           border-radius: 8px;
-          font-size: 14px;
+          font-size: 16px; /* Larger message text */
           line-height: 1.6;
           word-wrap: break-word;
           box-sizing: border-box;
@@ -1168,13 +1195,13 @@ const ResearchChatbot = ({
 
         .research-chatbot-input {
           width: 100%; // Ensure full width
-          min-height: 140px; // Increased height for more comfortable typing
+          min-height: 180px; // Taller input area
           padding: 16px 20px; // Reduced padding to minimize margins
           border: 1px solid #FFFFFF; // White border like header
           border-radius: 6px; // Slightly rounded like Climate TRACE
           background: rgba(255, 255, 255, 0.08); // Slightly darker background for better contrast
           color: #FFFFFF; // Pure white like header
-          font-size: 14px; // Increased font size for better readability
+          font-size: 16px; // Larger font size for readability
           font-family: 'Inter', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
           font-weight: 300; // Light weight like Climate TRACE
           outline: none;
@@ -1244,7 +1271,7 @@ const ResearchChatbot = ({
         .dataset-option .dataset-name {
           font-weight: 600;
           font-size: 12px; // Smaller font size
-          color: #333;
+          color: #444; // Softer gray
         }
 
         .dataset-option .dataset-description {
@@ -1302,16 +1329,16 @@ const ResearchChatbot = ({
         .research-chatbot-token {
           display: inline-flex;
           align-items: center;
-          padding: 2px 4px;
+          padding: 5px 10px; /* Bigger token */
           background: rgba(255, 255, 255, 0.1);
           color: #FFFFFF;
-          border-radius: 2px;
-          font-size: 8px;
+          border-radius: 3px;
+          font-size: 12px; /* Larger token text */
           font-family: 'Inter', sans-serif;
           font-weight: 400;
           border: 1px solid rgba(255, 255, 255, 0.2);
           cursor: default;
-          gap: 2px;
+          gap: 3px;
           width: fit-content;
           white-space: nowrap;
           overflow: hidden;
@@ -1322,14 +1349,14 @@ const ResearchChatbot = ({
           border: none;
           color: rgba(255, 255, 255, 0.6);
           cursor: pointer;
-          font-size: 6px;
+          font-size: 7px;
           padding: 0;
           line-height: 1;
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 8px;
-          height: 8px;
+          width: 9px;
+          height: 9px;
           border-radius: 50%;
           transition: all 0.2s ease;
           flex-shrink: 0;

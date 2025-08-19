@@ -15,6 +15,8 @@ export const getUpdatedLayerGroups = (statePointer) =>
     _layerGroups.map((_layerGroup) => ({
       ..._layerGroup,
       layers: _layerGroup.layers.map((_layer) => {
+
+        
         const timelineParams = getTimelineParams({
           ..._layer.layerConfig.timeline_config,
           ...(_layer.layerConfig.decode_config &&
@@ -65,6 +67,9 @@ export const getUpdatedLayers = (activeLayersPointer, parametrizationPointer) =>
           if (_activeLayer.id === 'user_area') {
             return _activeLayer;
           }
+          
+
+          
           const reducedDecodeParams = reduceParams(_activeLayer.layerConfig.decode_config);
           const { startDate, endDate } = reducedDecodeParams || {};
 
@@ -109,13 +114,26 @@ export const getUpdatedLayers = (activeLayersPointer, parametrizationPointer) =>
         if (indexLayer === -1) return;
         let currentLayer = _activeLayers[indexLayer];
 
-        const { layerConfig } = currentLayer;
+        // Handle case where layerConfig is nested in attributes
+        let layerConfig = currentLayer.layerConfig;
+        if (!layerConfig && currentLayer.attributes?.layerConfig) {
+          layerConfig = currentLayer.attributes.layerConfig;
+        }
+        
+        const { layerConfig: currentLayerConfig } = { layerConfig };
+        
+        // Check if layerConfig exists before destructuring
+        if (!currentLayerConfig) {
+          console.warn(`Layer ${currentLayer.id} has no layerConfig, skipping parametrization...`);
+          return;
+        }
+        
         const {
           params_config: paramsConfig,
           decode_config: decodeConfig,
           sql_config: sqlConfig,
           timeline_config: timelineConfig,
-        } = layerConfig;
+        } = currentLayerConfig;
         const {
           params: newParams,
           decodeParams: newDecodeParams,
@@ -127,13 +145,13 @@ export const getUpdatedLayers = (activeLayersPointer, parametrizationPointer) =>
         currentLayer = {
           ...currentLayer,
           ...(paramsConfig && {
-            params: {
-              ...reduceParams(paramsConfig),
-              ...(!!currentLayer.layerConfig.body.url && {
-                url: currentLayer.layerConfig.body.url,
-              }),
-              ...newParams,
-            },
+                          params: {
+                ...reduceParams(paramsConfig),
+                ...(!!currentLayer.layerConfig?.body?.url && {
+                  url: currentLayer.layerConfig?.body?.url,
+                }),
+                ...newParams,
+              },
           }),
           ...(sqlConfig && {
             sqlParams: {

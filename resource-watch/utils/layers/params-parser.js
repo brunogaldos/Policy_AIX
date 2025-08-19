@@ -7,6 +7,10 @@ import { LEGEND_TIMELINE_PROPERTIES } from 'layout/explore/explore-map/constants
 
 export const reduceParams = (params) => {
   if (!params) return null;
+  if (!Array.isArray(params)) {
+    console.warn('reduceParams received non-array params:', params);
+    return {};
+  }
   return params.reduce((obj, param) => {
     const {
       format, key, interval, count,
@@ -31,6 +35,10 @@ export const reduceParams = (params) => {
 
 export const reduceSqlParams = (params) => {
   if (!params) return null;
+  if (!Array.isArray(params)) {
+    console.warn('reduceSqlParams received non-array params:', params);
+    return {};
+  }
   return params.reduce((obj, param) => {
     const newObj = {
       ...obj,

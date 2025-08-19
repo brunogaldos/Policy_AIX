@@ -28,10 +28,10 @@
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  min-height: 100vh; // Extends to full viewport height
+  min-height: 65vh; // Reduced to 65% of viewport height (35% reduction)
   box-sizing: border-box; /* Ensures padding doesn't shrink the element */
   overflow-y: auto; // Enable vertical scrolling
-  max-height: 100vh; // Limit height to viewport to enable scrolling
+  max-height: 65vh; // Match reduced height
   
   /* Custom scrollbar styling to match UI theme */
   &::-webkit-scrollbar {
