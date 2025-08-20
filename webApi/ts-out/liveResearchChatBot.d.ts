@@ -13,6 +13,7 @@ export declare class LiveResearchChatBot extends PsBaseChatBot {
     sendAgentStart(message: string): void;
     sendAgentCompleted(message: string, final?: boolean): void;
     sendAgentUpdate(message: string): void;
+    sendToClient(message: any): void;
     doLiveResearch(question: string): Promise<void>;
     renderResultsToUser(research: object[], question: string): Promise<void>;
     researchConversation: (chatLog: PsSimpleChatLog[], numberOfSelectQueries: number, percentOfTopQueriesToSearch: number, percentOfTopResultsToScan: number) => Promise<void>;

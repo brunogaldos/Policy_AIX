@@ -70,7 +70,7 @@ export class LiveResearchChatController extends BaseController {
     const numberOfSelectQueries = req.body.numberOfSelectQueries || 5;
     const percentOfTopQueriesToSearch = req.body.percentOfTopQueriesToSearch || 0.25;
     const percentOfTopResultsToScan = req.body.percentOfTopResultsToScan || 0.25;
-    const silentMode = req.body.silentMode || false;
+    const silentMode = Boolean(req.body.silentMode);
 
     // For testing purposes, allow requests without wsClientId
     if (!wsClientId) {
@@ -87,13 +87,10 @@ export class LiveResearchChatController extends BaseController {
 
     try {
       const bot = new LiveResearchChatBot(wsClientId, this.wsClients, memoryId);
-      
-      // Enable silent mode if this is a policy research call (check by memory ID pattern)
-      if (memoryId && memoryId.startsWith('live-research-')) {
-        console.log('🔇 Enabling silent mode for policy research call');
+      if (silentMode) {
+        console.log('🔇 Enabling silent mode for live research');
         bot.silentMode = true;
       }
-      
       if (memoryId) {
         const memory = await bot.getLoadedMemory();
         if (memory) {

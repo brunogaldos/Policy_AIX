@@ -7,13 +7,14 @@ import { ResearchWeb } from "@policysynth/agents/webResearch/researchWeb.js";
 import { SearchResultsRanker } from "@policysynth/agents/webResearch/searchResultsRanker.js";
 import { WebPageScanner } from "@policysynth/agents/webResearch/webPageScanner.js";
 import { promises as fs } from "fs";
+import { PsConstants } from "@policysynth/agents/constants.js";
 
 export class LiveResearchChatBot extends PsBaseChatBot {
   numberOfQueriesToGenerate = 7;
   percentOfQueriesToSearch = 0.25;
   percentOfResultsToScan = 0.25;
   persistMemory = true;
-  silentMode = false; // Add silent mode to prevent WebSocket responses
+  silentMode = false;
 
   constructor(
     wsClientId: string,
@@ -25,6 +26,13 @@ export class LiveResearchChatBot extends PsBaseChatBot {
     console.log("wsClients Map keys:", Array.from(wsClients.keys()));
     
     super(wsClientId, wsClients, memoryId);
+
+    // Increase default navigation timeout for puppeteer-driven research to 40s
+    try {
+      PsConstants.webPageNavTimeout = 40 * 1000;
+    } catch (e) {
+      console.warn("Could not set PsConstants.webPageNavTimeout:", e);
+    }
   }
 
   summarySystemPrompt = `Please analyse those sources step by step and provide a summary of the most relevant information.
@@ -47,25 +55,31 @@ export class LiveResearchChatBot extends PsBaseChatBot {
     return `Please provide thoughtful answers to the users followup questions.`;
   }
 
-  // Override sendAgentStart to respect silent mode
+  // Respect silent mode
   sendAgentStart(message: string) {
     if (!this.silentMode) {
       super.sendAgentStart(message);
     }
   }
 
-  // Override sendAgentCompleted to respect silent mode
   sendAgentCompleted(message: string, final?: boolean) {
     if (!this.silentMode) {
       super.sendAgentCompleted(message, final);
     }
   }
 
-  // Override sendAgentUpdate to respect silent mode
   sendAgentUpdate(message: string) {
     if (!this.silentMode) {
       super.sendAgentUpdate(message);
     }
+  }
+
+  sendToClient(message: any) {
+    if (this.silentMode) {
+      return;
+    }
+    // @ts-ignore
+    return super.sendToClient(message);
   }
 
   async doLiveResearch(question: string) {

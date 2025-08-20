@@ -5,6 +5,7 @@ import { PsRagVectorSearch } from "./vectorSearch.js";
 
 export class SkillsFirstChatBot extends PsBaseChatBot {
   persistMemory = true;
+  silentMode = false;
 
   mainSreamingSystemPrompt = `You are a policy research chatbot a friendly AI that helps users find information from a large database of documents.
 
@@ -37,6 +38,9 @@ Your thoughtful answer in markdown:
 `;
 
   sendSourceDocuments(document: any[]) {
+    if (this.silentMode) {
+      return;
+    }
     document.forEach((d: any, i: number) => {
       if (d.contentType && d.contentType.includes("json")) {
         try {
@@ -64,6 +68,34 @@ Your thoughtful answer in markdown:
     } else {
       console.error("No wsClientSocket found");
     }
+  }
+
+  // Respect silent mode for agent events
+  sendAgentStart(message: string) {
+    if (!this.silentMode) {
+      super.sendAgentStart(message);
+    }
+  }
+
+  sendAgentCompleted(message: string, final?: boolean) {
+    if (!this.silentMode) {
+      super.sendAgentCompleted(message, final);
+    }
+  }
+
+  sendAgentUpdate(message: string) {
+    if (!this.silentMode) {
+      super.sendAgentUpdate(message);
+    }
+  }
+
+  // Prevent any WebSocket traffic when in silent mode
+  sendToClient(message: any) {
+    if (this.silentMode) {
+      return;
+    }
+    // @ts-ignore - call base implementation
+    return super.sendToClient(message);
   }
 
   async skillsFirstConversation(

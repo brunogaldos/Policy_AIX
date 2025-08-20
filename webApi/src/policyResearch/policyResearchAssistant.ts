@@ -87,14 +87,27 @@ Please provide a comprehensive analysis and recommendations based on the above d
       console.log('📄 LiveResearchChatBot response preview:', liveResearchResponse.substring(0, 200));
       this.sendAgentCompleted("Policy research completed");
 
-      // Step 4: Synthesize and provide final response
-      this.sendAgentStart("Synthesizing recommendations...");
+      // Step 4: Send raw combined output (no synthesis)
+      this.sendAgentStart("Preparing final results...");
       
-      // Add a delay to ensure LiveResearchChatBot response is complete
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      // Combine raw outputs: first bot's data + live research final response
+      const combinedContent = `${skillsFirstResponse}\n\n${liveResearchResponse}`;
       
-      await this.synthesizeAndRespond(userQuestion, skillsFirstResponse, liveResearchResponse);
-      this.sendAgentCompleted("Analysis complete");
+      // Emit using server-native shape so frontend mapping recognizes it
+      const botMessage = {
+        sender: "bot",
+        type: "chatResponse",
+        content: combinedContent,
+        data: { content: combinedContent },
+      } as any;
+      
+      if (this.wsClientSocket) {
+        this.wsClientSocket.send(JSON.stringify(botMessage));
+      } else if (this.wsClients && this.wsClientId && this.wsClients.has(this.wsClientId)) {
+        const socket = this.wsClients.get(this.wsClientId);
+        socket?.send(JSON.stringify(botMessage));
+      }
+      this.sendAgentCompleted("Results ready");
 
     } catch (error) {
       console.error("Error in policy research process:", error);
@@ -179,6 +192,9 @@ Please provide a comprehensive analysis and recommendations based on the above d
       const memoryId = `policy-research-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
       console.log('🔧 SkillsFirstChatBot: Memory ID created:', memoryId);
       
+      // Use an internal WS client id so responses are NOT streamed to the user-facing frontend
+      const internalSilentWsClientId = `${this.wsClientId}-internal-${Date.now()}`;
+      
       console.log('🔧 SkillsFirstChatBot: Sending API request...');
       // Send the chat message via HTTP API
       const response = await fetch('http://localhost:5029/api/rd_chat/', {
@@ -191,8 +207,10 @@ Please provide a comprehensive analysis and recommendations based on the above d
             sender: 'user',
             message: userQuestion
           }],
+          // Use the real wsClientId but force silent mode so websocket sends are suppressed in backend
           wsClientId: this.wsClientId,
-          memoryId: memoryId
+          memoryId: memoryId,
+          silentMode: true
         })
       });
 
@@ -312,11 +330,13 @@ Please provide a comprehensive analysis and recommendations based on the above d
             sender: 'user',
             message: researchQuestion
           }],
-          wsClientId: this.wsClientId,
+          // Use an internal/silent wsClientId so frontend does not receive interim streams
+          wsClientId: `${this.wsClientId}-internal-${Date.now()}`,
           memoryId: memoryId,
           numberOfSelectQueries: 5,
           percentOfTopQueriesToSearch: 0.25,
-          percentOfTopResultsToScan: 0.25
+          percentOfTopResultsToScan: 0.25,
+          silentMode: true
         })
       });
 
@@ -325,22 +345,19 @@ Please provide a comprehensive analysis and recommendations based on the above d
       }
       console.log('🔧 LiveResearchChatBot: API request successful');
 
-      // Wait for the bot to process
-      console.log('🔧 LiveResearchChatBot: Waiting for processing...');
-      await new Promise(resolve => setTimeout(resolve, 60000)); // Wait 60 seconds for complete processing
-      
-      console.log('🔧 LiveResearchChatBot: Retrieving response from memory...');
-      // Get the response from the bot's memory
-      const botResponse = await this.getBotResponseFromMemory(memoryId);
-      
-      console.log('🔧 LiveResearchChatBot: Response retrieved, length:', botResponse.length);
-      
-      // Only return substantial responses
-      if (botResponse && botResponse.length > 100 && !botResponse.includes("No response found in memory")) {
-        return botResponse;
-      } else {
-        return "LiveResearchChatBot research completed successfully";
+      // Wait and poll for the bot to process (up to ~90s)
+      console.log('🔧 LiveResearchChatBot: Waiting for processing with polling...');
+      let botResponse = "";
+      const maxAttempts = 30; // 30 * 5s = 150s
+      for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        botResponse = await this.getBotResponseFromMemory(memoryId);
+        console.log(`🔧 LiveResearchChatBot: Poll ${attempt}/${maxAttempts}, length: ${botResponse?.length || 0}`);
+        if (botResponse && botResponse.length > 100 && !botResponse.includes("No response found in memory")) {
+          break;
+        }
       }
+      return botResponse && !botResponse.includes("No response found in memory") ? botResponse : "";
       
     } catch (error) {
       console.error("Error calling LiveResearchChatBot:", error);
@@ -419,17 +436,33 @@ Please provide a comprehensive analysis and recommendations based on the above d
         return;
       }
 
-      const stream = await this.openaiClient.chat.completions.create({
+      // Generate final response without streaming so frontend only sees the result at the end
+      const completion = await this.openaiClient.chat.completions.create({
         model: "gpt-4-turbo",
         messages,
         max_tokens: 4000,
         temperature: 0.3,
-        stream: true,
+        stream: false,
       });
 
-      // Send a clear marker that this is the final response
+      const finalText = completion.choices?.[0]?.message?.content || "";
+
+      // Send a clear marker that this is the final response and then emit a single chat_response
       this.sendAgentStart("Final Policy Research Analysis");
-      await this.streamWebSocketResponses(stream);
+
+      const botMessage = {
+        sender: "bot",
+        type: "chat_response",
+        data: { content: finalText },
+      } as any;
+
+      if (this.wsClientSocket) {
+        this.wsClientSocket.send(JSON.stringify(botMessage));
+      } else if (this.wsClients && this.wsClientId && this.wsClients.has(this.wsClientId)) {
+        const socket = this.wsClients.get(this.wsClientId);
+        socket?.send(JSON.stringify(botMessage));
+      }
+
       this.sendAgentCompleted("Policy Research Complete");
 
     } catch (error) {

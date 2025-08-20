@@ -49,10 +49,12 @@ export class ChatController extends BaseController {
     const chatLog = req.body.chatLog;
     const wsClientId = req.body.wsClientId;
     const memoryId = req.body.memoryId;
+    const silentMode = Boolean(req.body.silentMode);
     let saveChatLog: PsSimpleChatLog[] | undefined;
 
     try {
       const bot = new SkillsFirstChatBot(wsClientId, this.wsClients, memoryId);
+      bot.silentMode = silentMode;
       if (memoryId) {
         const memory = await bot.getLoadedMemory();
         if (memory) {

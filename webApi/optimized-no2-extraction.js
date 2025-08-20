@@ -172,7 +172,7 @@ async function processCity(city, retries = 3) {
                 headers: {
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
                 },
-                timeout: 30000
+                timeout: 40000
             });
             
             if (response.data.data && Array.isArray(response.data.data) && response.data.data.length > 0) {

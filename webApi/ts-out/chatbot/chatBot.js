@@ -5,6 +5,7 @@ export class SkillsFirstChatBot extends PsBaseChatBot {
     constructor() {
         super(...arguments);
         this.persistMemory = true;
+        this.silentMode = false;
         this.mainSreamingSystemPrompt = `You are a policy research chatbot a friendly AI that helps users find information from a large database of documents.
 
 Instructions:
@@ -32,6 +33,9 @@ Your thoughtful answer in markdown:
 `;
     }
     sendSourceDocuments(document) {
+        if (this.silentMode) {
+            return;
+        }
         document.forEach((d, i) => {
             if (d.contentType && d.contentType.includes("json")) {
                 try {
@@ -59,6 +63,30 @@ Your thoughtful answer in markdown:
         else {
             console.error("No wsClientSocket found");
         }
+    }
+    // Respect silent mode for agent events
+    sendAgentStart(message) {
+        if (!this.silentMode) {
+            super.sendAgentStart(message);
+        }
+    }
+    sendAgentCompleted(message, final) {
+        if (!this.silentMode) {
+            super.sendAgentCompleted(message, final);
+        }
+    }
+    sendAgentUpdate(message) {
+        if (!this.silentMode) {
+            super.sendAgentUpdate(message);
+        }
+    }
+    // Prevent any WebSocket traffic when in silent mode
+    sendToClient(message) {
+        if (this.silentMode) {
+            return;
+        }
+        // @ts-ignore - call base implementation
+        return super.sendToClient(message);
     }
     async skillsFirstConversation(chatLog, dataLayout) {
         this.setChatLog(chatLog);
