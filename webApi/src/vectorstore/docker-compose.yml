@@ -27,7 +27,7 @@ services:
       AUTHENTICATION_APIKEY_USERS: 'bruno.galdos'
       DEFAULT_VECTORIZER_MODULE: text2vec-openai
       ENABLE_MODULES: ' text2vec-openai'
-      OPENAI_APIKEY: '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'
+      OPENAI_APIKEY: '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'
       CLUSTER_HOSTNAME: 'node1'
       #PERSISTENCE_DATA_PATH: '/home/robert/data/weaviate_ps_chatbot'
 volumes:

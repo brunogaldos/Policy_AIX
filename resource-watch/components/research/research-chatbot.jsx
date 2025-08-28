@@ -46,12 +46,19 @@ const ResearchChatbot = ({
   const [allDatasets, setAllDatasets] = useState([]);
   const [selectedDatasetIndex, setSelectedDatasetIndex] = useState(0);
   const [selectedDatasets, setSelectedDatasets] = useState([]);
+  
+  // Document upload state
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  
   // Track delete/backspace presses to require multiple taps before removing tokens
   const lastKeyRef = useRef(null);
   const tokenDeleteCountsRef = useRef({});
 
   // Redux
   const dispatch = useDispatch();
+
+  // File input ref
+  const fileInputRef = useRef(null);
 
   // Function to remove a dataset from selection - Enhanced to integrate with dataset widget functionality
   const removeDataset = useCallback(async (selectedItem) => {
@@ -84,6 +91,51 @@ const ResearchChatbot = ({
       logger.info('Map deactivated for dataset:', getDatasetDisplayName(datasetToRemove));
     }
   }, [inputMessage, dispatch]);
+
+  // Function to remove an uploaded file
+  const removeUploadedFile = useCallback((fileToRemove) => {
+    setUploadedFiles(prev => prev.filter(file => file.id !== fileToRemove.id));
+    logger.info('Removed uploaded file:', fileToRemove.name);
+  }, []);
+
+  // Function to handle file upload
+  const handleFileUpload = useCallback((event) => {
+    const files = Array.from(event.target.files);
+    
+    if (files.length > 0) {
+      const newFiles = files.map(file => ({
+        id: Date.now() + Math.random(),
+        file: file,
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        uploadTime: new Date()
+      }));
+      
+      setUploadedFiles(prev => [...prev, ...newFiles]);
+      
+      // Log uploaded files
+      newFiles.forEach(file => {
+        logger.info('File uploaded:', {
+          name: file.name,
+          size: file.size,
+          type: file.type
+        });
+      });
+      
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  }, []);
+
+  // Function to trigger file input
+  const triggerFileUpload = useCallback(() => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  }, []);
 
   // Refs
   const messagesEndRef = useRef(null);
@@ -894,88 +946,15 @@ const ResearchChatbot = ({
             </div>
           )}
 
-          <div className="research-chatbot-input-wrapper">
-            <div style={{ position: 'relative', flex: 1 }}>
-              <textarea
-                ref={inputRef}
-                value={inputMessage}
-                onChange={handleInputChange}
-                onKeyPress={handleKeyPress}
-                onKeyDown={undefined}
-                placeholder={isConnected ? textInputLabel : 'Connecting...'}
-                disabled={!isConnected || isLoading || isInitializing}
-                className="research-chatbot-input"
-                style={{ 
-                  minHeight: '140px',
-                  maxHeight: '200px',
-                  overflowY: 'auto',
-                  paddingRight: '50px' // Add padding to make room for the button
-                }}
-              />
-              
-              {/* Send button positioned inside the input box */}
-              <button
-                onClick={sendChatMessage}
-                disabled={!isConnected || isLoading || !inputMessage.trim() || isInitializing}
-                className="research-chatbot-send"
-                aria-label="Send message"
-                style={{
-                  position: 'absolute',
-                  bottom: '12px',
-                  right: '12px',
-                  zIndex: 10
-                }}
-              >
-                {isLoading ? '•' : '→'}
-              </button>
-              
-
-              
-
-              
-              {/* Dataset autocomplete dropdown */}
-              {showDatasetDropdown && filteredDatasets.length > 0 && (
-                <div className="dataset-dropdown">
-                  <div style={{ 
-                    padding: '8px 12px', 
-                    fontSize: '11px', 
-                    fontWeight: '600',
-                    color: '#333', 
-                    borderBottom: '1px solid #eee',
-                    background: '#f8f9fa'
-                  }}>
-                    Available datasets ({filteredDatasets.length})
-                  </div>
-                  {filteredDatasets.map((dataset, index) => {
-                    return (
-                      <div
-                        key={dataset.id}
-                        className={classnames('dataset-option', { '-active': selectedDatasetIndex === index })}
-                        onClick={() => selectDataset(dataset)}
-                        onMouseEnter={() => setSelectedDatasetIndex(index)}
-                      >
-                        <div style={{ flex: 1 }}>
-                          <div className="dataset-name">
-                            {getDatasetDisplayName(dataset)}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Redesigned token display - below input box with vertical stacking */}
-          {selectedDatasets.length > 0 && (
+          {(selectedDatasets.length > 0 || uploadedFiles.length > 0) && (
             <div className="research-chatbot-tokens-container">
               <div className="research-chatbot-tokens-list">
+                {/* Dataset tokens */}
                 {selectedDatasets.map((selectedItem, index) => {
                   // Use the display name for tokens
                   const shortName = selectedItem.shortName;
                   return (
-                    <span key={index} className="research-chatbot-token">
+                    <span key={`dataset-${index}`} className="research-chatbot-token research-chatbot-token-dataset">
                       @{shortName}
                       <button
                         onClick={(e) => {
@@ -990,9 +969,113 @@ const ResearchChatbot = ({
                     </span>
                   );
                 })}
+                
+                {/* File tokens */}
+                {uploadedFiles.map((file) => {
+                  // Extract filename without extension for token display
+                  const fileName = file.name.replace(/\.[^/.]+$/, '');
+                  return (
+                    <span key={`file-${file.id}`} className="research-chatbot-token research-chatbot-token-file">
+                      @{fileName}
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          removeUploadedFile(file);
+                        }}
+                        className="research-chatbot-token-remove"
+                        title={`Remove ${file.name}`}
+                      >
+                        ×
+                      </button>
+                    </span>
+                  );
+                })}
               </div>
             </div>
           )}
+
+          <div className="research-chatbot-input-wrapper">
+            <div className="research-chatbot-input-row">
+              <div className="research-chatbot-input-area">
+                <textarea
+                  ref={inputRef}
+                  value={inputMessage}
+                  onChange={handleInputChange}
+                  onKeyPress={handleKeyPress}
+                  onKeyDown={undefined}
+                  placeholder={isConnected ? textInputLabel : 'Connecting...'}
+                  disabled={!isConnected || isLoading || isInitializing}
+                  className="research-chatbot-input"
+                  style={{ 
+                    minHeight: '140px',
+                    maxHeight: '200px',
+                    overflowY: 'auto'
+                  }}
+                />
+
+                {/* Dataset autocomplete dropdown */}
+                {showDatasetDropdown && filteredDatasets.length > 0 && (
+                  <div className="dataset-dropdown">
+                    <div style={{ 
+                      padding: '8px 12px', 
+                      fontSize: '11px', 
+                      fontWeight: '600',
+                      color: '#333', 
+                      borderBottom: '1px solid #eee',
+                      background: '#f8f9fa'
+                    }}>
+                      Available datasets ({filteredDatasets.length})
+                    </div>
+                    {filteredDatasets.map((dataset, index) => {
+                      return (
+                        <div
+                          key={dataset.id}
+                          className={classnames('dataset-option', { '-active': selectedDatasetIndex === index })}
+                          onClick={() => selectDataset(dataset)}
+                          onMouseEnter={() => setSelectedDatasetIndex(index)}
+                        >
+                          <div style={{ flex: 1 }}>
+                            <div className="dataset-name">
+                              {getDatasetDisplayName(dataset)}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              <div className="research-chatbot-actions">
+                <button
+                  onClick={triggerFileUpload}
+                  disabled={!isConnected || isLoading || isInitializing}
+                  className="research-chatbot-action-button research-chatbot-action-button-upload"
+                  aria-label="Upload documents"
+                >
+                  {isLoading ? '•' : '•'}
+                </button>
+                <button
+                  onClick={sendChatMessage}
+                  disabled={!isConnected || isLoading || !inputMessage.trim() || isInitializing}
+                  className="research-chatbot-action-button research-chatbot-action-button-send"
+                  aria-label="Send message"
+                >
+                  {isLoading ? '•' : '→'}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Hidden file input */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.xls"
+            onChange={handleFileUpload}
+            style={{ display: 'none' }}
+          />
         </div>
       </div>
 
@@ -1185,9 +1268,54 @@ const ResearchChatbot = ({
         }
 
         .research-chatbot-input-wrapper {
+          display: block;
+        }
+
+        .research-chatbot-input-row {
           display: flex;
-          width: 100%; // Ensure full width usage
-          margin-bottom: 4px; // Minimal margin above status bar
+          align-items: stretch;
+          gap: 8px;
+        }
+
+        .research-chatbot-input-area {
+          position: relative;
+          flex: 1;
+        }
+
+        .research-chatbot-actions {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          margin-left: 4px;
+        }
+
+        /* Small action buttons (24x24) */
+        .research-chatbot-action-button {
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          color: #FFFFFF;
+          padding: 0;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-width: 24px;
+          width: 24px;
+          height: 24px;
+          font-size: 12px;
+          font-weight: 300;
+        }
+
+        .research-chatbot-action-button:hover:not(:disabled) {
+          background: rgba(255, 255, 255, 0.2);
+          border-color: #FFFFFF;
+        }
+
+        .research-chatbot-action-button:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
         }
 
         .research-chatbot-input {
@@ -1330,7 +1458,7 @@ const ResearchChatbot = ({
           background: rgba(255, 255, 255, 0.1);
           color: #FFFFFF;
           border-radius: 3px;
-          font-size: 12px; /* Larger token text */
+          font-size: 9px; /* Larger token text */
           font-family: 'Inter', sans-serif;
           font-weight: 400;
           border: 1px solid rgba(255, 255, 255, 0.2);
@@ -1362,6 +1490,56 @@ const ResearchChatbot = ({
         .research-chatbot-token-remove:hover {
           background: rgba(255, 255, 255, 0.2);
           color: #FFFFFF;
+        }
+
+        /* File token styling - match existing gray token style */
+        .research-chatbot-token-file {
+          background: rgba(255, 255, 255, 0.1) !important; /* Same as dataset tokens */
+          border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+
+        .research-chatbot-token-file:hover {
+          background: rgba(255, 255, 255, 0.15) !important;
+        }
+
+        /* Dataset token styling */
+        .research-chatbot-token-dataset {
+          background: rgba(255, 255, 255, 0.1); /* Original styling for datasets */
+          border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Inline upload button styling - same size as send button */
+        .research-chatbot-upload-button-inline {
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          color: #FFFFFF;
+          padding: 6px 8px;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-width: 32px;
+          height:32px;
+          font-size: 12px;
+          font-weight: 300;
+        }
+
+        .research-chatbot-upload-button-inline:hover:not(:disabled) {
+          background: rgba(255, 255, 255, 0.2);
+          border-color: #FFFFFF;
+        }
+
+        .research-chatbot-upload-button-inline:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        .research-chatbot-upload-icon-inline {
+          width: 16px;
+          height: 16px;
+          fill: currentColor;
         }
 
         /* Custom scrollbar for tokens list */

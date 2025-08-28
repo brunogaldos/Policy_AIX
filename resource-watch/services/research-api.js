@@ -22,7 +22,7 @@ logger.info('Research API Configuration:', {
 const researchAPI = axios.create({
   baseURL: RESEARCH_API_BASE_URL,
   headers: { 'Content-Type': 'application/json' },
-  timeout: 30000, // 30 second timeout for research requests
+  timeout: 40000, // 40 second timeout for research requests
 });
 
 /**

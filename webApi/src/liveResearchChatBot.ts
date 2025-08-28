@@ -14,7 +14,6 @@ export class LiveResearchChatBot extends PsBaseChatBot {
   percentOfQueriesToSearch = 0.25;
   percentOfResultsToScan = 0.25;
   persistMemory = true;
-  silentMode = false;
 
   constructor(
     wsClientId: string,
@@ -55,29 +54,22 @@ export class LiveResearchChatBot extends PsBaseChatBot {
     return `Please provide thoughtful answers to the users followup questions.`;
   }
 
-  // Respect silent mode
   sendAgentStart(message: string) {
-    if (!this.silentMode) {
-      super.sendAgentStart(message);
-    }
+    console.log(`🔵 sendAgentStart called with: ${message}`);
+    super.sendAgentStart(message);
   }
 
   sendAgentCompleted(message: string, final?: boolean) {
-    if (!this.silentMode) {
-      super.sendAgentCompleted(message, final);
-    }
+    console.log(`✅ sendAgentCompleted called with: ${message}, final: ${final}`);
+    super.sendAgentCompleted(message, final);
   }
 
   sendAgentUpdate(message: string) {
-    if (!this.silentMode) {
-      super.sendAgentUpdate(message);
-    }
+    console.log(`🔄 sendAgentUpdate called with: ${message}`);
+    super.sendAgentUpdate(message);
   }
 
   sendToClient(message: any) {
-    if (this.silentMode) {
-      return;
-    }
     // @ts-ignore
     return super.sendToClient(message);
   }

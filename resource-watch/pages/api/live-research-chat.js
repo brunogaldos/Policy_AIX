@@ -38,16 +38,6 @@ export default async function handler(req, res) {
     res.status(response.status).json(response.data);
   } catch (error) {
     console.error('Live research chat proxy error:', error.message);
-    console.error('Error details:', {
-      code: error.code,
-      status: error.response?.status,
-      data: error.response?.data,
-      config: {
-        url: error.config?.url,
-        method: error.config?.method,
-        headers: error.config?.headers
-      }
-    });
     
     if (error.response) {
       // Forward the error response from the API

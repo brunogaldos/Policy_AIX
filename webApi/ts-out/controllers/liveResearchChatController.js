@@ -54,7 +54,9 @@ export class LiveResearchChatController extends BaseController {
             const numberOfSelectQueries = req.body.numberOfSelectQueries || 5;
             const percentOfTopQueriesToSearch = req.body.percentOfTopQueriesToSearch || 0.25;
             const percentOfTopResultsToScan = req.body.percentOfTopResultsToScan || 0.25;
-            const silentMode = Boolean(req.body.silentMode);
+            const silentMode = req.body.silentMode === true;
+            console.log(`🔇 silentMode from request body: ${req.body.silentMode}, type: ${typeof req.body.silentMode}, parsed as: ${silentMode}`);
+            console.log(`🔇 Full request body:`, JSON.stringify(req.body, null, 2));
             // For testing purposes, allow requests without wsClientId
             if (!wsClientId) {
                 console.log('⚠️ No wsClientId provided - this is a test request');
@@ -67,11 +69,16 @@ export class LiveResearchChatController extends BaseController {
             }
             let saveChatLog;
             try {
-                const bot = new LiveResearchChatBot(wsClientId, this.wsClients, memoryId);
-                if (silentMode) {
-                    console.log('🔇 Enabling silent mode for live research');
-                    bot.silentMode = true;
+                console.log(`🔌 Controller: wsClientId=${wsClientId}`);
+                console.log(`🔌 Controller: wsClients Map size=${this.wsClients.size}`);
+                console.log(`🔌 Controller: wsClients Map keys=${Array.from(this.wsClients.keys())}`);
+                console.log(`🔌 Controller: wsClient exists=${this.wsClients.has(wsClientId)}`);
+                // Check WebSocket connection status
+                const wsClient = this.wsClients.get(wsClientId);
+                if (wsClient) {
+                    console.log(`🔌 WebSocket readyState: ${wsClient.readyState} (1=OPEN, 0=CONNECTING, 2=CLOSING, 3=CLOSED)`);
                 }
+                const bot = new LiveResearchChatBot(wsClientId, this.wsClients, memoryId);
                 if (memoryId) {
                     const memory = await bot.getLoadedMemory();
                     if (memory) {

@@ -24,7 +24,7 @@ export default async function handler(req, res) {
         // Forward authorization header if present
         ...(req.headers.authorization && { 'Authorization': req.headers.authorization }),
       },
-      timeout: 10000, // 10 second timeout
+      timeout: 40000, // 40 second timeout
     });
 
     // Set CORS headers

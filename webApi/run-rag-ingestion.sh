@@ -6,7 +6,7 @@
 echo "🚀 Setting up Skills First RAG Ingestion Pipeline..."
 
 # Export AI Model Configuration
-export AI_MODEL_API_KEY=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
+export AI_MODEL_API_KEY=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
 export AI_MODEL_NAME=gpt-4-turbo
 export AI_MODEL_PROVIDER=openai
 export AI_MODEL_TYPE=chat

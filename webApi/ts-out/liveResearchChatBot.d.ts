@@ -5,7 +5,6 @@ export declare class LiveResearchChatBot extends PsBaseChatBot {
     percentOfQueriesToSearch: number;
     percentOfResultsToScan: number;
     persistMemory: boolean;
-    silentMode: boolean;
     constructor(wsClientId: string, wsClients: Map<string, WebSocket>, memoryId?: string);
     summarySystemPrompt: string;
     jsonWebPageResearchSchema: string;

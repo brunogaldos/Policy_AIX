@@ -33,7 +33,8 @@ const HeaderMenu = () => {
           if (typeof item.user !== 'undefined' && item.user !== isUserLogged) return null;
 
           let DropdownMenu;
-          if (item.id !== 'blog') {
+          // Only create a dynamic dropdown if a component is registered for this id
+          if (header[item.id]) {
             DropdownMenu = dynamic(() => header[item.id]);
           }
 

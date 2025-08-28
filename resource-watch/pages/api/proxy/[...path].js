@@ -43,7 +43,7 @@ export default async function handler(req, res) {
       ...(body && Object.keys(body).length > 0 && { data: body }),
       params: queryParams,
       headers,
-      timeout: 30000, // 30 second timeout
+      timeout: 40000, // 40 second timeout
       validateStatus: function (status) {
         // Don't throw for any status code, let the client handle it
         return true;

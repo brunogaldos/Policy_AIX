@@ -1,5 +1,19 @@
 export const APP_HEADER_ITEMS = [
   {
+    id: 'map',
+    label: 'Map',
+    href: '/map',
+    // used to determine if the menu should be highlighted based on the current page
+    root: '/map',
+  },
+  {
+    id: 'dashboard',
+    label: 'Dashboard',
+    href: '/dashboard',
+    // used to determine if the menu should be highlighted based on the current page
+    root: '/dashboard',
+  },
+  {
     id: 'data',
     label: 'Data',
     href: '/data/explore',

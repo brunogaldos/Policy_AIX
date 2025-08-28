@@ -330,13 +330,13 @@ Please provide a comprehensive analysis and recommendations based on the above d
             sender: 'user',
             message: researchQuestion
           }],
-          // Use an internal/silent wsClientId so frontend does not receive interim streams
-          wsClientId: `${this.wsClientId}-internal-${Date.now()}`,
+          // Use the real wsClientId so frontend receives interim streams
+          wsClientId: this.wsClientId,
           memoryId: memoryId,
           numberOfSelectQueries: 5,
           percentOfTopQueriesToSearch: 0.25,
           percentOfTopResultsToScan: 0.25,
-          silentMode: true
+          silentMode: false
         })
       });
 
@@ -348,7 +348,7 @@ Please provide a comprehensive analysis and recommendations based on the above d
       // Wait and poll for the bot to process (up to ~90s)
       console.log('🔧 LiveResearchChatBot: Waiting for processing with polling...');
       let botResponse = "";
-      const maxAttempts = 30; // 30 * 5s = 150s
+      const maxAttempts = 35; // 30 * 5s = 150s
       for (let attempt = 1; attempt <= maxAttempts; attempt++) {
         await new Promise(resolve => setTimeout(resolve, 5000));
         botResponse = await this.getBotResponseFromMemory(memoryId);

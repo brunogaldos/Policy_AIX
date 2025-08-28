@@ -16,7 +16,6 @@ export class LiveResearchChatBot extends PsBaseChatBot {
         this.percentOfQueriesToSearch = 0.25;
         this.percentOfResultsToScan = 0.25;
         this.persistMemory = true;
-        this.silentMode = false;
         this.summarySystemPrompt = `Please analyse those sources step by step and provide a summary of the most relevant information.
     Provide links to the original webpages, if they are relevant, in markdown format as citations.
   `;
@@ -83,26 +82,19 @@ export class LiveResearchChatBot extends PsBaseChatBot {
     renderFollowupSystemPrompt() {
         return `Please provide thoughtful answers to the users followup questions.`;
     }
-    // Respect silent mode
     sendAgentStart(message) {
-        if (!this.silentMode) {
-            super.sendAgentStart(message);
-        }
+        console.log(`🔵 sendAgentStart called with: ${message}`);
+        super.sendAgentStart(message);
     }
     sendAgentCompleted(message, final) {
-        if (!this.silentMode) {
-            super.sendAgentCompleted(message, final);
-        }
+        console.log(`✅ sendAgentCompleted called with: ${message}, final: ${final}`);
+        super.sendAgentCompleted(message, final);
     }
     sendAgentUpdate(message) {
-        if (!this.silentMode) {
-            super.sendAgentUpdate(message);
-        }
+        console.log(`🔄 sendAgentUpdate called with: ${message}`);
+        super.sendAgentUpdate(message);
     }
     sendToClient(message) {
-        if (this.silentMode) {
-            return;
-        }
         // @ts-ignore
         return super.sendToClient(message);
     }
