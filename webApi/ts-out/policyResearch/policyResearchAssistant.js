@@ -1,429 +1,190 @@
 import { PsBaseChatBot } from "@policysynth/api/base/chat/baseChatBot.js";
-import fetch from 'node-fetch';
-export class PolicyResearchAssistant extends PsBaseChatBot {
+import { SearchQueriesRanker } from "@policysynth/agents/webResearch/searchQueriesRanker.js";
+import { SearchQueriesGenerator } from "@policysynth/agents/webResearch/searchQueriesGenerator.js";
+import { ResearchWeb } from "@policysynth/agents/webResearch/researchWeb.js";
+import { SearchResultsRanker } from "@policysynth/agents/webResearch/searchResultsRanker.js";
+import { WebPageScanner } from "@policysynth/agents/webResearch/webPageScanner.js";
+import { promises as fs } from "fs";
+import { PsConstants } from "@policysynth/agents/constants.js";
+export class LiveResearchChatBot extends PsBaseChatBot {
     constructor(wsClientId, wsClients, memoryId) {
+        console.log("Inside PsBaseChatBot constructor:");
+        console.log("wsClientId:", wsClientId);
+        console.log("wsClients Map keys:", Array.from(wsClients.keys()));
         super(wsClientId, wsClients, memoryId);
+        this.numberOfQueriesToGenerate = 7;
+        this.percentOfQueriesToSearch = 0.25;
+        this.percentOfResultsToScan = 0.25;
         this.persistMemory = true;
-        this.capturedResponses = new Map();
-        this.isLiveResearchActive = false;
-        // Main system prompt for the integrated assistant
-        this.mainSystemPrompt = `You are an expert policy research assistant that helps governments and policymakers make informed decisions based on data and policy research.
-
-Your capabilities:
-1. Access data for locations from a comprehensive database
-2. Research current policies, laws, and regulations that could help implement sustainable policies
-3. Give accurate sources for the policies and regulations you find
-
-Instructions:
-
-- Be professional and accurate
-- Provide sources for the policies and regulations you find
-- Provide links to the original webpages, if they are relevant, in markdown format as citations`;
-        // User prompt template
-        this.userPromptTemplate = (userQuestion, ragData, policyResearch) => `
-<USER_QUESTION>
-${userQuestion}
-</USER_QUESTION>
-
-<RAG_DATA_CONTEXT>
-${ragData}
-</RAG_DATA_CONTEXT>
-
-<POLICY_RESEARCH_CONTEXT>
-${policyResearch}
-</POLICY_RESEARCH_CONTEXT>
-
-Please provide a comprehensive analysis and recommendations based on the above data and research. The RAG system provides data values from its database, while the live research system provides policy analysis and recommendations. Synthesize both sources into actionable insights for policymakers.
-`;
-        this.wsClients = wsClients;
+        this.summarySystemPrompt = `Please analyse those sources step by step and provide a summary of the most relevant information.
+    Provide links to the original webpages, if they are relevant, in markdown format as citations.
+  `;
+        // For directing the LLMs to focus on the most relevant parts of each web page
+        this.jsonWebPageResearchSchema = `
+    //MOST IMPORTANT INSTRUCTIONS: Act as a policy research assistant. From the query, identify laws, barriers, and opportunities in the area that affect sustainable policies for the common good, providing insights useful for decision-makers.
+    {
+      potentialSourcesOfInformationAboutBarriersToSkillsFirstPolicies: string[],
+      potentialDescriptionOfBarriersToSkillsFirstPolicies: string[],
+      summary: string,
+      howThisIsRelevant: string,
+      relevanceScore: number
     }
-    /**
-     * Main method to process a city policy research request
-     */
-    async processCityPolicyRequest(userQuestion, dataLayout) {
-        try {
-            this.sendAgentStart("Analyzing data and researching policies...");
-            // Step 1: Process the user's question
-            console.log(`Processing request: ${userQuestion}`);
-            // Step 2: Call SkillsFirstChatBot with a data-focused question
-            this.sendAgentStart("Retrieving data from database...");
-            console.log('🚀 Starting SkillsFirstChatBot...');
-            const dataQuestion = `For this question: "${userQuestion}", provide ONLY the raw data values, measurements, or facts. NO analysis, NO recommendations, NO policy suggestions, NO conclusions. Just the data.`;
-            const skillsFirstResponse = await this.callSkillsFirstChatBotAndCaptureResponse(dataQuestion);
-            console.log('✅ SkillsFirstChatBot completed with response length:', skillsFirstResponse.length);
-            this.sendAgentCompleted("Data retrieved successfully");
-            // Step 3: Use the SkillsFirstChatBot response as input for LiveResearchChatBot
-            this.sendAgentStart("Researching current policies and regulations...");
-            console.log('🔍 SkillsFirstChatBot response captured:', skillsFirstResponse);
-            console.log('🔍 Starting LiveResearchChatBot with data length:', skillsFirstResponse.length);
-            // Add a longer delay to ensure SkillsFirstChatBot is completely finished
-            console.log('⏳ Waiting for SkillsFirstChatBot to complete...');
-            await new Promise(resolve => setTimeout(resolve, 10000));
-            console.log('✅ SkillsFirstChatBot should be completely finished');
-            console.log('🚀 Starting LiveResearchChatBot...');
-            const liveResearchResponse = await this.callLiveResearchChatBotAndCaptureResponse(userQuestion, skillsFirstResponse);
-            console.log('✅ LiveResearchChatBot completed with response length:', liveResearchResponse.length);
-            console.log('📄 LiveResearchChatBot response preview:', liveResearchResponse.substring(0, 200));
-            this.sendAgentCompleted("Policy research completed");
-            // Step 4: Send raw combined output (no synthesis)
-            this.sendAgentStart("Preparing final results...");
-            // Combine raw outputs: first bot's data + live research final response
-            const combinedContent = `${skillsFirstResponse}\n\n${liveResearchResponse}`;
-            // Emit using server-native shape so frontend mapping recognizes it
-            const botMessage = {
-                sender: "bot",
-                type: "chatResponse",
-                content: combinedContent,
-                data: { content: combinedContent },
-            };
-            if (this.wsClientSocket) {
-                this.wsClientSocket.send(JSON.stringify(botMessage));
-            }
-            else if (this.wsClients && this.wsClientId && this.wsClients.has(this.wsClientId)) {
-                const socket = this.wsClients.get(this.wsClientId);
-                socket?.send(JSON.stringify(botMessage));
-            }
-            this.sendAgentCompleted("Results ready");
-        }
-        catch (error) {
-            console.error("Error in policy research process:", error);
-            this.sendAgentStart("Error occurred during analysis");
-            throw error;
-        }
-    }
-    /**
-     * Get bot response from memory
-     */
-    async getBotResponseFromMemory(memoryId) {
-        try {
-            // Import Redis client
-            const { createClient } = await import('redis');
-            const client = createClient();
-            await client.connect();
-            // Get the memory data from Redis
-            const memoryKey = `ps-chatbot-memory-${memoryId}`;
-            console.log(`🔍 Looking for memory key: ${memoryKey}`);
-            const memoryData = await client.get(memoryKey);
-            await client.disconnect();
-            if (memoryData) {
-                console.log(`✅ Found memory data for ${memoryId}`);
-                const parsed = JSON.parse(memoryData);
-                if (parsed.chatLog && parsed.chatLog.length > 0) {
-                    // Get the last bot response
-                    const lastBotMessage = parsed.chatLog
-                        .filter((msg) => msg.sender === 'bot')
-                        .pop();
-                    if (lastBotMessage) {
-                        console.log(`📤 Returning bot message (first 100 chars): ${lastBotMessage.message.substring(0, 100)}...`);
-                        return lastBotMessage.message;
-                    }
-                }
+  `;
+        this.researchConversation = async (chatLog, numberOfSelectQueries, percentOfTopQueriesToSearch, percentOfTopResultsToScan) => {
+            this.numberOfQueriesToGenerate = numberOfSelectQueries;
+            this.percentOfQueriesToSearch = percentOfTopQueriesToSearch;
+            this.percentOfResultsToScan = percentOfTopResultsToScan;
+            this.setChatLog(chatLog);
+            console.log("In LIVE RESEARH conversation");
+            let messages = chatLog.map((message) => {
+                return {
+                    role: message.sender,
+                    content: message.message,
+                };
+            });
+            console.log(`messages: ${JSON.stringify(messages, null, 2)}`);
+            if (messages.length === 1) {
+                this.doLiveResearch(messages[0].content);
             }
             else {
-                console.log(`❌ No memory data found for ${memoryId}`);
-            }
-            return "No response found in memory";
-        }
-        catch (error) {
-            console.error("Error getting bot response from memory:", error);
-            return "Error retrieving response from memory";
-        }
-    }
-    /**
-     * Extract city name from user question
-     */
-    extractLocationOrTopic(userQuestion) {
-        // Generic extraction of location or topic from the question
-        // This is a basic fallback - the actual data will come from RAG
-        const words = userQuestion.split(' ');
-        const locationWords = words.filter(word => word.length > 2 && /^[A-Z]/.test(word));
-        if (locationWords.length > 0) {
-            return locationWords.slice(0, 2).join(' '); // Take first two capitalized words
-        }
-        // Generic fallback
-        return "the specified location";
-    }
-    /**
-     * Call SkillsFirstChatBot and get its response
-     */
-    async callSkillsFirstChatBotAndCaptureResponse(userQuestion) {
-        try {
-            console.log('🔧 SkillsFirstChatBot: Method called, isLiveResearchActive =', this.isLiveResearchActive);
-            console.log('🔧 SkillsFirstChatBot: Creating memory ID...');
-            // Create a unique memory ID for this conversation
-            const memoryId = `policy-research-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-            console.log('🔧 SkillsFirstChatBot: Memory ID created:', memoryId);
-            // Use an internal WS client id so responses are NOT streamed to the user-facing frontend
-            const internalSilentWsClientId = `${this.wsClientId}-internal-${Date.now()}`;
-            console.log('🔧 SkillsFirstChatBot: Sending API request...');
-            // Send the chat message via HTTP API
-            const response = await fetch('http://localhost:5029/api/rd_chat/', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    chatLog: [{
-                            sender: 'user',
-                            message: userQuestion
-                        }],
-                    // Use the real wsClientId but force silent mode so websocket sends are suppressed in backend
-                    wsClientId: this.wsClientId,
-                    memoryId: memoryId,
-                    silentMode: true
-                })
-            });
-            if (!response.ok) {
-                throw new Error(`SkillsFirstChatBot API call failed: ${response.status}`);
-            }
-            console.log('🔧 SkillsFirstChatBot: API request successful');
-            console.log('🔧 SkillsFirstChatBot: Waiting for processing...');
-            // Wait for the bot to process and get the response from memory
-            await new Promise(resolve => setTimeout(resolve, 8000));
-            console.log('🔧 SkillsFirstChatBot: Retrieving response from memory...');
-            // Get the response from the bot's memory
-            const botResponse = await this.getBotResponseFromMemory(memoryId);
-            console.log('🔧 SkillsFirstChatBot: Response retrieved, length:', botResponse.length);
-            return botResponse || "Data retrieved from database";
-        }
-        catch (error) {
-            console.error("Error calling SkillsFirstChatBot:", error);
-            return "Error retrieving data from SkillsFirstChatBot";
-        }
-    }
-    /**
-     * Extract time context from user question
-     */
-    extractTimeContext(userQuestion) {
-        const lowerQuestion = userQuestion.toLowerCase();
-        if (lowerQuestion.includes('recent') || lowerQuestion.includes('current') || lowerQuestion.includes('latest')) {
-            return 'recent';
-        }
-        if (lowerQuestion.includes('trend') || lowerQuestion.includes('change') || lowerQuestion.includes('improvement')) {
-            return 'long-term trends';
-        }
-        if (lowerQuestion.includes('historical') || lowerQuestion.includes('past')) {
-            return 'historical';
-        }
-        return 'current and recent';
-    }
-    /**
-     * Extract key themes from user question for targeted research
-     */
-    extractThemesFromQuestion(userQuestion) {
-        const themes = [];
-        const lowerQuestion = userQuestion.toLowerCase();
-        // Transportation-related themes
-        if (lowerQuestion.includes('transport') || lowerQuestion.includes('vehicle') || lowerQuestion.includes('traffic')) {
-            themes.push('transportation policies', 'vehicle emissions', 'public transit');
-        }
-        // Industrial themes
-        if (lowerQuestion.includes('industrial') || lowerQuestion.includes('factory') || lowerQuestion.includes('manufacturing')) {
-            themes.push('industrial emissions', 'factory regulations', 'manufacturing policies');
-        }
-        // Energy themes
-        if (lowerQuestion.includes('energy') || lowerQuestion.includes('renewable') || lowerQuestion.includes('clean energy')) {
-            themes.push('clean energy policies', 'renewable energy', 'energy efficiency');
-        }
-        // Urban planning themes
-        if (lowerQuestion.includes('urban') || lowerQuestion.includes('planning') || lowerQuestion.includes('development')) {
-            themes.push('urban planning', 'sustainable development', 'city planning');
-        }
-        // Health themes
-        if (lowerQuestion.includes('health') || lowerQuestion.includes('medical') || lowerQuestion.includes('respiratory')) {
-            themes.push('public health policies', 'air quality health impacts', 'respiratory health');
-        }
-        // Economic themes
-        if (lowerQuestion.includes('economic') || lowerQuestion.includes('cost') || lowerQuestion.includes('investment')) {
-            themes.push('economic impact', 'policy cost analysis', 'investment strategies');
-        }
-        // If no specific themes found, add general air quality themes
-        if (themes.length === 0) {
-            themes.push('air quality policies', 'pollution control', 'environmental regulations');
-        }
-        return themes;
-    }
-    /**
-     * Call LiveResearchChatBot via API but prevent frontend responses
-     */
-    async callLiveResearchChatBotAndCaptureResponse(userQuestion, skillsFirstResponse) {
-        try {
-            console.log('🔧 LiveResearchChatBot: API call method');
-            // Create a unique memory ID for this conversation
-            const memoryId = `live-research-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-            console.log('🔧 LiveResearchChatBot: Memory ID created:', memoryId);
-            // Use the SkillsFirstChatBot response as the research question
-            const researchQuestion = `Based on this data: "${skillsFirstResponse}", research current policies and regulations that could address this situation. Provide comprehensive policy recommendations.`;
-            console.log('🔧 LiveResearchChatBot: Sending API request...');
-            // Send the chat message via HTTP API
-            const response = await fetch('http://localhost:5029/api/live_research_chat/', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    chatLog: [{
-                            sender: 'user',
-                            message: researchQuestion
-                        }],
-                    // Use the real wsClientId so frontend receives interim streams
-                    wsClientId: this.wsClientId,
-                    memoryId: memoryId,
-                    numberOfSelectQueries: 5,
-                    percentOfTopQueriesToSearch: 0.25,
-                    percentOfTopResultsToScan: 0.25,
-                    silentMode: false
-                })
-            });
-            if (!response.ok) {
-                throw new Error(`LiveResearchChatBot API call failed: ${response.status}`);
-            }
-            console.log('🔧 LiveResearchChatBot: API request successful');
-            // Wait and poll for the bot to process (up to ~90s)
-            console.log('🔧 LiveResearchChatBot: Waiting for processing with polling...');
-            let botResponse = "";
-            const maxAttempts = 35; // 30 * 5s = 150s
-            for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-                await new Promise(resolve => setTimeout(resolve, 5000));
-                botResponse = await this.getBotResponseFromMemory(memoryId);
-                console.log(`🔧 LiveResearchChatBot: Poll ${attempt}/${maxAttempts}, length: ${botResponse?.length || 0}`);
-                if (botResponse && botResponse.length > 100 && !botResponse.includes("No response found in memory")) {
-                    break;
-                }
-            }
-            return botResponse && !botResponse.includes("No response found in memory") ? botResponse : "";
-        }
-        catch (error) {
-            console.error("Error calling LiveResearchChatBot:", error);
-            return "Error in LiveResearchChatBot processing";
-        }
-    }
-    /**
-     * Create a contextualized research question that incorporates RAG data
-     */
-    createContextualizedResearchQuestion(userQuestion, no2Data, researchQueries) {
-        // Extract the main topic from user question
-        const mainTopic = this.extractMainTopic(userQuestion);
-        const locationOrTopic = this.extractLocationOrTopic(userQuestion);
-        // Create a research question that explicitly references the RAG data
-        return `Based on the following data for ${locationOrTopic}: "${no2Data}", what are the current policies and regulations for ${mainTopic}? Focus on successful implementations and best practices that address the specific challenges identified in the data. Please research policies specifically for ${locationOrTopic} and similar locations.`;
-    }
-    /**
-     * Extract the main topic from user question for simple research
-     */
-    extractMainTopic(userQuestion) {
-        const lowerQuestion = userQuestion.toLowerCase();
-        // Extract location or topic first
-        const locationOrTopic = this.extractLocationOrTopic(userQuestion);
-        // Determine the main policy area
-        if (lowerQuestion.includes('transport') || lowerQuestion.includes('vehicle') || lowerQuestion.includes('traffic')) {
-            return `improving transportation and reducing vehicle emissions in ${locationOrTopic}`;
-        }
-        if (lowerQuestion.includes('industrial') || lowerQuestion.includes('factory')) {
-            return `regulating industrial emissions in ${locationOrTopic}`;
-        }
-        if (lowerQuestion.includes('energy') || lowerQuestion.includes('renewable')) {
-            return `implementing clean energy policies in ${locationOrTopic}`;
-        }
-        if (lowerQuestion.includes('urban') || lowerQuestion.includes('planning')) {
-            return `sustainable urban development in ${locationOrTopic}`;
-        }
-        if (lowerQuestion.includes('health') || lowerQuestion.includes('medical')) {
-            return `public health policies related to air quality in ${locationOrTopic}`;
-        }
-        if (lowerQuestion.includes('economic') || lowerQuestion.includes('cost')) {
-            return `economic policies for air quality improvement in ${locationOrTopic}`;
-        }
-        // Default to general policies
-        return `improving overall conditions in ${locationOrTopic}`;
-    }
-    /**
-     * Synthesize the results and provide final response
-     */
-    async synthesizeAndRespond(userQuestion, ragData, policyResearch) {
-        try {
-            const messages = [
-                {
+                this.startBroadcastingLiveCosts();
+                const systemMessage = {
                     role: "system",
-                    content: this.mainSystemPrompt
-                },
-                {
-                    role: "user",
-                    content: this.userPromptTemplate(userQuestion, ragData, policyResearch)
+                    content: this.renderFollowupSystemPrompt(),
+                };
+                messages.unshift(systemMessage);
+                try {
+                    const stream = await this.openaiClient.chat.completions.create({
+                        model: "gpt-4-0125-preview",
+                        messages,
+                        max_tokens: 4000,
+                        temperature: 0.7,
+                        stream: true,
+                    });
+                    await this.streamWebSocketResponses(stream);
                 }
-            ];
-            if (!this.openaiClient) {
-                console.error("OpenAI client is not initialized");
-                this.sendAgentStart("Error: OpenAI client not configured");
-                return;
+                catch (err) {
+                    console.error(`Error in doLiveResearch: ${err}`);
+                }
+                finally {
+                    this.stopBroadcastingLiveCosts();
+                }
             }
-            // Generate final response without streaming so frontend only sees the result at the end
-            const completion = await this.openaiClient.chat.completions.create({
-                model: "gpt-4-turbo",
-                messages,
-                max_tokens: 4000,
-                temperature: 0.3,
-                stream: false,
-            });
-            const finalText = completion.choices?.[0]?.message?.content || "";
-            // Send a clear marker that this is the final response and then emit a single chat_response
-            this.sendAgentStart("Final Policy Research Analysis");
-            const botMessage = {
-                sender: "bot",
-                type: "chat_response",
-                data: { content: finalText },
-            };
-            if (this.wsClientSocket) {
-                this.wsClientSocket.send(JSON.stringify(botMessage));
-            }
-            else if (this.wsClients && this.wsClientId && this.wsClients.has(this.wsClientId)) {
-                const socket = this.wsClients.get(this.wsClientId);
-                socket?.send(JSON.stringify(botMessage));
-            }
-            this.sendAgentCompleted("Policy Research Complete");
+        };
+        // Increase default navigation timeout for puppeteer-driven research to 40s
+        try {
+            PsConstants.webPageNavTimeout = 40 * 1000;
         }
-        catch (error) {
-            console.error("Error synthesizing response:", error);
-            this.sendAgentStart("Error occurred while generating final response");
+        catch (e) {
+            console.warn("Could not set PsConstants.webPageNavTimeout:", e);
         }
     }
-    /**
-     * Handle follow-up questions in the conversation
-     */
-    async handleFollowUpQuestion(chatLog, userQuestion) {
+    renderFollowupSystemPrompt() {
+        return `Please provide thoughtful answers to the users followup questions.`;
+    }
+    sendAgentStart(message) {
+        console.log(`🔵 sendAgentStart called with: ${message}`);
+        super.sendAgentStart(message);
+    }
+    sendAgentCompleted(message, final) {
+        console.log(`✅ sendAgentCompleted called with: ${message}, final: ${final}`);
+        super.sendAgentCompleted(message, final);
+    }
+    sendAgentUpdate(message) {
+        console.log(`🔄 sendAgentUpdate called with: ${message}`);
+        super.sendAgentUpdate(message);
+    }
+    sendToClient(message) {
+        // @ts-ignore
+        return super.sendToClient(message);
+    }
+    async doLiveResearch(question) {
         try {
-            this.sendAgentStart("Processing follow-up question...");
-            const messages = [
-                {
-                    role: "system",
-                    content: `You are continuing a policy research conversation. Provide detailed, helpful responses based on the previous context and any new information requested.`
-                },
-                ...chatLog.map(msg => ({
-                    role: msg.sender === "user" ? "user" : "assistant",
-                    content: msg.message
-                })),
-                {
-                    role: "user",
-                    content: userQuestion
-                }
-            ];
-            if (!this.openaiClient) {
-                console.error("OpenAI client is not initialized");
-                this.sendAgentStart("Error: OpenAI client not configured");
-                return;
+            this.startBroadcastingLiveCosts();
+            console.log(`In doLiveResearch: ${question}`);
+            console.log(`this.memory: ${JSON.stringify(this.memory, null, 2)}`);
+            // Generate search queries
+            this.sendAgentStart("Generate search queries");
+            const searchQueriesGenerator = new SearchQueriesGenerator(
+            //this.memory as PsSmarterCrowdsourcingMemoryData,
+            this.memory, this.numberOfQueriesToGenerate, question);
+            const searchQueries = await searchQueriesGenerator.generateSearchQueries();
+            this.sendAgentCompleted(`Generated ${searchQueries.length} search queries`);
+            // Rank search queries
+            this.sendAgentStart("Pairwise Ranking Search Queries");
+            const searchQueriesRanker = new SearchQueriesRanker(
+            //this.memory as PsSmarterCrowdsourcingMemoryData,
+            this.memory, this.sendAgentUpdate.bind(this));
+            const rankedSearchQueries = await searchQueriesRanker.rankSearchQueries(searchQueries, question, searchQueries.length * 10);
+            this.sendAgentCompleted("Pairwise Ranking Completed");
+            const queriesToSearch = rankedSearchQueries.slice(0, Math.floor(rankedSearchQueries.length * this.percentOfQueriesToSearch));
+            // Note: Removed hardcoded "New Jersey" filter to make research more general
+            // queriesToSearch can now be used as-is without location filtering
+            // Search the web
+            this.sendAgentStart("Searching the Web...");
+            //const webSearch = new ResearchWeb(this.memory as PsSmarterCrowdsourcingMemoryData);
+            const webSearch = new ResearchWeb(this.memory);
+            const searchResults = await webSearch.search(queriesToSearch);
+            this.sendAgentCompleted(`Found ${searchResults.length} Web Pages`);
+            // Rank search results
+            this.sendAgentStart("Pairwise Ranking Search Results");
+            const searchResultsRanker = new SearchResultsRanker(
+            //this.memory as PsSmarterCrowdsourcingMemoryData,
+            this.memory, this.sendAgentUpdate.bind(this));
+            const rankedSearchResults = await searchResultsRanker.rankSearchResults(searchResults, question, searchResults.length * 10);
+            this.sendAgentCompleted("Pairwise Ranking Completed");
+            const searchResultsToScan = rankedSearchResults.slice(0, Math.floor(rankedSearchResults.length * this.percentOfResultsToScan));
+            // Scan and Research Web pages
+            this.sendAgentStart("Scan and Research Web pages");
+            const webPageResearch = new WebPageScanner(this.memory
+            //this.memory as PsSmarterCrowdsourcingMemoryData
+            );
+            const webScan = await webPageResearch.scan(searchResultsToScan.map((i) => i.url), this.jsonWebPageResearchSchema, undefined, this.sendAgentUpdate.bind(this));
+            this.sendAgentCompleted("Website Scanning Completed", true);
+            console.log(`webScan: (${webScan.length}) ${JSON.stringify(webScan, null, 2)}`);
+            // Create a webScan.json filename with a timestamp
+            const timestamp = new Date().toISOString().replace(/:/g, "-");
+            try {
+                await fs.writeFile(`/tmp/webScan_${timestamp}.json`, JSON.stringify(webScan, null, 2));
+                console.log("webScan.json has been saved to /tmp directory.");
             }
-            const stream = await this.openaiClient.chat.completions.create({
-                model: "gpt-4-turbo",
-                messages,
-                max_tokens: 3000,
-                temperature: 0.3,
-                stream: true,
-            });
-            await this.streamWebSocketResponses(stream);
+            catch (err) {
+                console.error(`Error saving webScan.json: ${err}`);
+            }
+            await this.renderResultsToUser(webScan, question);
         }
-        catch (error) {
-            console.error("Error handling follow-up:", error);
-            this.sendAgentStart("Error occurred while processing follow-up question");
+        catch (err) {
+            console.error(`Error in doLiveResearch: ${err}`);
         }
+        finally {
+            this.stopBroadcastingLiveCosts();
+        }
+    }
+    async renderResultsToUser(research, question) {
+        const summaryUserPrompt = `
+      Research Question: ${question}
+
+      Results from the web research:
+      ${JSON.stringify(research, null, 2)}
+    `;
+        this.addToExternalSolutionsMemoryCosts(summaryUserPrompt + this.summarySystemPrompt, "in");
+        const messages = [
+            {
+                role: "system",
+                content: this.summarySystemPrompt,
+            },
+            {
+                role: "user",
+                content: summaryUserPrompt,
+            },
+        ];
+        const stream = await this.openaiClient.chat.completions.create({
+            model: "gpt-4-0125-preview",
+            messages,
+            max_tokens: 4000,
+            temperature: 0.45,
+            stream: true,
+        });
+        await this.streamWebSocketResponses(stream);
     }
 }

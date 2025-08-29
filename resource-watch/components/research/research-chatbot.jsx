@@ -15,6 +15,8 @@ import Icon from 'components/ui/icon';
 // actions
 import { toggleMapLayerGroup, resetMapLayerGroupsInteraction } from 'layout/explore/actions';
 
+import Spinner from 'components/ui/Spinner';
+
 /**
  * Research Chatbot Component
  * Adapted from WebApp LiveResearchChatBot for Resource Watch
@@ -36,6 +38,7 @@ const ResearchChatbot = ({
   const [wsClientId, setWsClientId] = useState(null);
   const [connectionError, setConnectionError] = useState(null);
   const [isInitializing, setIsInitializing] = useState(false);
+  const [spinnerActive, setSpinnerActive] = useState(false); // Track spinner state for intermediate messages
   
   // Dataset-related state
   const [activeDatasets, setActiveDatasets] = useState([]);
@@ -264,6 +267,7 @@ const ResearchChatbot = ({
    */
   const addMessage = useCallback(
     (sender, message, messageType = 'text') => {
+      console.log('🔍 DEBUG: addMessage called with:', { sender, message, messageType });
       const newMessage = {
         id: Date.now() + Math.random(),
         sender,
@@ -272,7 +276,12 @@ const ResearchChatbot = ({
         timestamp: new Date(),
       };
 
-      setMessages((prev) => [...prev, newMessage]);
+      console.log('🔍 DEBUG: New message object:', newMessage);
+      setMessages((prev) => {
+        const newMessages = [...prev, newMessage];
+        console.log('🔍 DEBUG: Updated messages array length:', newMessages.length);
+        return newMessages;
+      });
 
       // Scroll to bottom after message is added
       setTimeout(scrollToBottom, 100);
@@ -284,15 +293,24 @@ const ResearchChatbot = ({
    * Update the last message (useful for progress updates)
    */
   const updateLastMessage = useCallback((message) => {
+    console.log('🔍 DEBUG: updateLastMessage called with:', message);
     setMessages((prev) => {
-      if (prev.length === 0) return prev;
+      console.log('🔍 DEBUG: Current messages array:', prev);
+      if (prev.length === 0) {
+        console.log('🔍 DEBUG: No messages to update');
+        return prev;
+      }
 
       const newMessages = [...prev];
       const lastMessage = newMessages[newMessages.length - 1];
+      console.log('🔍 DEBUG: Last message:', lastMessage);
 
       if (lastMessage.sender === 'system') {
+        console.log('🔍 DEBUG: Updating system message from:', lastMessage.message, 'to:', message);
         lastMessage.message = message;
         lastMessage.timestamp = new Date();
+      } else {
+        console.log('🔍 DEBUG: Last message is not system type, sender:', lastMessage.sender);
       }
 
       return newMessages;
@@ -334,11 +352,60 @@ const ResearchChatbot = ({
    */
     const handleWebSocketMessage = useCallback(
     (message) => {
+      console.log('🔍 DEBUG: WebSocket message received in component:', message);
       logger.info('Research chatbot received WebSocket message:', message);
 
       // Only process messages that are meant for user display
       switch (message.type) {
+        case 'agentStart':
+        case 'agent_start':
+          // Handle agent start messages (research phase beginning)
+          console.log('🔍 DEBUG: Processing agentStart message:', message);
+          if (message.data?.name) {
+            console.log('🔍 DEBUG: Adding agent start message:', message.data.name);
+            addMessage('system', message.data.name, 'intermediate');
+            setIsLoading(true);
+          }
+          break;
+
+        case 'agentUpdate':
+        case 'agent_update':
+          // Handle agent update messages (progress updates)
+          console.log('🔍 DEBUG: Processing agentUpdate message:', message);
+          if (message.message) {
+            console.log('🔍 DEBUG: Updating last message with:', message.message);
+            updateLastMessage(message.message);
+          }
+          break;
+
+        case 'agentCompleted':
+        case 'agent_completed':
+          // Handle agent completed messages (research phase completed)
+          console.log('🔍 DEBUG: Processing agentCompleted message:', message);
+          if (message.data?.name) {
+            console.log('🔍 DEBUG: Updating last message with:', message.data.name);
+            // Mark the last intermediate message as completed
+            setMessages((prev) => {
+              const newMessages = [...prev];
+              const lastMessage = newMessages[newMessages.length - 1];
+              
+              if (lastMessage && lastMessage.messageType === 'intermediate') {
+                lastMessage.message = message.data.name;
+                lastMessage.messageType = 'completed';
+                lastMessage.timestamp = new Date();
+              }
+              
+              return newMessages;
+            });
+            
+            if (message.data.lastAgent === true) {
+              setIsLoading(false);
+            }
+          }
+          break;
+
         case 'chat_response':
+        case 'chatResponse':
           // Handle complete chat responses
           if (message.data?.content || message.content) {
             const content = message.data?.content || message.content;
@@ -348,6 +415,7 @@ const ResearchChatbot = ({
           break;
 
         case 'stream_response':
+        case 'streamResponse':
         case 'stream':
           // Handle streaming responses (only actual research content)
           const content = message.data?.content || message.content || message.data?.message || message.message;
@@ -390,6 +458,7 @@ const ResearchChatbot = ({
           break;
 
         case 'stream_end':
+        case 'streamEnd':
         case 'end':
         case 'complete':
         case 'finished':
@@ -419,6 +488,31 @@ const ResearchChatbot = ({
         case 'error':
           addMessage('system', `❌ Error: ${message.data?.message || message.message || 'An error occurred'}`);
           setIsLoading(false);
+          break;
+
+        case 'memoryIdCreated':
+          // Handle memory ID creation (backend setup)
+          console.log('🔍 DEBUG: Memory ID created:', message.data);
+          break;
+
+        case 'liveLlmCosts':
+          // Handle cost updates (optional display)
+          if (message.data > 0) {
+            console.log('🔍 DEBUG: Cost update:', message.data);
+          }
+          break;
+
+        case 'cost_update':
+          // Handle cost updates (transformed format)
+          if (message.data > 0) {
+            console.log('🔍 DEBUG: Cost update:', message.data);
+          }
+          break;
+
+        case 'test':
+          // Handle test messages
+          console.log('🔍 DEBUG: Test message received:', message);
+          addMessage('system', `🧪 Test: ${message.data?.name || message.message}`);
           break;
 
         default:
@@ -470,17 +564,28 @@ const ResearchChatbot = ({
   const handleConnectionChange = useCallback(
     (status) => {
       logger.info('Research chatbot connection status changed:', status);
-
+      setIsConnected(status.type === 'connected');
+      
       if (status.type === 'connected') {
-        setIsConnected(true);
         setConnectionError(null);
+        setIsInitializing(false);
       } else if (status.type === 'disconnected') {
-        setIsConnected(false);
-        setWsClientId(null);
-        addMessage('system', 'Connection lost. Attempting to reconnect...');
+        setConnectionError('WebSocket connection lost');
+        setIsInitializing(false);
       }
     },
-    [addMessage],
+    [],
+  );
+
+  /**
+   * Handle spinner state changes
+   */
+  const handleSpinnerChange = useCallback(
+    (active) => {
+      console.log('🔍 DEBUG: Spinner state changed:', active);
+      setSpinnerActive(active);
+    },
+    [],
   );
 
   /**
@@ -793,22 +898,44 @@ const ResearchChatbot = ({
     }
   }, [isOpen, isConnected, isInitializing, initializeWebSocket]);
 
+  // Effect: Add test message when component loads
+  useEffect(() => {
+    if (isOpen) {
+      console.log('🔍 DEBUG: Component opened, adding test message');
+      addMessage('system', '🔍 Test message - component is working');
+    }
+  }, [isOpen, addMessage]);
+
   // Effect: Set up WebSocket message handlers
   useEffect(() => {
     if (isOpen) {
+      console.log('🔍 DEBUG: Setting up WebSocket message handlers');
       // Add message handlers
       researchAPI.onMessage('*', handleWebSocketMessage);
       researchAPI.onConnection(handleConnectionChange);
       researchAPI.onError(handleConnectionError);
+      researchAPI.onSpinnerChange(handleSpinnerChange); // Register spinner change handler
+
+      // Test if the message handler is working
+      console.log('🔍 DEBUG: Testing message handler registration');
+      setTimeout(() => {
+        console.log('🔍 DEBUG: Sending test message to handler');
+        handleWebSocketMessage({
+          type: 'test',
+          data: { name: 'Test message' },
+          message: 'This is a test'
+        });
+      }, 1000);
 
       return () => {
         // Clean up handlers
         researchAPI.offMessage('*', handleWebSocketMessage);
         researchAPI.offConnection(handleConnectionChange);
         researchAPI.offError(handleConnectionError);
+        researchAPI.offSpinnerChange(handleSpinnerChange); // Clean up spinner handler
       };
     }
-  }, [isOpen, handleWebSocketMessage, handleConnectionChange, handleConnectionError]);
+  }, [isOpen, handleWebSocketMessage, handleConnectionChange, handleConnectionError, handleSpinnerChange]);
 
   // Effect: Focus input when connected
   useEffect(() => {
@@ -852,7 +979,36 @@ const ResearchChatbot = ({
               }`}
             >
               <div className="research-chatbot-message-content">
-                {msg.messageType === 'research_result' ? (
+                {/* Show spinner for active intermediate messages, checkmark for completed ones */}
+                {msg.messageType === 'intermediate' ? (
+                  <div className="research-chatbot-message-with-spinner">
+                    {spinnerActive ? (
+                      <svg className="progress-ring" width="16" height="16">
+                        <circle
+                          className="progress-ring__circle"
+                          stroke="blue"
+                          strokeWidth="2"
+                          fill="transparent"
+                          r="6"
+                          cx="8"
+                          cy="8"
+                        />
+                      </svg>
+                    ) : (
+                      <span className="done-icon">✓</span>
+                    )}
+                    <span className="research-chatbot-spinner-text-inline">
+                      {msg.message}
+                    </span>
+                  </div>
+                ) : msg.messageType === 'completed' ? (
+                  <div className="research-chatbot-message-with-spinner">
+                    <span className="done-icon">✓</span>
+                    <span className="research-chatbot-spinner-text-inline">
+                      {msg.message}
+                    </span>
+                  </div>
+                ) : msg.messageType === 'research_result' ? (
                   <div className="research-chatbot-research-content">
                                 
                     <ReactMarkdown remarkPlugins={[remarkGfm]}> 
@@ -933,9 +1089,7 @@ const ResearchChatbot = ({
           <div ref={messagesEndRef} />
         </div>
 
-
-
-        {/* Input */}
+        {/* Input Section */}
         <div className="research-chatbot-input-container">
           {connectionError && (
             <div className="research-chatbot-error">

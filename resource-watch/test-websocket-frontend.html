@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .message { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .system { background-color: #f0f0f0; }
+        .user { background-color: #e3f2fd; }
+        .assistant { background-color: #f3e5f5; }
+        .error { background-color: #ffebee; color: red; }
+        button { margin: 10px; padding: 10px 20px; }
+        #status { font-weight: bold; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>WebSocket Test Page</h1>
+    
+    <div id="status">Status: Disconnected</div>
+    
+    <button onclick="connect()">Connect</button>
+    <button onclick="disconnect()">Disconnect</button>
+    <button onclick="sendTestMessage()">Send Test Message</button>
+    <button onclick="clearMessages()">Clear Messages</button>
+    
+    <div id="messages"></div>
+
+    <script>
+        let ws = null;
+        let clientId = null;
+        const messagesDiv = document.getElementById('messages');
+        const statusDiv = document.getElementById('status');
+
+        function addMessage(sender, message, messageType = 'text') {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.innerHTML = `
+                <strong>${sender.toUpperCase()}:</strong> 
+                <span>${message}</span>
+                <small>${new Date().toLocaleTimeString()}</small>
+            `;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function updateStatus(status) {
+            statusDiv.textContent = `Status: ${status}`;
+        }
+
+        function connect() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                addMessage('system', 'Already connected');
+                return;
+            }
+
+            updateStatus('Connecting...');
+            ws = new WebSocket('ws://localhost:5029/ws');
+
+            ws.onopen = function() {
+                updateStatus('Connected');
+                addMessage('system', 'WebSocket connected');
+            };
+
+            ws.onmessage = function(event) {
+                try {
+                    const message = JSON.parse(event.data);
+                    console.log('WebSocket message received:', message);
+                    
+                    // Handle client ID assignment
+                    if (message.clientId && !clientId) {
+                        clientId = message.clientId;
+                        addMessage('system', `Client ID assigned: ${clientId}`);
+                    }
+                    
+                    // Handle different message types
+                    switch (message.type) {
+                        case 'agentStart':
+                            addMessage('system', `🔄 ${message.data?.name || 'Starting...'}`);
+                            break;
+                        case 'agentUpdate':
+                            addMessage('system', `🔄 ${message.message || 'Updating...'}`);
+                            break;
+                        case 'agentCompleted':
+                            addMessage('system', `✅ ${message.data?.name || 'Completed'}`);
+                            break;
+                        case 'memoryIdCreated':
+                            addMessage('system', `📝 Memory created: ${message.data}`);
+                            break;
+                        case 'liveLlmCosts':
+                            if (message.data > 0) {
+                                addMessage('system', `💰 Cost: ${message.data}`);
+                            }
+                            break;
+                        default:
+                            addMessage('system', `📨 ${message.type}: ${JSON.stringify(message)}`);
+                    }
+                } catch (error) {
+                    addMessage('error', `Error parsing message: ${error.message}`);
+                }
+            };
+
+            ws.onclose = function(event) {
+                updateStatus('Disconnected');
+                addMessage('system', `WebSocket closed: ${event.code} - ${event.reason}`);
+                clientId = null;
+            };
+
+            ws.onerror = function(error) {
+                updateStatus('Error');
+                addMessage('error', `WebSocket error: ${error.message}`);
+            };
+        }
+
+        function disconnect() {
+            if (ws) {
+                ws.close();
+                ws = null;
+                clientId = null;
+                updateStatus('Disconnected');
+                addMessage('system', 'WebSocket disconnected');
+            }
+        }
+
+        function sendTestMessage() {
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                addMessage('error', 'WebSocket not connected');
+                return;
+            }
+
+            if (!clientId) {
+                addMessage('error', 'Client ID not available yet');
+                return;
+            }
+
+            // Send a test research request
+            fetch('http://localhost:5029/api/policy_research/', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    wsClientId: clientId,
+                    chatLog: [{
+                        sender: 'user',
+                        message: 'Test research question: What are the current policies on renewable energy?'
+                    }],
+                    numberOfSelectQueries: 3,
+                    percentOfTopQueriesToSearch: 0.5,
+                    percentOfTopResultsToScan: 0.5
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    addMessage('user', 'Test research request sent successfully');
+                } else {
+                    addMessage('error', `Research request failed: ${response.status}`);
+                }
+            })
+            .catch(error => {
+                addMessage('error', `Error sending research request: ${error.message}`);
+            });
+        }
+
+        function clearMessages() {
+            messagesDiv.innerHTML = '';
+        }
+
+        // Auto-connect when page loads
+        window.addEventListener('load', function() {
+            setTimeout(connect, 1000);
+        });
+    </script>
+</body>
+</html>
+
+

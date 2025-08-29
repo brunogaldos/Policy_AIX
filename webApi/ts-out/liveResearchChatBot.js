@@ -5,7 +5,6 @@ import { ResearchWeb } from "@policysynth/agents/webResearch/researchWeb.js";
 import { SearchResultsRanker } from "@policysynth/agents/webResearch/searchResultsRanker.js";
 import { WebPageScanner } from "@policysynth/agents/webResearch/webPageScanner.js";
 import { promises as fs } from "fs";
-import { PsConstants } from "@policysynth/agents/constants.js";
 export class LiveResearchChatBot extends PsBaseChatBot {
     constructor(wsClientId, wsClients, memoryId) {
         console.log("Inside PsBaseChatBot constructor:");
@@ -71,32 +70,9 @@ export class LiveResearchChatBot extends PsBaseChatBot {
                 }
             }
         };
-        // Increase default navigation timeout for puppeteer-driven research to 40s
-        try {
-            PsConstants.webPageNavTimeout = 40 * 1000;
-        }
-        catch (e) {
-            console.warn("Could not set PsConstants.webPageNavTimeout:", e);
-        }
     }
     renderFollowupSystemPrompt() {
         return `Please provide thoughtful answers to the users followup questions.`;
-    }
-    sendAgentStart(message) {
-        console.log(`🔵 sendAgentStart called with: ${message}`);
-        super.sendAgentStart(message);
-    }
-    sendAgentCompleted(message, final) {
-        console.log(`✅ sendAgentCompleted called with: ${message}, final: ${final}`);
-        super.sendAgentCompleted(message, final);
-    }
-    sendAgentUpdate(message) {
-        console.log(`🔄 sendAgentUpdate called with: ${message}`);
-        super.sendAgentUpdate(message);
-    }
-    sendToClient(message) {
-        // @ts-ignore
-        return super.sendToClient(message);
     }
     async doLiveResearch(question) {
         try {

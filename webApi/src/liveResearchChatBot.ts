@@ -26,12 +26,7 @@ export class LiveResearchChatBot extends PsBaseChatBot {
     
     super(wsClientId, wsClients, memoryId);
 
-    // Increase default navigation timeout for puppeteer-driven research to 40s
-    try {
-      PsConstants.webPageNavTimeout = 40 * 1000;
-    } catch (e) {
-      console.warn("Could not set PsConstants.webPageNavTimeout:", e);
-    }
+
   }
 
   summarySystemPrompt = `Please analyse those sources step by step and provide a summary of the most relevant information.
@@ -54,25 +49,7 @@ export class LiveResearchChatBot extends PsBaseChatBot {
     return `Please provide thoughtful answers to the users followup questions.`;
   }
 
-  sendAgentStart(message: string) {
-    console.log(`🔵 sendAgentStart called with: ${message}`);
-    super.sendAgentStart(message);
-  }
 
-  sendAgentCompleted(message: string, final?: boolean) {
-    console.log(`✅ sendAgentCompleted called with: ${message}, final: ${final}`);
-    super.sendAgentCompleted(message, final);
-  }
-
-  sendAgentUpdate(message: string) {
-    console.log(`🔄 sendAgentUpdate called with: ${message}`);
-    super.sendAgentUpdate(message);
-  }
-
-  sendToClient(message: any) {
-    // @ts-ignore
-    return super.sendToClient(message);
-  }
 
   async doLiveResearch(question: string) {
     try {

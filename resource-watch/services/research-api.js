@@ -39,6 +39,8 @@ class ResearchWebSocketManager {
     this.messageHandlers = new Map();
     this.connectionHandlers = new Set();
     this.errorHandlers = new Set();
+    this.spinnerActive = false; // Track spinner state for intermediate messages
+    this.spinnerHandlers = new Set(); // Handlers for spinner state changes
   }
 
   /**
@@ -90,35 +92,47 @@ class ResearchWebSocketManager {
                 message: message.message,
                 data: message.data || message
               };
+              // Activate spinner when agent starts
+              this.setSpinnerActive(true);
             } else if (message.type === 'agentUpdate') {
               processedMessage = {
                 type: 'agent_update',
                 message: message.message,
                 data: message.data || message
               };
+              // Keep spinner active during agent updates
+              this.setSpinnerActive(true);
             } else if (message.type === 'agentCompleted') {
               processedMessage = {
                 type: 'agent_completed',
                 message: message.message,
                 data: message.data || message
               };
+              // Deactivate spinner when agent completes
+              this.setSpinnerActive(false);
             } else if (message.type === 'streamResponse') {
               processedMessage = {
                 type: 'stream_response',
                 content: message.content,
                 data: message.data || message
               };
+              // Keep spinner active during streaming
+              this.setSpinnerActive(true);
             } else if (message.type === 'streamEnd') {
               processedMessage = {
                 type: 'stream_end',
                 data: message.data || message
               };
+              // Deactivate spinner when streaming ends
+              this.setSpinnerActive(false);
             } else if (message.type === 'chatResponse') {
               processedMessage = {
                 type: 'chat_response',
                 content: message.content,
                 data: message.data || message
               };
+              // Deactivate spinner when chat response is complete
+              this.setSpinnerActive(false);
             } else if (message.type === 'costUpdate') {
               processedMessage = {
                 type: 'cost_update',
@@ -130,13 +144,20 @@ class ResearchWebSocketManager {
                 message: message.message || message.error,
                 data: message.data || message
               };
+              // Deactivate spinner on error
+              this.setSpinnerActive(false);
             }
             
             // Route message to appropriate handlers
             const messageType = processedMessage.type || 'unknown';
+            console.log('🔍 DEBUG: Routing message type:', messageType);
+            console.log('🔍 DEBUG: Available handlers:', Array.from(this.messageHandlers.keys()));
+            
             const handlers = this.messageHandlers.get(messageType) || [];
+            console.log('🔍 DEBUG: Found handlers for type', messageType, ':', handlers.length);
             handlers.forEach(handler => {
               try {
+                console.log('🔍 DEBUG: Calling handler for type', messageType);
                 handler(processedMessage);
               } catch (error) {
                 logger.error(`Error in message handler for type ${messageType}:`, error);
@@ -145,8 +166,10 @@ class ResearchWebSocketManager {
             
             // Also call generic message handlers
             const genericHandlers = this.messageHandlers.get('*') || [];
+            console.log('🔍 DEBUG: Generic handlers:', genericHandlers.length);
             genericHandlers.forEach(handler => {
               try {
+                console.log('🔍 DEBUG: Calling generic handler');
                 handler(processedMessage);
               } catch (error) {
                 logger.error('Error in generic message handler:', error);
@@ -248,10 +271,12 @@ class ResearchWebSocketManager {
    * @param {Function} handler - Handler function
    */
   onMessage(messageType, handler) {
+    console.log('🔍 DEBUG: Registering handler for message type:', messageType);
     if (!this.messageHandlers.has(messageType)) {
       this.messageHandlers.set(messageType, []);
     }
     this.messageHandlers.get(messageType).push(handler);
+    console.log('🔍 DEBUG: Total handlers for type', messageType, ':', this.messageHandlers.get(messageType).length);
   }
 
   /**
@@ -316,6 +341,54 @@ class ResearchWebSocketManager {
   }
 
   /**
+   * Set spinner active state
+   * @param {boolean} active - Whether spinner should be active
+   */
+  setSpinnerActive(active) {
+    this.spinnerActive = active;
+    this.notifySpinnerHandlers(active);
+  }
+
+  /**
+   * Get current spinner state
+   * @returns {boolean} Current spinner state
+   */
+  getSpinnerActive() {
+    return this.spinnerActive;
+  }
+
+  /**
+   * Add spinner state change handler
+   * @param {Function} handler - Handler function that receives spinner state
+   */
+  onSpinnerChange(handler) {
+    this.spinnerHandlers.add(handler);
+  }
+
+  /**
+   * Remove spinner state change handler
+   * @param {Function} handler - Handler function to remove
+   */
+  offSpinnerChange(handler) {
+    this.spinnerHandlers.delete(handler);
+  }
+
+  /**
+   * Notify spinner handlers of state change
+   * @private
+   * @param {boolean} active - New spinner state
+   */
+  notifySpinnerHandlers(active) {
+    this.spinnerHandlers.forEach(handler => {
+      try {
+        handler(active);
+      } catch (handlerError) {
+        logger.error('Error in spinner handler:', handlerError);
+      }
+    });
+  }
+
+  /**
    * Close WebSocket connection
    */
   close() {
@@ -337,6 +410,7 @@ class ResearchWebSocketManager {
       isConnected: this.isConnected,
       clientId: this.clientId,
       reconnectAttempts: this.reconnectAttempts,
+      spinnerActive: this.spinnerActive, // Include spinner state in status
     };
   }
 }
@@ -523,6 +597,42 @@ export const offError = (handler) => {
 };
 
 /**
+ * Add spinner state change handler
+ * @param {Function} handler - Handler function that receives spinner state
+ */
+export const onSpinnerChange = (handler) => {
+  const wsManager = getWebSocketManager();
+  wsManager.onSpinnerChange(handler);
+};
+
+/**
+ * Remove spinner state change handler
+ * @param {Function} handler - Handler function to remove
+ */
+export const offSpinnerChange = (handler) => {
+  const wsManager = getWebSocketManager();
+  wsManager.offSpinnerChange(handler);
+};
+
+/**
+ * Get current spinner state
+ * @returns {boolean} Current spinner state
+ */
+export const getSpinnerState = () => {
+  const wsManager = getWebSocketManager();
+  return wsManager.getSpinnerActive();
+};
+
+/**
+ * Manually set spinner state (useful for external control)
+ * @param {boolean} active - Whether spinner should be active
+ */
+export const setSpinnerState = (active) => {
+  const wsManager = getWebSocketManager();
+  wsManager.setSpinnerActive(active);
+};
+
+/**
  * Send message through WebSocket
  * @param {Object} message - Message to send
  * @returns {Promise<void>}
@@ -562,6 +672,10 @@ export default {
   offConnection,
   onError,
   offError,
+  onSpinnerChange,
+  offSpinnerChange,
+  getSpinnerState,
+  setSpinnerState,
   sendMessage,
   closeConnection,
   getConnectionStatus,

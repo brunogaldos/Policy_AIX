@@ -331,3 +331,55 @@
     vertical-align: initial;
   }
 }
+
+/* Research Chatbot Spinner Styles */
+.research-chatbot-message-with-spinner {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.research-chatbot-spinner-text-inline {
+  font-size: 14px;
+  color: #666;
+  font-style: italic;
+}
+
+/* Progress ring spinner animation */
+.research-chatbot-message-with-spinner .progress-ring {
+  transform: rotate(-90deg);
+  color: var(--md-sys-color-secondary, #666);
+  transform-origin: 50% 50%;
+  margin-right: 4px;
+}
+
+.research-chatbot-message-with-spinner .progress-ring__circle {
+  stroke: var(--md-sys-color-primary, #007bff);
+  stroke-dasharray: 37.7;
+  stroke-dashoffset: 37.7;
+  stroke-linecap: round;
+  animation: progress-ring 2.5s infinite;
+}
+
+/* Done icon styling */
+.research-chatbot-message-with-spinner .done-icon {
+  margin-right: 4px;
+  color: var(--md-sys-color-secondary, #28a745);
+  font-size: 14px;
+  font-weight: bold;
+}
+
+@keyframes progress-ring {
+  0% {
+    stroke-dashoffset: 37.7;
+  }
+  50% {
+    stroke-dashoffset: 0;
+    transform: rotate(0deg);
+  }
+  100% {
+    stroke-dashoffset: 37.7;
+  }
+}
+
+
