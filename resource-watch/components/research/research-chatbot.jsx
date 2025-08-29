@@ -1068,9 +1068,12 @@ const ResearchChatbot = ({
                 )}
               </div>
               
-              <div className="research-chatbot-message-time">
-                {msg.timestamp?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </div>
+              {/* Only show timestamp for non-intermediate messages */}
+              {msg.messageType !== 'intermediate' && msg.messageType !== 'completed' && (
+                <div className="research-chatbot-message-time">
+                  {msg.timestamp?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </div>
+              )}
             </div>
           ))}
 
