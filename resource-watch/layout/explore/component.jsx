@@ -111,7 +111,7 @@ const Explore = (props) => {
         className="research-btn"
         onClick={() => setIsChatOpen(!isChatOpen)}
       >
-        <span>•</span>
+        <img src="/favicon.ico" alt="AI Icon" className="ai-button-icon" />
         <span>AI</span>
       </button>
 
