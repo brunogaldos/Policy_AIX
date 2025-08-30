@@ -41,7 +41,7 @@ export default function Header({
               <div className="header-logo">
                 <Link href="/">
                   <a>
-                    <h1 className="brand-title">AIX POLICY</h1>
+                    <h1 className="brand-title">POLISENSE AI</h1>
                   </a>
                 </Link>
               </div>
