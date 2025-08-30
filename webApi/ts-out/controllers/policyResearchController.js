@@ -48,6 +48,8 @@ export class PolicyResearchController extends BaseController {
             console.log(`🔍 PUT request to ${req.path} from origin: ${req.headers.origin}`);
             console.log(`📋 Request headers:`, JSON.stringify(req.headers, null, 2));
             console.log(`📦 Request body:`, JSON.stringify(req.body, null, 2));
+            console.log(`📦 Request body keys:`, Object.keys(req.body));
+            console.log(`📦 Request body types:`, Object.fromEntries(Object.entries(req.body).map(([key, value]) => [key, typeof value])));
             const chatLog = req.body.chatLog || [];
             const wsClientId = req.body.wsClientId;
             const memoryId = req.body.memoryId;
@@ -55,10 +57,7 @@ export class PolicyResearchController extends BaseController {
             const percentOfTopQueriesToSearch = req.body.percentOfTopQueriesToSearch || 0.25;
             const percentOfTopResultsToScan = req.body.percentOfTopResultsToScan || 0.25;
             const silentMode = req.body.silentMode === true;
-            // NEW: Check if this is a policy research request that needs RAG context
-            const isPolicyResearch = req.body.isPolicyResearch === true;
             console.log(`🔇 silentMode from request body: ${req.body.silentMode}, type: ${typeof req.body.silentMode}, parsed as: ${silentMode}`);
-            console.log(`🔍 Policy research mode: ${isPolicyResearch ? 'Yes' : 'No'}`);
             // For testing purposes, allow requests without wsClientId
             if (!wsClientId) {
                 console.log('⚠️ No wsClientId provided - this is a test request');
@@ -89,14 +88,17 @@ export class PolicyResearchController extends BaseController {
                 }
                 // NEW: Handle RAG context retrieval and query enhancement
                 let enhancedChatLog = [...chatLog];
-                if (isPolicyResearch && chatLog.length > 0) {
-                    console.log(`🔍 Policy research mode detected, getting RAG context...`);
+                if (chatLog.length > 0) {
+                    console.log(`🔍 Getting RAG context for all requests...`);
+                    console.log(`🔍 Chat log length: ${chatLog.length}`);
+                    console.log(`🔍 First message: ${chatLog[0]?.message}`);
                     try {
                         // Step 1: Get RAG context from SkillsFirstChatBot
                         const userQuestion = chatLog[0].message;
                         console.log(`📄 Original user question:`, userQuestion);
                         const ragContext = await this.getRAGContext(userQuestion, wsClientId);
                         console.log(`📝 RAG context retrieved, length:`, ragContext.length);
+                        console.log(`📝 RAG context preview (first 500 chars):`, ragContext.substring(0, 500));
                         // Step 2: Enhance the query with RAG context
                         enhancedChatLog[0] = {
                             ...enhancedChatLog[0],
@@ -112,13 +114,16 @@ Please research current policies and regulations that address this situation, in
                     }
                     catch (ragError) {
                         console.error(`❌ Error getting RAG context:`, ragError);
+                        console.error(`❌ RAG error details:`, ragError);
+                        if (ragError instanceof Error) {
+                            console.error(`❌ RAG error stack:`, ragError.stack);
+                        }
                         console.log(`⚠️ Proceeding with original query due to RAG error`);
                         // Keep original query if RAG fails
                     }
                 }
                 else {
-                    console.log(`📄 Using original query (no RAG enhancement)`);
-                    console.log(`📄 Original query:`, chatLog[0]?.message);
+                    console.log(`📄 No chat log available for RAG enhancement`);
                 }
                 // Run the research conversation (with enhanced context if available)
                 console.log(`🚀 Starting LiveResearchChatBot with ${enhancedChatLog.length} messages`);
@@ -158,6 +163,16 @@ Please research current policies and regulations that address this situation, in
             console.log('🔧 RAG memory ID created:', ragMemoryId);
             // Call the SkillsFirstChatBot API endpoint to get RAG data
             console.log('🔧 Sending request to SkillsFirstChatBot API...');
+            console.log('🔧 API URL: http://localhost:5029/api/rd_chat/');
+            console.log('🔧 Request payload:', JSON.stringify({
+                chatLog: [{
+                        sender: 'user',
+                        message: `For this question: "${userQuestion}", provide ONLY the raw data values, measurements, or facts. NO analysis, NO recommendations, NO policy suggestions, NO conclusions. Just the data.`
+                    }],
+                wsClientId: wsClientId,
+                memoryId: ragMemoryId,
+                silentMode: true // Don't stream RAG responses to frontend
+            }, null, 2));
             const response = await fetch('http://localhost:5029/api/rd_chat/', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -172,7 +187,7 @@ Please research current policies and regulations that address this situation, in
                 })
             });
             console.log('🔧 SkillsFirstChatBot API response status:', response.status);
-            console.log('🔧 SkillsFirstChatBot API response headers:', response.headers);
+            console.log('🔧 SkillsFirstChatBot API response headers:', JSON.stringify(response.headers, null, 2));
             if (response.ok) {
                 console.log('✅ SkillsFirstChatBot API call successful');
                 // Wait a bit for the bot to process and store the response
@@ -202,6 +217,10 @@ Please research current policies and regulations that address this situation, in
         }
         catch (error) {
             console.error("❌ Error getting RAG context:", error);
+            console.error("❌ Error details:", error);
+            if (error instanceof Error) {
+                console.error("❌ Error stack:", error.stack);
+            }
             return `RAG Context: Basic context for "${userQuestion}" - proceeding with research. (Error: ${error instanceof Error ? error.message : String(error)})`;
         }
     }
@@ -225,6 +244,12 @@ Please research current policies and regulations that address this situation, in
                 const parsed = JSON.parse(memoryData);
                 console.log('🔍 Memory data structure keys:', Object.keys(parsed));
                 if (parsed.chatLog && parsed.chatLog.length > 0) {
+                    console.log('🔍 Chat log length:', parsed.chatLog.length);
+                    console.log('🔍 Chat log messages:', parsed.chatLog.map((msg) => ({
+                        sender: msg.sender,
+                        message: msg.message?.substring(0, 100),
+                        timestamp: msg.timestamp
+                    })));
                     // Get the last bot response
                     const lastBotMessage = parsed.chatLog
                         .filter((msg) => msg.sender === 'bot')
@@ -232,6 +257,7 @@ Please research current policies and regulations that address this situation, in
                     if (lastBotMessage) {
                         console.log('✅ Found bot message in RAG memory');
                         console.log('📄 Bot message preview (first 100 chars):', lastBotMessage.message.substring(0, 100));
+                        console.log('📄 Bot message timestamp:', lastBotMessage.timestamp);
                         return lastBotMessage.message;
                     }
                     else {
@@ -241,15 +267,21 @@ Please research current policies and regulations that address this situation, in
                 }
                 else {
                     console.log('⚠️ No chatLog found in RAG memory');
+                    console.log('🔍 Memory data structure:', JSON.stringify(parsed, null, 2));
                 }
             }
             else {
                 console.log('❌ No memory data found for RAG request');
+                console.log('🔍 Memory key searched:', memoryKey);
             }
             return "No RAG response found in memory";
         }
         catch (error) {
             console.error("❌ Error retrieving RAG response from memory:", error);
+            console.error("❌ Error details:", error);
+            if (error instanceof Error) {
+                console.error("❌ Error stack:", error.stack);
+            }
             return "Error retrieving RAG response from memory";
         }
     }

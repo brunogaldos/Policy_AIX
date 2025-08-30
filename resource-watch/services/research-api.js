@@ -475,6 +475,7 @@ export const conversation = async (chatLog = [], options = {}) => {
   try {
     // Send HTTP PUT request to initiate research conversation
     const response = await researchAPI.put('/live-research-chat/', requestPayload);
+    //const response = await researchAPI.put('/policy_research/', requestPayload);
     
     logger.info('Research conversation request successful:', response.status);
     
