@@ -509,11 +509,7 @@ const ResearchChatbot = ({
           }
           break;
 
-        case 'test':
-          // Handle test messages
-          console.log('🔍 DEBUG: Test message received:', message);
-          addMessage('system', `🧪 Test: ${message.data?.name || message.message}`);
-          break;
+
 
         default:
           // Handle role/content chunks (OpenAI streaming format)
@@ -976,6 +972,8 @@ const ResearchChatbot = ({
               key={msg.id}
               className={`research-chatbot-message research-chatbot-message-${msg.sender} ${
                 msg.messageType === 'research_result' ? 'research-chatbot-message-research' : ''
+              } ${
+                msg.messageType === 'intermediate' || msg.messageType === 'completed' ? 'research-chatbot-message-intermediate' : ''
               }`}
             >
               <div className="research-chatbot-message-content">
@@ -983,15 +981,15 @@ const ResearchChatbot = ({
                 {msg.messageType === 'intermediate' ? (
                   <div className="research-chatbot-message-with-spinner">
                     {spinnerActive ? (
-                      <svg className="progress-ring" width="16" height="16">
+                      <svg className="progress-ring" width="12" height="12">
                         <circle
                           className="progress-ring__circle"
                           stroke="blue"
                           strokeWidth="2"
                           fill="transparent"
-                          r="6"
-                          cx="8"
-                          cy="8"
+                          r="4"
+                          cx="6"
+                          cy="6"
                         />
                       </svg>
                     ) : (
