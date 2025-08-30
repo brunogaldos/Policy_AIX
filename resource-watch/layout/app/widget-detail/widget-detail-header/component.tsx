@@ -60,7 +60,7 @@ const WidgetDetailHeader = ({
               <Tooltip
                 overlay={<CollectionsPanel resource={widget} resourceType="widget" />}
                 overlayClassName="c-rc-tooltip"
-                overlayStyle={{ color: '#c32d7b' }}
+                overlayStyle={{ color: '#40E0D0' }}
                 placement="bottomLeft"
                 trigger="click"
               >

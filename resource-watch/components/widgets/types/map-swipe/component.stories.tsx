@@ -149,7 +149,7 @@ const widget = {
               {
                 filter: ['all', ['==', 'coast', 1], ['in', 'intersect', true]],
                 paint: {
-                  'fill-color': '#FAB72E',
+                  'fill-color': '#40E0D0',
                   'fill-opacity': [
                     'case',
                     ['boolean', ['feature-state', 'active'], false],
@@ -158,7 +158,7 @@ const widget = {
                     0.5,
                     0,
                   ],
-                  'fill-outline-color': '#FAB72E',
+                  'fill-outline-color': '#40E0D0',
                 },
                 'source-layer': 'layer0',
                 id: 'coastal-interactivity',
@@ -167,7 +167,7 @@ const widget = {
               {
                 filter: ['in', 'intersect', true],
                 paint: {
-                  'line-color': '#FAB72E',
+                  'line-color': '#40E0D0',
                   'line-width': 2,
                 },
                 'source-layer': 'layer0',

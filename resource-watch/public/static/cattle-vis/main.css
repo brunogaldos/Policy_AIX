@@ -27,7 +27,7 @@ body {
 }
 
 .slider .track-progress {
-  stroke: #c32d7b;
+  stroke: #40E0D0;
   stroke-width: 4;
 }
 
@@ -50,7 +50,7 @@ body {
 .flow .title tspan:first-of-type {
   font-size: 125%;
   font-weight: 300;
-  fill: #c32d7b;
+  fill: #40E0D0 ;
 }
 
 .baseflow .title tspan:last-of-type,

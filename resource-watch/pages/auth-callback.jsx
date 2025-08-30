@@ -45,7 +45,7 @@ export default function AuthCallback({
           style={{
             display: 'inline-block',
             marginTop: 150,
-            color: '#c32d7b',
+            color: '#40E0D0',
             fontSize: 26,
             fontWeight: 300,
           }}

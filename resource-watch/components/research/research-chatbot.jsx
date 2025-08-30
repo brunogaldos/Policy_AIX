@@ -895,12 +895,7 @@ const ResearchChatbot = ({
   }, [isOpen, isConnected, isInitializing, initializeWebSocket]);
 
   // Effect: Add test message when component loads
-  useEffect(() => {
-    if (isOpen) {
-      console.log('🔍 DEBUG: Component opened, adding test message');
-      addMessage('system', '🔍 Test message - component is working');
-    }
-  }, [isOpen, addMessage]);
+
 
   // Effect: Set up WebSocket message handlers
   useEffect(() => {

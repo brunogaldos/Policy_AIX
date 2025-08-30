@@ -44,17 +44,17 @@
   }
   
   &::-webkit-scrollbar-thumb {
-    background: rgba(250, 183, 46, 0.6); // Using the #fab72e color with transparency
+    background: rgba(64, 224, 208, 0.6); // Using the #40E0D0 color with transparency
     border-radius: 4px;
     
     &:hover {
-      background: rgba(250, 183, 46, 0.8); // Darker on hover
+      background: rgba(64, 224, 208, 0.8); // Darker on hover
     }
   }
   
   /* Firefox scrollbar styling */
   scrollbar-width: thin;
-  scrollbar-color: rgba(250, 183, 46, 0.6) rgba(255, 255, 255, 0.1);
+  scrollbar-color: rgba(64, 224, 208, 0.6) rgba(255, 255, 255, 0.1);
 }
 
 /* Floating AI Assistant button */
@@ -63,7 +63,7 @@
   top: 5px;
   right: 8px;
   z-index: 999999;
-  background: #45535C; // Updated background color
+  background: #404957; // Updated background color
   color: #FFFFFF; // Pure white color
   padding: 12px 16px;
   font-size: 14px;

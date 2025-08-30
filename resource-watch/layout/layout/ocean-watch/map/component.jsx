@@ -51,7 +51,7 @@ const layers = [
               'fill-color': [
                 'case',
                 ['boolean', ['feature-state', 'hover'], false],
-                '#fab72e',
+                '#40E0D0',
                 '#217098',
               ],
               'fill-opacity': 1,
@@ -326,7 +326,7 @@ export default function MapSelection() {
                     >
                       <span
                         style={{
-                          color: '#fab72e',
+                          color: '#40E0D0',
                           textShadow: '1px 1px 2px rgba(15, 69, 115, 0.75)',
                         }}
                       >

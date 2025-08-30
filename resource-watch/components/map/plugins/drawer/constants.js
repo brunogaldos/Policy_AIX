@@ -13,7 +13,7 @@ export const DRAWER_CONFIG = {
         'line-join': 'round',
       },
       paint: {
-        'line-color': '#fab72e',
+        'line-color': '#40E0D0',
         'line-width': 2,
       },
     },
@@ -23,7 +23,7 @@ export const DRAWER_CONFIG = {
       type: 'fill',
       filter: ['all', ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
       paint: {
-        'fill-color': '#fab72e',
+        'fill-color': '#40E0D0',
         'fill-opacity': 0.2,
       },
     },
@@ -38,7 +38,7 @@ export const DRAWER_CONFIG = {
         'line-join': 'round',
       },
       paint: {
-        'line-color': '#fab72e',
+        'line-color': '#40E0D0',
         'line-width': 2,
       },
     },
@@ -74,7 +74,7 @@ export const DRAWER_CONFIG = {
         'line-join': 'round',
       },
       paint: {
-        'line-color': '#fab72e',
+        'line-color': '#40E0D0',
         'line-width': 2,
       },
     },

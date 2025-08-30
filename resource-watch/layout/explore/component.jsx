@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-undef */
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 
@@ -94,6 +94,8 @@ const Explore = (props) => {
     }
     return dynamic(() => import(`scripts/schemas/${datasetData.slug.toLowerCase()}`));
   }, [datasetData]);
+
+
 
   const metadata = dataset?.metadata?.[0];
   const infoObj = metadata?.info;

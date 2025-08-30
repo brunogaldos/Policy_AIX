@@ -7,7 +7,7 @@ $min-width-sidebar-closed: 10px;
   display: flex;
   flex-direction: column;
   max-width: $max-width-sidebar;
-  background-color: #45535C; // Updated background color to match header
+  background-color: #404957; // Updated background color to match header
   color: #FFFFFF; // Updated text color to match header
   z-index: 3;
 
@@ -53,7 +53,7 @@ $min-width-sidebar-closed: 10px;
     left: 100%;
     z-index: 1;
     cursor: pointer;
-    background-color: #45535C; // Updated background color to match header
+    background-color: #404957; // Updated background color to match header
     backdrop-filter: blur(10px);
     border: none;
     border-radius: 0 2px 2px 0;

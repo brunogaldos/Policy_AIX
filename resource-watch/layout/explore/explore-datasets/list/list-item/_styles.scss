@@ -67,7 +67,7 @@
       font-size: $font-size-tiny;
       font-weight: bold;
       line-height: 10px;
-      color: #fab72e; // Changed to match the new color scheme
+      color: #40E0D0; // Changed to match the new color scheme
 
       .source {
           text-overflow: ellipsis;
@@ -75,11 +75,11 @@
           overflow: hidden;
           margin-right: 4 * $space;
           max-width: 100px;
-          color: #fab72e; // Changed to match the new color scheme
+          color: #40E0D0; // Changed to match the new color scheme
       }
 
       .date {
-          color: #fab72e; // Changed to match the new color scheme
+          color: #40E0D0; // Changed to match the new color scheme
       }
     }
 

@@ -25,9 +25,9 @@ export default class MyDocument extends Document {
 
           {/* Mobile address background */}
           {/* Chrome, Firefox OS and Opera */}
-          <meta name="theme-color" content="#c32d7b" />
+          <meta name="theme-color" content="#40E0D0" />
           {/* Windows Phone */}
-          <meta name="msapplication-navbutton-color" content="#c32d7b" />
+          <meta name="msapplication-navbutton-color" content="#40E0D0" />
           {/* iOS Safari */}
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />

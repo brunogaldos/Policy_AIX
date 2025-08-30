@@ -7,7 +7,7 @@ export default function HeadError({
 }) {
   return (
     <HeadNext>
-      <title>{`${title} | Resource Watch`}</title>
+      <title>{`${title} | Polisense`}</title>
       <meta name="robots" content="noindex, follow" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
     </HeadNext>

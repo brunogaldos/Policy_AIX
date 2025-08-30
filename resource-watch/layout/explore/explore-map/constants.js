@@ -10,7 +10,7 @@ export const LEGEND_TIMELINE_PROPERTIES = {
   },
   handleStyle: [
     {
-      backgroundColor: '#c32d7b',
+      backgroundColor: '#40E0D0',
       width: 21,
       height: 21,
       borderWidth: 3,
@@ -19,7 +19,7 @@ export const LEGEND_TIMELINE_PROPERTIES = {
       top: 0,
     },
     {
-      backgroundColor: '#c32d7b',
+      backgroundColor: '#40E0D0',
       width: 21,
       height: 21,
       borderWidth: 3,

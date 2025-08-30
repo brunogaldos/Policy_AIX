@@ -99,6 +99,8 @@ const ResourceWatchApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
           }}
         />
       )}
+
+
       <QueryClientProvider client={queryClient}>
         <MediaContextProvider>
           <Hydrate state={pageProps.dehydratedState}>

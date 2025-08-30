@@ -143,13 +143,13 @@ export const USER_AREA_LAYER_TEMPLATES = {
           {
             type: 'line',
             source: id,
-            paint: { 'line-color': '#fab72e' },
+            paint: { 'line-color': '#40E0D0' },
           },
           {
             type: 'fill',
             source: id,
             paint: {
-              'fill-color': '#fab72e',
+              'fill-color': '#40E0D0',
               'fill-opacity': 0.2,
             },
           },

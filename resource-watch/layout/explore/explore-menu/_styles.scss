@@ -11,7 +11,7 @@
   .c-dataset-search {
     position: absolute;
     z-index: 999;
-    background-color: #45535C; // Updated background color to match header
+    background-color: #404957; // Updated background color to match header
     backdrop-filter: blur(10px);
     width: 100%;
     padding: (2 * $space) 0 (2 * $space) (2 * $space);
@@ -45,7 +45,7 @@
         width: 25px;
         height: 25px;
         margin: 0 (4 * $space);
-        fill: #fab72e; // Changed to new color scheme
+        fill: #40E0D0; // Changed to new color scheme
       }
 
       .section-name,
@@ -68,7 +68,7 @@
         }
 
         svg {
-          fill: #fab72e; // Changed to new color scheme
+          fill: #40E0D0; // Changed to new color scheme
         }
 
         .section-name,
