@@ -100,43 +100,100 @@ export class PolicyResearchController extends BaseController {
                         let ragContext;
                         if (chatLog.length === 1) {
                             // First question - get initial RAG context
+                            console.log(`📝 Getting RAG context for FIRST question:`, userQuestion);
                             ragContext = await this.getRAGContext(userQuestion, wsClientId);
                             console.log(`📝 Initial RAG context retrieved, length:`, ragContext.length);
+                            console.log(`🔍 First question RAG success:`, ragContext.length > 50 ? 'YES' : 'NO');
                         }
                         else {
-                            // Follow-up question - get fresh RAG context for the follow-up
+                            // Follow-up question - use the SAME approach as first question (which works)
+                            // Get fresh RAG context for the follow-up question
                             const followUpQuestion = chatLog[chatLog.length - 1].message;
                             console.log(`📝 Follow-up question detected:`, followUpQuestion);
+                            console.log(`📝 Getting RAG context for FOLLOW-UP question:`, followUpQuestion);
                             ragContext = await this.getRAGContext(followUpQuestion, wsClientId);
                             console.log(`📝 Fresh RAG context for follow-up retrieved, length:`, ragContext.length);
+                            console.log(`🔍 Follow-up question RAG success:`, ragContext.length > 50 ? 'YES' : 'NO');
                         }
                         console.log(`📝 RAG context preview (first 500 chars):`, ragContext.substring(0, 500));
+                        console.log(`📊 RAG context length:`, ragContext.length);
+                        console.log(`🔍 RAG context contains data:`, ragContext.length > 50 ? 'YES' : 'NO');
                         // Step 2: Enhance the query with RAG context
                         if (chatLog.length === 1) {
                             // First question - use original enhancement
                             enhancedChatLog[0] = {
                                 ...enhancedChatLog[0],
-                                message: `${ragContext}
+                                message: `CRITICAL INSTRUCTION: You MUST use the RAG data below to provide specific, detailed answers. Do NOT give generic responses.
 
-User Question: ${userQuestion}
+RAG DATA CONTEXT:
+${ragContext}
 
-Please research current policies and regulations that address this situation, incorporating the data context provided above. Provide comprehensive policy recommendations based on both the data and current best practices.`
+USER QUESTION: ${userQuestion}
+
+REQUIRED: Use the RAG data above to provide:
+1. Specific data points, statistics, and findings from the RAG context
+2. Concrete examples and evidence from the retrieved information
+3. Detailed analysis based on the actual data, not generic statements
+4. Specific policy recommendations grounded in the RAG data
+5. District rankings and scores based on the retrieved information
+
+DO NOT provide vague, generic answers. Every response must reference specific data from the RAG context above.
+
+EXAMPLES OF WHAT NOT TO DO:
+- "Begin with quick wins like solar installations" (too generic)
+- "Expand to more complex projects" (too vague)
+- "Strengthen the overall energy infrastructure" (too generic)
+
+EXAMPLES OF WHAT TO DO:
+- "Based on the RAG data showing District A has 8,500 people/km² density and 15% energy burden, prioritize solar installations in District A"
+- "According to the infrastructure data, District B has 75% existing coverage, making it suitable for battery storage expansion"
+- "The RAG data indicates District C has security score 0.8, supporting wind power development"
+
+EVERY PARAGRAPH MUST START WITH "Based on the RAG data..." or "According to the RAG context..." and reference specific numbers, facts, or data points.
+
+MANDATORY DATA INJECTION: If the RAG data is insufficient, you MUST use your web research capabilities to find specific data and statistics. You are FORBIDDEN from giving generic policy statements without concrete data backing. Every recommendation must include specific numbers, percentages, or measurable facts.`
                             };
                         }
                         else {
                             // Follow-up question - enhance with fresh RAG context
                             enhancedChatLog[enhancedChatLog.length - 1] = {
                                 ...enhancedChatLog[enhancedChatLog.length - 1],
-                                message: `${ragContext}
+                                message: `CRITICAL INSTRUCTION: You MUST use the RAG data below to provide specific, detailed answers. Do NOT give generic responses.
 
-Follow-up Question: ${chatLog[chatLog.length - 1].message}
+RAG DATA CONTEXT (from initial research):
+${ragContext}
 
-Please provide a comprehensive answer using the data context above, following the energy-transition policy advisor format with neighborhood rankings and detailed analysis.`
+FOLLOW-UP QUESTION: ${chatLog[chatLog.length - 1].message}
+
+REQUIRED: Use the RAG data above to provide:
+1. Specific data points, statistics, and findings from the RAG context
+2. Concrete examples and evidence from the retrieved information
+3. Detailed analysis based on the actual data, not generic statements
+4. Specific policy recommendations grounded in the RAG data
+5. District rankings and scores based on the retrieved information
+
+DO NOT provide vague, generic answers. Every response must reference specific data from the RAG context above.
+
+EXAMPLES OF WHAT NOT TO DO:
+- "Begin with quick wins like solar installations" (too generic)
+- "Expand to more complex projects" (too vague)
+- "Strengthen the overall energy infrastructure" (too generic)
+
+EXAMPLES OF WHAT TO DO:
+- "Based on the RAG data showing District A has 8,500 people/km² density and 15% energy burden, prioritize solar installations in District A"
+- "According to the infrastructure data, District B has 75% existing coverage, making it suitable for battery storage expansion"
+- "The RAG data indicates District C has security score 0.8, supporting wind power development"
+
+EVERY PARAGRAPH MUST START WITH "Based on the RAG data..." or "According to the RAG context..." and reference specific numbers, facts, or data points.
+
+MANDATORY DATA INJECTION: If the RAG data is insufficient, you MUST use your web research capabilities to find specific data and statistics. You are FORBIDDEN from giving generic policy statements without concrete data backing. Every recommendation must include specific numbers, percentages, or measurable facts.`
                             };
                         }
                         console.log(`📝 Enhanced query created with RAG context`);
                         console.log(`📄 Enhanced query preview (first 300 chars):`, enhancedChatLog[enhancedChatLog.length - 1].message.substring(0, 300));
                         console.log(`📊 Enhanced query total length:`, enhancedChatLog[enhancedChatLog.length - 1].message.length);
+                        console.log(`🔍 RAG data is in enhanced query:`, enhancedChatLog[enhancedChatLog.length - 1].message.includes('RAG DATA CONTEXT') ? 'YES' : 'NO');
+                        console.log(`🔍 RAG data length in enhanced query:`, enhancedChatLog[enhancedChatLog.length - 1].message.length - enhancedChatLog[enhancedChatLog.length - 1].message.indexOf('RAG DATA CONTEXT'));
                     }
                     catch (ragError) {
                         console.error(`❌ Error getting RAG context:`, ragError);
@@ -190,15 +247,6 @@ Please provide a comprehensive answer using the data context above, following th
             // Call the SkillsFirstChatBot API endpoint to get RAG data
             console.log('🔧 Sending request to SkillsFirstChatBot API...');
             console.log('🔧 API URL: http://localhost:5029/api/rd_chat/');
-            console.log('🔧 Request payload:', JSON.stringify({
-                chatLog: [{
-                        sender: 'user',
-                        message: `For this question: "${userQuestion}", provide ONLY the raw data values, measurements, or facts. NO analysis, NO recommendations, NO policy suggestions, NO conclusions. Just the data.`
-                    }],
-                wsClientId: wsClientId,
-                memoryId: ragMemoryId,
-                silentMode: true // Don't stream RAG responses to frontend
-            }, null, 2));
             const response = await fetch('http://localhost:5029/api/rd_chat/', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -218,10 +266,22 @@ Please provide a comprehensive answer using the data context above, following th
                 console.log('✅ SkillsFirstChatBot API call successful');
                 // Wait a bit for the bot to process and store the response
                 console.log('⏳ Waiting for SkillsFirstChatBot to process and store response...');
-                await new Promise(resolve => setTimeout(resolve, 5000));
+                await new Promise(resolve => setTimeout(resolve, 12000)); // 12 seconds to ensure data is loaded
                 // Now try to retrieve the actual response from memory
                 console.log('🔍 Attempting to retrieve RAG response from memory...');
-                const ragResponse = await this.retrieveRAGResponseFromMemory(ragMemoryId);
+                let ragResponse = await this.retrieveRAGResponseFromMemory(ragMemoryId);
+                // If first attempt fails, wait a bit more and try again
+                if (!ragResponse || ragResponse.length < 50) {
+                    console.log('⏳ First attempt failed, waiting 5 more seconds and retrying...');
+                    await new Promise(resolve => setTimeout(resolve, 5000));
+                    ragResponse = await this.retrieveRAGResponseFromMemory(ragMemoryId);
+                }
+                // If second attempt also fails, try one more time with even more time
+                if (!ragResponse || ragResponse.length < 50) {
+                    console.log('⏳ Second attempt failed, waiting 8 more seconds for final retry...');
+                    await new Promise(resolve => setTimeout(resolve, 8000));
+                    ragResponse = await this.retrieveRAGResponseFromMemory(ragMemoryId);
+                }
                 if (ragResponse && ragResponse.length > 50) {
                     console.log('✅ RAG response retrieved successfully from memory');
                     console.log('📄 RAG response preview (first 200 chars):', ragResponse.substring(0, 200));
@@ -231,14 +291,14 @@ Please provide a comprehensive answer using the data context above, following th
                 else {
                     console.log('⚠️ RAG response from memory is too short or empty, using fallback');
                     console.log('📄 RAG response from memory:', ragResponse);
-                    return `RAG Context Retrieved: Data and measurements related to "${userQuestion}" have been retrieved from the SkillsFirst database. This includes historical trends, current measurements, and relevant environmental data.`;
+                    return `RAG Context: Data retrieval in progress. The SkillsFirstChatBot is processing your request for: "${userQuestion}". Please wait for the data to be fully loaded, then provide specific analysis based on the retrieved information.`;
                 }
             }
             else {
                 console.error(`❌ RAG API call failed: ${response.status}`);
                 const errorText = await response.text();
                 console.error('❌ RAG API error response:', errorText);
-                return `RAG Context: Basic data context for "${userQuestion}" - proceeding with research. (API call failed: ${response.status})`;
+                return `RAG Context: API call failed (${response.status}). Use web research to find specific data and statistics. Every response must include concrete numbers, facts, and specific examples.`;
             }
         }
         catch (error) {
@@ -247,7 +307,7 @@ Please provide a comprehensive answer using the data context above, following th
             if (error instanceof Error) {
                 console.error("❌ Error stack:", error.stack);
             }
-            return `RAG Context: Basic context for "${userQuestion}" - proceeding with research. (Error: ${error instanceof Error ? error.message : String(error)})`;
+            return `RAG Context: Error occurred (${error instanceof Error ? error.message : String(error)}). Use web research to find specific data and statistics. Every response must include concrete numbers, facts, and specific examples.`;
         }
     }
     /**
@@ -260,10 +320,24 @@ Please provide a comprehensive answer using the data context above, following th
             const { createClient } = await import('redis');
             const client = createClient();
             await client.connect();
-            // Get the memory data from Redis
-            const memoryKey = `ps-chatbot-memory-${memoryId}`;
-            console.log('🔍 Looking for memory key:', memoryKey);
-            const memoryData = await client.get(memoryKey);
+            // Get the memory data from Redis - try multiple key formats
+            const possibleKeys = [
+                `ps-chatbot-memory-${memoryId}`,
+                `ps-chatbot-memory:${memoryId}`,
+                `rag-context-${memoryId}`,
+                memoryId
+            ];
+            let memoryData = null;
+            let foundKey = null;
+            for (const key of possibleKeys) {
+                console.log('🔍 Trying memory key:', key);
+                memoryData = await client.get(key);
+                if (memoryData) {
+                    foundKey = key;
+                    console.log('✅ Found memory data with key:', foundKey);
+                    break;
+                }
+            }
             await client.disconnect();
             if (memoryData) {
                 console.log('✅ Found memory data for RAG request');
@@ -298,7 +372,7 @@ Please provide a comprehensive answer using the data context above, following th
             }
             else {
                 console.log('❌ No memory data found for RAG request');
-                console.log('🔍 Memory key searched:', memoryKey);
+                console.log('🔍 Memory keys tried:', possibleKeys);
             }
             return "No RAG response found in memory";
         }

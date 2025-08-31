@@ -11,6 +11,7 @@ import remarkGfm from "remark-gfm"
 // utils
 import { logger } from 'utils/logs';
 import Icon from 'components/ui/icon';
+import MessageRenderer from 'components/ui/MessageRenderer';
 
 // actions
 import { toggleMapLayerGroup, resetMapLayerGroupsInteraction } from 'layout/explore/actions';
@@ -513,6 +514,7 @@ const ResearchChatbot = ({
 
         default:
           // Handle role/content chunks (OpenAI streaming format)
+          console.log('🔍 DEBUG: Processing default case message:', message);
           if (message.role && message.content && typeof message.content === 'string') {
             
             setMessages((prev) => {
@@ -1001,57 +1003,12 @@ const ResearchChatbot = ({
                       {msg.message}
                     </span>
                   </div>
-                ) : msg.messageType === 'research_result' ? (
+                ) : msg.sender === 'assistant' ? (
                   <div className="research-chatbot-research-content">
-                                
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}> 
-                      {msg.message}
-                    </ReactMarkdown>
-
-                    {/* Format research results with markdown-like styling 
-                    {msg.message.split('\n').map((line, index) => {
-                      // Handle markdown links
-                      const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-                      const parts = [];
-                      let lastIndex = 0;
-                      let match;
-
-                      while ((match = linkRegex.exec(line)) !== null) {
-                        // Add text before the link
-                        if (match.index > lastIndex) {
-                          parts.push(line.substring(lastIndex, match.index));
-                        }
-                        // Add the link
-                        parts.push(
-                          <a
-                            key={`link-${index}-${match.index}`}
-                            href={match[2]}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="research-chatbot-link"
-                          >
-                            {match[1]}
-                          </a>
-                        );
-                        lastIndex = match.index + match[0].length;
-                      }
-
-                      // Add remaining text
-                      if (lastIndex < line.length) {
-                        parts.push(line.substring(lastIndex));
-                      }
-
-                      // If no links found, just use the line as is
-                      if (parts.length === 0) {
-                        parts.push(line);
-                      }
-
-                      return (
-                        <div key={index} className="research-chatbot-line">
-                          {parts.length > 0 ? parts : line}
-                        </div>
-                      );
-                    })} */}
+                    <MessageRenderer 
+                      message={msg.message}
+                      sender={msg.sender}
+                    />
                   </div>
                 ) : (
                   msg.message

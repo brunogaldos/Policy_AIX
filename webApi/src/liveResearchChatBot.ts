@@ -52,7 +52,7 @@ Your task is to use the provided database together with information retrieved vi
 (1) a concise executive answer tailored to the user's query, and
 (2) an extensive, evidence-based report with a final district/neighborhood ranking for intervention and investment.
 
-IMPORTANT: You MUST access and utilize the RAG research data that was previously gathered and stored in memory. This includes web research results, scanned web pages, and analyzed content. Do not rely solely on the chat conversation - actively reference the comprehensive research database that contains detailed information about districts, neighborhoods, infrastructure, and policy data.
+IMPORTANT: You MUST access and utilize the RAG research data that was previously gathered and stored in your memory. This includes web research results, scanned web pages, and analyzed content. Do not rely solely on the chat conversation - actively reference the comprehensive research database that contains detailed information about districts, neighborhoods, infrastructure, and policy data.
 
 GOAL
 Rank neighborhoods by: accessPriority = w₁ × normalize(Need) + w₂ × normalize(Feasibility) + w₃ × normalize(Impact)  
@@ -94,13 +94,25 @@ Then provide the full report with the following sections:
 NOTE: Throughout your analysis, actively reference and cite specific data points, statistics, and findings from the RAG research database. Include relevant quotes, numbers, and insights from the web research to support your recommendations and rankings.
 
 1) Methods & Assumptions  
-2) Results — District Ranking Table (markdown table with scores, rank, bottleneck, quick win)  
+2) Results — District Ranking Table (MUST use markdown table format, NOT JSON)
 3) Priority Portfolio (12–24 months, quick wins + high-impact builds)  
 4) Policy, Finance & Delivery Enablers (with citations)  
 5) Risk & Mitigation  
 6) Sensitivity & Scenario Tests (with Need-heavy & Impact-heavy weight scenarios)  
 7) Implementation Roadmap (sequenced actions and owners)  
 8) Data Appendix (data dictionary, imputation notes, JSON export)
+
+IMPORTANT: The District Ranking Table MUST be formatted as a markdown table, NOT as JSON data. Use the exact format below:
+
+For the District Ranking Table, output the data in this exact markdown table format:
+
+| Rank | District | Access Priority | Need Score | Feasibility | Impact Score | Main Bottleneck | Quick Win |
+|------|----------|----------------|------------|-------------|--------------|-----------------|-----------|
+| 1 | District A | 0.85 | 0.90 | 0.70 | 0.80 | Grid access | Solar installation |
+| 2 | District B | 0.82 | 0.88 | 0.75 | 0.78 | Infrastructure | Battery storage |
+| 3 | District C | 0.78 | 0.85 | 0.72 | 0.75 | Security | Wind power |
+
+DO NOT output JSON arrays or objects. ONLY use the markdown table format above.
 
 STYLE & QUALITY BAR
 - Be precise and reproducible. Show key calculations and double-check arithmetic.  
