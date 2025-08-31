@@ -1,0 +1,20 @@
+{
+  "jsonUrls": [
+    
+  ],
+  "documentUrls": [
+    "http://localhost:3001/city-data-index.csv"
+  ],
+  "categories": [
+    "NO₂ (Nitrogen Dioxide)",
+    "Air Quality",
+    "Environmental Health",
+    "Urban Pollution",
+    "Satellite Data",
+    "Atmospheric Chemistry",
+    "Environmental Monitoring",
+    "Climate Change",
+    "Geospatial Data"
+  ],
+  "aboutProject": "This RAG system provides comprehensive NO₂ (Nitrogen Dioxide) air quality data for cities across Latin America, with a focus on Colombia. The system contains detailed measurements from TROPOMI satellite data, including NO₂ concentrations, air quality categories, health impacts, and environmental context for major cities. Users can query specific cities, compare air quality across regions, understand health risks, and get recommendations for different air quality levels. The data covers 15 major cities including 8 Colombian cities (Medellín, Cali, Barranquilla, Cartagena, Bucaramanga, Pereira, Manizales) and 7 other Latin American cities (Mexico City, São Paulo, Buenos Aires, Lima, Santiago, Caracas, Quito, La Paz). Each city entry includes coordinates, NO₂ measurements, air quality categories, health impacts, pollution sources, and recommendations."
+}

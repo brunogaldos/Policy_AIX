@@ -35,7 +35,7 @@ export class LiveResearchChatBot extends PsBaseChatBot {
 
   // For directing the LLMs to focus on the most relevant parts of each web page
   jsonWebPageResearchSchema = `
-    //MOST IMPORTANT INSTRUCTIONS: Act as a policy research assistant. From the query, identify laws, barriers, and opportunities in the area that affect sustainable policies for the common good, providing insights useful for decision-makers.
+    //MOST IMPORTANT INSTRUCTIONS: Act as a policy research assistant. From the query, identify laws, barriers, and investment opportunities in the area that affect sustainable policies for the common good, providing insights useful for decision-makers.
     {
       potentialSourcesOfInformationAboutBarriersToSkillsFirstPolicies: string[],
       potentialDescriptionOfBarriersToSkillsFirstPolicies: string[],

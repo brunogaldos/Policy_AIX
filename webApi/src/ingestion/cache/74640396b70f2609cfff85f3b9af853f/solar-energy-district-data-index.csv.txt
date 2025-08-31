@@ -1,0 +1,20 @@
+<html><head><meta name="color-scheme" content="light dark"></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">Country,city,District,Province,Latitude,Longitude,Solar Energy Potential (GHI),Unit,Description
+Peru,Arequipa,Arequipa,Arequipa,-16.42,-71.53,6.7979998588562,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential
+Peru,Arequipa,La Joya,Arequipa,-16.7252,-71.8605,6.81300020217896,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential
+Peru,Arequipa,Alto Selva Alegre,Arequipa,-16.3632,-71.548,6.79099988937378,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential
+Peru,Arequipa,Cerro Colorado,Arequipa,-16.3702,-71.5273,6.78000020980835,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential
+Peru,Arequipa,Paucarpata,Arequipa,-16.3989,-71.535,6.79899978637695,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential
+Peru,Arequipa,Yanahuara,Arequipa,-16.3985,-71.538,6.80200004577637,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential
+Peru,Arequipa,Cayma,Arequipa,-16.395,-71.53,6.79400014877319,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential
+Peru,Arequipa,Miraflores,Arequipa,-16.402,-71.54,6.80200004577637,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential
+Peru,Arequipa,Sachaca,Arequipa,-16.405,-71.545,6.80600023269653,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential
+Peru,Arequipa,JL Bustamante,Arequipa,-16.4,-71.532,6.79699993133545,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential
+Peru,Arequipa,Camaná,Camaná,-16.62,-72.72,5.38800001144409,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential
+Peru,Arequipa,Caravelí,Caravelí,-15.9,-74.23,5.60699987411499,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential
+Peru,Arequipa,Aplao,Castilla,-15.77,-72.65,6.66800022125244,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential
+Peru,Arequipa,Chivay,Caylloma,-15.63,-71.58,6.25799989700317,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential
+Peru,Arequipa,Majes,Caylloma,-16.2396,-72.2364,6.85500001907349,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential
+Peru,Arequipa,Chuquibamba,Condesuyos,-15.73,-72.93,6.6269998550415,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential
+Peru,Arequipa,Mollendo,Islay,-17.02,-72.02,5.01000022888184,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential
+Peru,Arequipa,Cotahuasi,La Unión,-15.5,-72.7,6.03299999237061,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential
+</pre></body></html>

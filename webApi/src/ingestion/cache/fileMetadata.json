@@ -1,223 +1,941 @@
 {
-  "ff24994cc3617f8fc52089708a2e1c99": {
-    "url": "http://localhost:3001/city-data-index.csv",
-    "fileId": "ff24994cc3617f8fc52089708a2e1c99",
+  "f0a55fff154697c42a3f3bd3783d94cd": {
+    "url": "http://localhost:3001/nighttime-lights-district-data-index.csv",
+    "fileId": "f0a55fff154697c42a3f3bd3783d94cd",
     "contentType": "text/plain; charset=utf-8",
-    "filePath": "src/ingestion/cache/ff24994cc3617f8fc52089708a2e1c99/city-data-index.csv.txt",
-    "lastModified": "2025-08-16T19:45:14.809Z",
+    "filePath": "src/ingestion/cache/f0a55fff154697c42a3f3bd3783d94cd/nighttime-lights-district-data-index.csv.txt",
+    "lastModified": "2025-08-31T13:34:12.777Z",
     "lastModifiedOnServer": "",
-    "size": 2600,
-    "hash": "67b6495f9326c1a7d2021d5f4f55b90af7c76b58d6809220ffb3ede33a3f9357",
-    "title": "Global Cities NO2 Concentration Data",
-    "shortDescription": "Detailed NO2 concentration data across numerous global cities.",
-    "description": "This dataset comprises an extensive list of global cities including Medellín, Cali, Barranquilla, Cartagena, Bucaramanga, Pereira, Manizales, Mexico City, São Paulo, Buenos Aires, Lima, Santiago, Caracas, Quito, La Paz, New York, London, Tokyo, Paris, Beijing, Moscow, Los Angeles, Chicago, Mumbai, Cairo, Seoul, Jakarta, Delhi, Shanghai, Istanbul, Bangkok, Lagos, and Kinshasa. It includes their respective countries, regions, coordinates, and NO2 concentrations.",
-    "fullDescriptionOfAllContents": "The dataset includes cities like Medellín, Cali, Barranquilla, Cartagena, Bucaramanga, Pereira, Manizales from Colombia, major cities like Mexico City, São Paulo, Buenos Aires, Lima, Santiago, Caracas, Quito, La Paz, New York, London, Tokyo, Paris, Beijing, Moscow, Los Angeles, Chicago, Mumbai, Cairo, Seoul, Jakarta, Delhi, Shanghai, Istanbul, Bangkok, Lagos, Kinshasa, and many others, detailing their country, specific region, geographical coordinates (latitude and longitude), and the nitrogen dioxide (NO2) concentration levels in their atmosphere.",
+    "size": 3787,
+    "hash": "d79e2ce40d43f63f00580cec735439af87ed544ad6200207f7dd3c4799f154a9",
+    "title": "Nighttime Lights Intensity Data for Arequipa, Peru",
+    "shortDescription": "Detailed analysis of annual average nighttime lights intensity across various districts in Arequipa, Peru, reflecting urbanization levels.",
+    "description": "This document presents a comprehensive dataset of annual average nighttime lights intensity from DMSP-OLS satellite data for Arequipa, Peru. It includes detailed measurements in nW/cm²/sr across multiple districts, specifying country, city, district, province, latitude, longitude, intensity levels, and unit. The data reveals varying degrees of urbanization, with higher values in more urbanized areas like Arequipa city, and lower values in less developed regions such as Ocoña and Caravelí, underlining the economic and development disparities within the region.",
+    "fullDescriptionOfAllContents": "The dataset includes information on nighttime lights intensity measured in nW/cm²/sr for multiple districts within the province of Arequipa, Peru. Each record specifies the country, city, district, province, latitude, longitude, nighttime lights intensity, unit, and a brief description of the data's relevance. The data indicates varying levels of urbanization and development, with higher values corresponding to more urbanized areas such as Arequipa city and lower or zero values in less developed districts like Ocoña and Caravelí.",
     "documentMetaData": {
       "color-scheme": "light dark"
     },
     "allReferencesWithUrls": [],
     "allOtherReferences": [],
     "allImageUrls": [],
-    "compressedFullDescriptionOfAllContents": "The dataset features cities from Colombia such as Medellín, Cali, and Barranquilla, and major international cities like New York, Tokyo, and London, detailing their nations, regions, geographical coordinates, and NO2 levels.",
-    "cleanedDocument": "City,Country,Region,Latitude,Longitude,NO2 Concentration\nMedellín,Colombia,Andean,6.2442N,75.5812W,0.00005287683832672508\nCali,Colombia,Pacific,3.4516N,76.5320W,0.00005408222751911359\nBarranquilla,Colombia,Caribbean,10.9685N,74.7813W,0.00003307695648305236\nCartagena,Colombia,Caribbean,10.3932N,75.4792W,0.00003540827804483048\nBucaramanga,Colombia,Andean,7.1258N,73.1290W,0.000024795050975012625\nPereira,Colombia,Andean,4.8143N,75.6946W,0.00001603397984899616\nManizales,Colombia,Andean,5.0689N,75.5174W,0.000021088215980001284\nMexico City,Mexico,North America,19.4326N,99.1332W,0.00015807887206112776\nSão Paulo,Brazil,South America,23.5505S,46.6333W,0.00022406450608824193\nBuenos Aires,Argentina,South America,34.6118S,58.3960W,0.00015453262150193006\nLima,Peru,South America,12.0464S,77.0428W,0.00015974674588693273\nSantiago,Chile,South America,33.4489S,70.6693W,0.0006111542349260093\nCaracas,Venezuela,South America,10.4806N,66.9036W,0.000043007381929922926\nQuito,Ecuador,South America,0.2299S,78.5249W,0.00003405252841404021\nLa Paz,Bolivia,South America,16.4897S,68.1193W,0.000047821710471239845\nNew York,United States,North America,40.7128N,74.0060W,0.00012852552322888334\nLondon,United Kingdom,Europe,51.5074N,0.1278W,0.00008777661927527068\nTokyo,Japan,Asia,35.6762N,139.6503E,0.00009439394421809944\nParis,France,Europe,48.8566N,2.3522E,0.00008408808171214001\nBeijing,China,Asia,39.9042N,116.4074E,0.00007799815937306964\nMoscow,Russia,Europe/Asia,55.7558N,37.6176E,0.00024072472196452348\nLos Angeles,United States,North America,34.0522N,118.2437W,0.00011485329844309273\nChicago,United States,North America,41.8781N,87.6298W,0.00008068719685972504\nMumbai,India,Asia,19.0760N,72.8777E,0.00002915104697750016\nCairo,Egypt,Africa,30.0444N,31.2357E,0.00020896666307795096\nSeoul,South Korea,Asia,37.5665N,126.9780E,0.00011224220170241877\nJakarta,Indonesia,Asia,6.2088S,106.8456E,0.00012597957925070108\nDelhi,India,Asia,28.7041N,77.1025E,0.000059845545175333555\nShanghai,China,Asia,31.2304N,121.4737E,0.00009702806926614362\nIstanbul,Turkey,Europe/Asia,41.0082N,28.9784E,0.00006667501808902234\nBangkok,Thailand,Asia,13.7563N,100.5018E,0.00010080249608226114\nLagos,Nigeria,Africa,6.5244N,3.3792E,0.00003703854025943128\nKinshasa,Democratic Republic of the Congo,Africa,4.4419S,15.2663E,0.000042235966436732594",
+    "compressedFullDescriptionOfAllContents": "Comprehensive dataset detailing nighttime lights intensity in nW/cm²/sr across Arequipa's districts, showing urbanization via varying intensity levels. Includes geo-coordinates and urban development insights, highlighting disparities.",
+    "cleanedDocument": "Country,city,District,Province,Latitude,Longitude,Nighttime Lights,Unit,Description\nPeru,Arequipa,Arequipa,Arequipa,-16.42,-71.53,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,La Joya,Arequipa,-16.7252,-71.8605,8,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Alto Selva Alegre,Arequipa,-16.3632,-71.548,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Cerro Colorado,Arequipa,-16.3702,-71.5273,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Paucarpata,Arequipa,-16.3989,-71.535,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Yanahuara,Arequipa,-16.3985,-71.538,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Cayma,Arequipa,-16.395,-71.53,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Miraflores,Arequipa,-16.402,-71.54,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Sachaca,Arequipa,-16.405,-71.545,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,JL Bustamante,Arequipa,-16.4,-71.532,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Camaná,Camaná,-16.62,-72.72,41,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Ocoña,Camaná,-16.7,-72.9,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Caravelí,Caravelí,-15.9,-74.23,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Chala,Caravelí,-16.5,-74.5,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Aplao,Castilla,-15.77,-72.65,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Chivay,Caylloma,-15.63,-71.58,9,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Majes,Caylloma,-16.2396,-72.2364,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Chuquibamba,Condesuyos,-15.73,-72.93,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Mollendo,Islay,-17.02,-72.02,48,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Cotahuasi,La Unión,-15.5,-72.7,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level",
     "chunks": [
       {
         "chunkIndex": 0,
         "chapterIndex": 1,
-        "title": "Air Quality Data for Colombian Cities",
+        "title": "CSV Dataset Header Analysis",
         "mainExternalUrlFound": "",
         "importantContextChunkIndexes": [],
-        "shortSummary": "Table of Colombian cities detailing regional classification, coordinates, and NO2 air pollution levels.",
-        "fullSummary": "The text provides a table listing various cities in Colombia along with their respective country, regional classification, geographical coordinates (latitude and longitude), and the concentration of nitrogen dioxide (NO2) in the atmosphere. Each city is associated with specific values for these parameters, indicating the environmental air quality in terms of NO2 concentration for different regions of Colombia.",
-        "compressedContent": "City,Country,Region,Lat,Long,NO2\nMedellín,Colombia,Andean,6.2442N,75.5812W,0.0000529\nCali,Colombia,Pacific,3.4516N,76.5320W,0.0000541\nBarranquilla,Colombia,Caribbean,10.9685N,74.7813W,0.0000331\nCartagena,Colombia,Caribbean,10.3932N,75.4792W,0.0000354\nBucaramanga,Colombia,Andean,7.1258N,73.1290W,0.0000248\nPereira,Colombia,Andean,4.8143N,75.6946W,0.0000160\nManizales,Colombia,Andean,5.0689N,75.5174W,0.0000211",
+        "shortSummary": "CSV header line for a dataset containing geographical and descriptive data.",
+        "fullSummary": "The text provided is a CSV header line indicating the columns for a dataset that includes geographical and some additional descriptive information. The columns listed are Country, City, District, Province, Latitude, Longitude, Nighttime Lights, Unit, and Description.",
+        "compressedContent": "Country, city, district, province, latitude, longitude, nighttime lights, unit, description",
         "metaData": {
-          "DataType": "Table",
-          "Subject": "Environmental Data",
-          "Focus": "NO2 Concentration",
-          "GeographicScope": "Colombia",
-          "Entries": "7",
-          "Columns": "6"
+          "Format": "CSV",
+          "Columns": "9",
+          "ColumnNames": "Country, City, District, Province, Latitude, Longitude, Nighttime Lights, Unit, Description",
+          "DataType": "Geographical and Descriptive Data"
         },
-        "uncompressedContent": "City,Country,Region,Latitude,Longitude,NO2 Concentration\nMedellín,Colombia,Andean,6.2442N,75.5812W,0.00005287683832672508\nCali,Colombia,Pacific,3.4516N,76.5320W,0.00005408222751911359\nBarranquilla,Colombia,Caribbean,10.9685N,74.7813W,0.00003307695648305236\nCartagena,Colombia,Caribbean,10.3932N,75.4792W,0.00003540827804483048\nBucaramanga,Colombia,Andean,7.1258N,73.1290W,0.000024795050975012625\nPereira,Colombia,Andean,4.8143N,75.6946W,0.00001603397984899616\nManizales,Colombia,Andean,5.0689N,75.5174W,0.000021088215980001284",
+        "uncompressedContent": "Country,city,District,Province,Latitude,Longitude,Nighttime Lights,Unit,Description",
         "subChunks": [],
-        "relevanceEloRating": 1117.9280984524619,
-        "substanceEloRating": 1028.460916578951,
-        "qualityEloRating": 1117.6751700325956
+        "relevanceEloRating": 852.0295963954146,
+        "substanceEloRating": 855.5521377876681,
+        "qualityEloRating": 844.3938837119238
       },
       {
         "chunkIndex": 1,
         "chapterIndex": 2,
-        "title": "Geographical Information of Mexico City",
+        "title": "Nighttime Lights Intensity Data for Arequipa, Peru",
         "mainExternalUrlFound": "",
         "importantContextChunkIndexes": [
-          4
+          1
         ],
-        "shortSummary": "Geographical data of Mexico City, Mexico.",
-        "fullSummary": "The text provides geographical information about Mexico City, including its name, country, continent, latitude, longitude, and a numerical value possibly representing an area or density.",
-        "compressedContent": "Mexico City, Mexico, North America, 19.4326N, 99.1332W, 0.000158",
+        "shortSummary": "Dataset of nighttime lights intensity in Arequipa, Peru indicating urbanization levels.",
+        "fullSummary": "This text presents a dataset of annual average nighttime lights intensity measurements for various districts within Arequipa, Peru. Each entry includes the country, region, district, geographical coordinates (latitude and longitude), and the intensity of nighttime lights measured in nanoWatts per square centimeter per steradian (nW/cm²/sr). The data from the DMSP-OLS satellite is used as an indicator of urbanization and development level in these areas.",
+        "compressedContent": "Peru,Arequipa,Arequipa,-16.42,-71.53,63,nW/cm²/sr,DMSP-OLS data shows annual average nighttime lights intensity, indicating urbanization and development level.\nPeru,Arequipa,La Joya,-16.7252,-71.8605,8,nW/cm²/sr,DMSP-OLS data shows annual average nighttime lights intensity, indicating urbanization and development level.\nPeru,Arequipa,Alto Selva Alegre,-16.3632,-71.548,63,nW/cm²/sr,DMSP-OLS data shows annual average nighttime lights intensity, indicating urbanization and development level.\nPeru,Arequipa,Cerro Colorado,-16.3702,-71.5273,63,nW/cm²/sr,DMSP-OLS data shows annual average nighttime lights intensity, indicating urbanization and development level.\nPeru,Arequipa,Paucarpata,-16.3989,-71.535,63,nW/cm²/sr,DMSP-OLS data shows annual average nighttime lights intensity, indicating urbanization and development level.\nPeru,Arequipa,Yanahuara,-16.3985,-71.538,63,nW/cm²/sr,DMSP-OLS data shows annual average nighttime lights intensity, indicating urbanization and development level.\nPeru,Arequipa,Cayma,-16.395,-71.53,63,nW/cm²/sr,DMSP-OLS data shows annual average nighttime lights intensity, indicating urbanization and development level.\nPeru,Arequipa,Miraflores,-16.402,-71.54,63,nW/cm²/sr,DMSP-OLS data shows annual average nighttime lights intensity, indicating urbanization and development level.\nPeru,Arequipa,Sachaca,-16.405,-71.545,63,nW/cm²/sr,DMSP-OLS data shows annual average nighttime lights intensity, indicating urbanization and development level.\nPeru,Arequipa,JL Bustamante,-16.4,-71.532,63,nW/cm²/sr,DMSP-OLS data shows annual average nighttime lights intensity, indicating urbanization and development level.",
         "metaData": {
-          "City": "Mexico City",
-          "Country": "Mexico",
-          "Continent": "North America",
-          "Latitude": "19.4326N",
-          "Longitude": "99.1332W",
-          "NumericValue": "0.00015807887206112776"
+          "Country": "Peru",
+          "Region": "Arequipa",
+          "Units": "nW/cm²/sr",
+          "Data Source": "DMSP-OLS satellite data",
+          "Indicator": "Urbanization and development level"
         },
-        "uncompressedContent": "Mexico City,Mexico,North America,19.4326N,99.1332W,0.00015807887206112776",
+        "uncompressedContent": "Peru,Arequipa,Arequipa,Arequipa,-16.42,-71.53,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,La Joya,Arequipa,-16.7252,-71.8605,8,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Alto Selva Alegre,Arequipa,-16.3632,-71.548,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Cerro Colorado,Arequipa,-16.3702,-71.5273,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Paucarpata,Arequipa,-16.3989,-71.535,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Yanahuara,Arequipa,-16.3985,-71.538,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Cayma,Arequipa,-16.395,-71.53,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Miraflores,Arequipa,-16.402,-71.54,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Sachaca,Arequipa,-16.405,-71.545,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,JL Bustamante,Arequipa,-16.4,-71.532,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level",
         "subChunks": [],
-        "relevanceEloRating": 882.2698742249348,
-        "substanceEloRating": 878.8415897549596,
-        "qualityEloRating": 885.828150360733
+        "relevanceEloRating": 1148.8579004814262,
+        "substanceEloRating": 1147.9704036045853,
+        "qualityEloRating": 1148.2344355759255
       },
       {
         "chunkIndex": 2,
         "chapterIndex": 3,
-        "title": "Geographical and Statistical Data of Major Cities in the Americas",
+        "title": "Nighttime Lights Intensity Data for Camaná, Arequipa, Peru",
         "mainExternalUrlFound": "",
         "importantContextChunkIndexes": [
-          2
+          1
         ],
-        "shortSummary": "List of major cities in the Americas with geographical coordinates and a statistical value.",
-        "fullSummary": "This text provides a list of major cities across North and South America, including their names, countries, continental location, geographical coordinates (latitude and longitude), and an associated statistical value. The cities listed are São Paulo, Buenos Aires, Lima, Santiago, Caracas, Quito, La Paz, and New York.",
-        "compressedContent": "São Paulo,Brazil,23.5505S,46.6333W,0.0002240645\nBuenos Aires,Argentina,34.6118S,58.3960W,0.0001545326\nLima,Peru,12.0464S,77.0428W,0.0001597467\nSantiago,Chile,33.4489S,70.6693W,0.0006111542\nCaracas,Venezuela,10.4806N,66.9036W,0.00004300738\nQuito,Ecuador,0.2299S,78.5249W,0.00003405253\nLa Paz,Bolivia,16.4897S,68.1193W,0.00004782171\nNew York,United States,40.7128N,74.0060W,0.0001285255",
+        "shortSummary": "Satellite data on nighttime lights intensity for two locations in Camaná, Peru.",
+        "fullSummary": "The text provides satellite data of annual average nighttime lights intensity from the DMSP-OLS for two locations in Camaná, Arequipa, Peru. The data includes geographical coordinates, the intensity value, and its measurement unit.",
+        "compressedContent": "Peru, Arequipa, Camaná, Camaná, -16.62, -72.72, 41, nW/cm²/sr, DMSP-OLS data shows urbanization\nPeru, Arequipa, Ocoña, Camaná, -16.7, -72.9, 0, nW/cm²/sr, DMSP-OLS data shows urbanization",
         "metaData": {
-          "TotalCities": "8",
-          "ContinentsCovered": "North America, South America",
-          "CountriesCovered": "Brazil, Argentina, Peru, Chile, Venezuela, Ecuador, Bolivia, United States",
-          "DataFields": "City, Country, Continent, Latitude, Longitude, Statistical Value"
+          "country": "Peru",
+          "region": "Arequipa",
+          "province": "Camaná",
+          "localities": "Camaná, Ocoña",
+          "coordinates": "Camaná: (-16.62, -72.72), Ocoña: (-16.7, -72.9)",
+          "intensityValues": "Camaná: 41 nW/cm²/sr, Ocoña: 0 nW/cm²/sr",
+          "dataSource": "DMSP-OLS satellite data",
+          "measurementUnit": "nW/cm²/sr"
         },
-        "uncompressedContent": "São Paulo,Brazil,South America,23.5505S,46.6333W,0.00022406450608824193\nBuenos Aires,Argentina,South America,34.6118S,58.3960W,0.00015453262150193006\nLima,Peru,South America,12.0464S,77.0428W,0.00015974674588693273\nSantiago,Chile,South America,33.4489S,70.6693W,0.0006111542349260093\nCaracas,Venezuela,South America,10.4806N,66.9036W,0.000043007381929922926\nQuito,Ecuador,South America,0.2299S,78.5249W,0.00003405252841404021\nLa Paz,Bolivia,South America,16.4897S,68.1193W,0.000047821710471239845\nNew York,United States,North America,40.7128N,74.0060W,0.00012852552322888334",
+        "uncompressedContent": "Peru,Arequipa,Camaná,Camaná,-16.62,-72.72,41,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Ocoña,Camaná,-16.7,-72.9,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level",
         "subChunks": [],
-        "relevanceEloRating": 976.1085189556392,
-        "substanceEloRating": 979.4415636322507,
-        "qualityEloRating": 1024.6731570552533
+        "relevanceEloRating": 983.4480767386343,
+        "substanceEloRating": 970.3475231295079,
+        "qualityEloRating": 982.8255211727296
       },
       {
         "chunkIndex": 3,
         "chapterIndex": 4,
-        "title": "Geographical Information of London",
+        "title": "Analysis of Nighttime Lights Intensity in Caravelí, Arequipa",
         "mainExternalUrlFound": "",
         "importantContextChunkIndexes": [
-          2
+          1
         ],
-        "shortSummary": "Geographical data for London with coordinates.",
-        "fullSummary": "The text provides geographical and locational data for London, including its designation within the United Kingdom and Europe, and specific coordinates with latitude and longitude.",
-        "compressedContent": "London, UK, Europe, 51.5074N, 0.1278W, 0.00008777661927527068",
+        "shortSummary": "Satellite data analysis of nighttime lights intensity for Caravelí and Chala in Arequipa, Peru indicating low urbanization.",
+        "fullSummary": "The text provides data about the annual average nighttime lights intensity from DMSP-OLS satellite data for two locations in the Caravelí province of Arequipa, Peru. This intensity is measured in nanowatts per square centimeter per steradian (nW/cm²/sr) and is used to indicate the level of urbanization and development in these areas. Both locations, Caravelí and Chala, have the same intensity measurement, which is 0 nW/cm²/sr, suggesting minimal to no urban light emissions.",
+        "compressedContent": "Peru, Arequipa, Caravelí, Caravelí, -15.9, -74.23, 0, nW/cm²/sr, Annual average nighttime lights intensity from DMSP-OLS satellite data indicates urbanization and development level.\nPeru, Arequipa, Chala, Caravelí, -16.5, -74.5, 0, nW/cm²/sr, Annual average nighttime lights intensity from DMSP-OLS satellite data indicates urbanization and development level.",
         "metaData": {
-          "Location": "London",
-          "Country": "United Kingdom",
-          "Continent": "Europe",
-          "Latitude": "51.5074N",
-          "Longitude": "0.1278W",
-          "AdditionalData": "0.00008777661927527068"
+          "Location1": "Caravelí, Arequipa, Peru",
+          "Coordinates1": "-15.9, -74.23",
+          "LightIntensity1": "0 nW/cm²/sr",
+          "Location2": "Chala, Arequipa, Peru",
+          "Coordinates2": "-16.5, -74.5",
+          "LightIntensity2": "0 nW/cm²/sr"
         },
-        "uncompressedContent": "London,United Kingdom,Europe,51.5074N,0.1278W,0.00008777661927527068",
+        "uncompressedContent": "Peru,Arequipa,Caravelí,Caravelí,-15.9,-74.23,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Chala,Caravelí,-16.5,-74.5,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level",
         "subChunks": [],
-        "relevanceEloRating": 1029.9436363160053,
-        "substanceEloRating": 921.2826786050304,
-        "qualityEloRating": 927.2468555193935
+        "relevanceEloRating": 1111.2832602331284,
+        "substanceEloRating": 1064.9909198839061,
+        "qualityEloRating": 1102.9704036045853
       },
       {
         "chunkIndex": 4,
         "chapterIndex": 5,
-        "title": "Global City Data Overview",
+        "title": "Nighttime Lights Intensity and Urbanization Data for Aplao, Arequipa, Peru",
         "mainExternalUrlFound": "",
         "importantContextChunkIndexes": [
-          4
+          1
         ],
-        "shortSummary": "Data listing of major cities with geographic and demographic details.",
-        "fullSummary": "The text provides a list of major cities along with their respective country, continent, geographic coordinates (latitude and longitude), and a decimal value that possibly represents a population-related statistic. The cities listed are Tokyo, Paris, Beijing, Moscow, Los Angeles, Chicago, and Mumbai.",
-        "compressedContent": "Tokyo,Japan,Asia,35.6762N,139.6503E,0.00009439\nParis,France,Europe,48.8566N,2.3522E,0.00008409\nBeijing,China,Asia,39.9042N,116.4074E,0.00007800\nMoscow,Russia,Europe/Asia,55.7558N,37.6176E,0.00024072\nLos Angeles,United States,North America,34.0522N,118.2437W,0.00011485\nChicago,United States,North America,41.8781N,87.6298W,0.00008069\nMumbai,India,Asia,19.0760N,72.8777E,0.00002915",
+        "shortSummary": "Geolocation and urbanization data for Aplao, Arequipa, Peru, indicating minimal nighttime light and development.",
+        "fullSummary": "The text provides geolocation data for a specific place in Peru, which is Aplao in the Castilla district of Arequipa. The coordinates given are latitude -15.77 and longitude -72.65. The data also describes an annual average nighttime lights intensity from DMSP-OLS satellite data, which is used to indicate the level of urbanization and development in the region. The value for the intensity is given as '0 nW/cm²/sr', suggesting minimal to no nighttime light detected in this area.",
+        "compressedContent": "Peru, Arequipa, Aplao, Castilla, -15.77, -72.65, 0, nW/cm²/sr, DMSP-OLS satellite data indicates average nighttime lights intensity level for urbanization and development.",
         "metaData": {
-          "Cities": "Tokyo, Paris, Beijing, Moscow, Los Angeles, Chicago, Mumbai",
-          "Countries": "Japan, France, China, Russia, United States, India",
-          "Continents": "Asia, Europe, North America",
-          "Coordinates": "Latitudes - 35.6762N, 48.8566N, 39.9042N, 55.7558N, 34.0522N, 41.8781N, 19.0760N; Longitudes - 139.6503E, 2.3522E, 116.4074E, 37.6176E, 118.2437W, 87.6298W, 72.8777E"
+          "Country": "Peru",
+          "City": "Aplao",
+          "Region": "Castilla",
+          "Province": "Arequipa",
+          "Latitude": "-15.77",
+          "Longitude": "-72.65",
+          "Nighttime Light Intensity": "0 nW/cm²/sr",
+          "Data Source": "DMSP-OLS satellite"
         },
-        "uncompressedContent": "Tokyo,Japan,Asia,35.6762N,139.6503E,0.00009439394421809944\nParis,France,Europe,48.8566N,2.3522E,0.00008408808171214001\nBeijing,China,Asia,39.9042N,116.4074E,0.00007799815937306964\nMoscow,Russia,Europe/Asia,55.7558N,37.6176E,0.00024072472196452348\nLos Angeles,United States,North America,34.0522N,118.2437W,0.00011485329844309273\nChicago,United States,North America,41.8781N,87.6298W,0.00008068719685972504\nMumbai,India,Asia,19.0760N,72.8777E,0.00002915104697750016",
+        "uncompressedContent": "Peru,Arequipa,Aplao,Castilla,-15.77,-72.65,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level",
         "subChunks": [],
-        "relevanceEloRating": 1071.5528722656695,
-        "substanceEloRating": 1061.3935636953806,
-        "qualityEloRating": 1067.730125775065
+        "relevanceEloRating": 896.0579076442807,
+        "substanceEloRating": 889.1187882779133,
+        "qualityEloRating": 899.3801011766876
       },
       {
         "chunkIndex": 5,
         "chapterIndex": 6,
-        "title": "Global City Coordinates and Metrics",
+        "title": "Nighttime Lights Intensity Data for Arequipa, Peru",
         "mainExternalUrlFound": "",
         "importantContextChunkIndexes": [
-          5
+          1
         ],
-        "shortSummary": "List of major cities with geographic coordinates and a numerical metric.",
-        "fullSummary": "The provided text contains a list of major cities along with their respective geographic coordinates (latitude and longitude) and a numerical value which could represent a specific data metric for each city. Cities listed are from various continents including Africa, Asia, and Europe/Asia. Specific cities mentioned are Cairo, Seoul, Jakarta, Delhi, Shanghai, Istanbul, Bangkok, Lagos, and Kinshasa.",
-        "compressedContent": "Cairo,Egypt,Africa,30.0444N,31.2357E,0.00020896666307795096\nSeoul,South Korea,Asia,37.5665N,126.9780E,0.00011224220170241877\nJakarta,Indonesia,Asia,6.2088S,106.8456E,0.00012597957925070108\nDelhi,India,Asia,28.7041N,77.1025E,0.000059845545175333555\nShanghai,China,Asia,31.2304N,121.4737E,0.00009702806926614362\nIstanbul,Turkey,Europe/Asia,41.0082N,28.9784E,0.00006667501808902234\nBangkok,Thailand,Asia,13.7563N,100.5018E,0.00010080249608226114\nLagos,Nigeria,Africa,6.5244N,3.3792E,0.00003703854025943128\nKinshasa,Democratic Republic of the Congo,Africa,4.4419S,15.2663E,0.000042235966436732594",
+        "shortSummary": "Satellite data on nighttime light intensity from Arequipa, Peru indicating urbanization levels.",
+        "fullSummary": "The text provides data on the annual average nighttime lights intensity from DMSP-OLS satellite data for different locations in the Arequipa region of Peru. It includes specific coordinates and light intensity measurements, which are used to indicate levels of urbanization and development.",
+        "compressedContent": "Peru,Arequipa,Chivay,Caylloma,-15.63,-71.58,9,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data-indicates urbanization and development level\nPeru,Arequipa,Majes,Caylloma,-16.2396,-72.2364,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data-indicates urbanization and development level",
         "metaData": {
-          "citiesCount": "9",
-          "continentsIncluded": "Africa, Asia, Europe/Asia",
-          "sampleCity": "Cairo",
-          "sampleLatitude": "30.0444N",
-          "sampleLongitude": "31.2357E",
-          "sampleMetric": "0.00020896666307795096"
+          "Countries": "Peru",
+          "Regions": "Arequipa",
+          "Districts": "Caylloma",
+          "Locations": "Chivay, Majes",
+          "Coordinates": "(-15.63, -71.58), (-16.2396, -72.2364)",
+          "LightIntensityMeasure": "nW/cm²/sr",
+          "DataSet": "DMSP-OLS"
         },
-        "uncompressedContent": "Cairo,Egypt,Africa,30.0444N,31.2357E,0.00020896666307795096\nSeoul,South Korea,Asia,37.5665N,126.9780E,0.00011224220170241877\nJakarta,Indonesia,Asia,6.2088S,106.8456E,0.00012597957925070108\nDelhi,India,Asia,28.7041N,77.1025E,0.000059845545175333555\nShanghai,China,Asia,31.2304N,121.4737E,0.00009702806926614362\nIstanbul,Turkey,Europe/Asia,41.0082N,28.9784E,0.00006667501808902234\nBangkok,Thailand,Asia,13.7563N,100.5018E,0.00010080249608226114\nLagos,Nigeria,Africa,6.5244N,3.3792E,0.00003703854025943128\nKinshasa,Democratic Republic of the Congo,Africa,4.4419S,15.2663E,0.000042235966436732594",
+        "uncompressedContent": "Peru,Arequipa,Chivay,Caylloma,-15.63,-71.58,9,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Majes,Caylloma,-16.2396,-72.2364,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level",
         "subChunks": [],
-        "relevanceEloRating": 929.6847879778037,
-        "substanceEloRating": 1113.2338140661816,
-        "qualityEloRating": 982.8352855956382
+        "relevanceEloRating": 1065.1616037661488,
+        "substanceEloRating": 1114.054472599352,
+        "qualityEloRating": 1027.2542143665717
+      },
+      {
+        "chunkIndex": 6,
+        "chapterIndex": 7,
+        "title": "Nighttime Lights Intensity Data for Arequipa, Peru",
+        "mainExternalUrlFound": "https://www.ngdc.noaa.gov/eog/dmsp.html",
+        "importantContextChunkIndexes": [
+          1
+        ],
+        "shortSummary": "Nighttime lights intensity data from Arequipa, Peru, indicating levels of urbanization and development.",
+        "fullSummary": "The text contains geographic and environmental data indicating the annual average nighttime lights intensity from DMSP-OLS satellite data for two locations in Arequipa, Peru. The data includes coordinates, light intensity measured in nanoWatts per square centimeter per steradian, and a brief description of what the data represents regarding urbanization and development levels.",
+        "compressedContent": "Peru, Arequipa, Chuquibamba, Condesuyos, -15.73, -72.93, 0, nW/cm²/sr, DMSP-OLS data shows urbanization level\nPeru, Arequipa, Mollendo, Islay, -17.02, -72.02, 48, nW/cm²/sr, DMSP-OLS data shows urbanization level",
+        "metaData": {
+          "Locations": "Chuquibamba, Condesuyos; Mollendo, Islay",
+          "Region": "Arequipa, Peru",
+          "Measurement": "nW/cm²/sr",
+          "Data Source": "DMSP-OLS satellite data"
+        },
+        "uncompressedContent": "Peru,Arequipa,Chuquibamba,Condesuyos,-15.73,-72.93,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Mollendo,Islay,-17.02,-72.02,48,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level",
+        "subChunks": [],
+        "relevanceEloRating": 976.6677148695454,
+        "substanceEloRating": 981.1666708422453,
+        "qualityEloRating": 1059.8684830540292
+      },
+      {
+        "chunkIndex": 7,
+        "chapterIndex": 8,
+        "title": "Nighttime Lights Intensity Data for Arequipa, Peru",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [
+          1
+        ],
+        "shortSummary": "Data on nighttime lights intensity from Arequipa, Peru, indicating urban development levels.",
+        "fullSummary": "The text provides geographical and data-specific information regarding Peru, specifically the area of Arequipa, Cotahuasi, La Unión. It details the coordinates (latitude: -15.5, longitude: -72.7) and mentions that the measurement of 0 nW/cm²/sr pertains to the annual average nighttime lights intensity sourced from DMSP-OLS satellite data. This measurement is used to indicate the level of urbanization and development in the region.",
+        "compressedContent": "Peru, Arequipa, Cotahuasi, La Unión, -15.5, -72.7, 0, nW/cm²/sr, Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level.",
+        "metaData": {
+          "Country": "Peru",
+          "Region": "Arequipa",
+          "Subregion": "Cotahuasi, La Unión",
+          "Latitude": "-15.5",
+          "Longitude": "-72.7",
+          "Measurement": "0 nW/cm²/sr",
+          "Data Source": "DMSP-OLS satellite",
+          "Indicator": "Urbanization and development level"
+        },
+        "uncompressedContent": "Peru,Arequipa,Cotahuasi,La Unión,-15.5,-72.7,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level",
+        "subChunks": [],
+        "relevanceEloRating": 985.2203407939633,
+        "substanceEloRating": 973.2733948792051,
+        "qualityEloRating": 939.1331244828416
       }
     ],
     "cachedChunkStrategy": [
       {
         "chapterIndex": 1,
-        "chapterTitle": "Introduction and Table Format Explanation",
+        "chapterTitle": "Introduction to Nighttime Lights Data",
         "chapterStartLineNumber": 1,
         "importantContextChapterIndexes": [],
-        "chunkData": "City,Country,Region,Latitude,Longitude,NO2 Concentration\nMedellín,Colombia,Andean,6.2442N,75.5812W,0.00005287683832672508\nCali,Colombia,Pacific,3.4516N,76.5320W,0.00005408222751911359\nBarranquilla,Colombia,Caribbean,10.9685N,74.7813W,0.00003307695648305236\nCartagena,Colombia,Caribbean,10.3932N,75.4792W,0.00003540827804483048\nBucaramanga,Colombia,Andean,7.1258N,73.1290W,0.000024795050975012625\nPereira,Colombia,Andean,4.8143N,75.6946W,0.00001603397984899616\nManizales,Colombia,Andean,5.0689N,75.5174W,0.000021088215980001284"
+        "chunkData": "Country,city,District,Province,Latitude,Longitude,Nighttime Lights,Unit,Description"
       },
       {
         "chapterIndex": 2,
-        "chapterTitle": "North America",
-        "chapterStartLineNumber": 9,
+        "chapterTitle": "Arequipa Metropolitan Area",
+        "chapterStartLineNumber": 2,
         "importantContextChapterIndexes": [
-          4
+          1
         ],
-        "chunkData": "Mexico City,Mexico,North America,19.4326N,99.1332W,0.00015807887206112776"
+        "chunkData": "Peru,Arequipa,Arequipa,Arequipa,-16.42,-71.53,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,La Joya,Arequipa,-16.7252,-71.8605,8,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Alto Selva Alegre,Arequipa,-16.3632,-71.548,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Cerro Colorado,Arequipa,-16.3702,-71.5273,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Paucarpata,Arequipa,-16.3989,-71.535,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Yanahuara,Arequipa,-16.3985,-71.538,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Cayma,Arequipa,-16.395,-71.53,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Miraflores,Arequipa,-16.402,-71.54,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Sachaca,Arequipa,-16.405,-71.545,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,JL Bustamante,Arequipa,-16.4,-71.532,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level"
       },
       {
         "chapterIndex": 3,
-        "chapterTitle": "South America",
-        "chapterStartLineNumber": 10,
+        "chapterTitle": "Camaná and Surrounding Districts",
+        "chapterStartLineNumber": 12,
         "importantContextChapterIndexes": [
-          2
+          1
         ],
-        "chunkData": "São Paulo,Brazil,South America,23.5505S,46.6333W,0.00022406450608824193\nBuenos Aires,Argentina,South America,34.6118S,58.3960W,0.00015453262150193006\nLima,Peru,South America,12.0464S,77.0428W,0.00015974674588693273\nSantiago,Chile,South America,33.4489S,70.6693W,0.0006111542349260093\nCaracas,Venezuela,South America,10.4806N,66.9036W,0.000043007381929922926\nQuito,Ecuador,South America,0.2299S,78.5249W,0.00003405252841404021\nLa Paz,Bolivia,South America,16.4897S,68.1193W,0.000047821710471239845\nNew York,United States,North America,40.7128N,74.0060W,0.00012852552322888334"
+        "chunkData": "Peru,Arequipa,Camaná,Camaná,-16.62,-72.72,41,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Ocoña,Camaná,-16.7,-72.9,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level"
       },
       {
         "chapterIndex": 4,
-        "chapterTitle": "Europe and Europe/Asia",
-        "chapterStartLineNumber": 18,
+        "chapterTitle": "Caravelí and Its Districts",
+        "chapterStartLineNumber": 14,
         "importantContextChapterIndexes": [
-          2
+          1
         ],
-        "chunkData": "London,United Kingdom,Europe,51.5074N,0.1278W,0.00008777661927527068"
+        "chunkData": "Peru,Arequipa,Caravelí,Caravelí,-15.9,-74.23,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Chala,Caravelí,-16.5,-74.5,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level"
       },
       {
         "chapterIndex": 5,
-        "chapterTitle": "Asia",
-        "chapterStartLineNumber": 19,
+        "chapterTitle": "Castilla and Surrounding Areas",
+        "chapterStartLineNumber": 16,
         "importantContextChapterIndexes": [
-          4
+          1
         ],
-        "chunkData": "Tokyo,Japan,Asia,35.6762N,139.6503E,0.00009439394421809944\nParis,France,Europe,48.8566N,2.3522E,0.00008408808171214001\nBeijing,China,Asia,39.9042N,116.4074E,0.00007799815937306964\nMoscow,Russia,Europe/Asia,55.7558N,37.6176E,0.00024072472196452348\nLos Angeles,United States,North America,34.0522N,118.2437W,0.00011485329844309273\nChicago,United States,North America,41.8781N,87.6298W,0.00008068719685972504\nMumbai,India,Asia,19.0760N,72.8777E,0.00002915104697750016"
+        "chunkData": "Peru,Arequipa,Aplao,Castilla,-15.77,-72.65,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level"
       },
       {
         "chapterIndex": 6,
-        "chapterTitle": "Africa",
-        "chapterStartLineNumber": 26,
+        "chapterTitle": "Caylloma and Its Environments",
+        "chapterStartLineNumber": 17,
         "importantContextChapterIndexes": [
-          5
+          1
         ],
-        "chunkData": "Cairo,Egypt,Africa,30.0444N,31.2357E,0.00020896666307795096\nSeoul,South Korea,Asia,37.5665N,126.9780E,0.00011224220170241877\nJakarta,Indonesia,Asia,6.2088S,106.8456E,0.00012597957925070108\nDelhi,India,Asia,28.7041N,77.1025E,0.000059845545175333555\nShanghai,China,Asia,31.2304N,121.4737E,0.00009702806926614362\nIstanbul,Turkey,Europe/Asia,41.0082N,28.9784E,0.00006667501808902234\nBangkok,Thailand,Asia,13.7563N,100.5018E,0.00010080249608226114\nLagos,Nigeria,Africa,6.5244N,3.3792E,0.00003703854025943128\nKinshasa,Democratic Republic of the Congo,Africa,4.4419S,15.2663E,0.000042235966436732594"
+        "chunkData": "Peru,Arequipa,Chivay,Caylloma,-15.63,-71.58,9,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Majes,Caylloma,-16.2396,-72.2364,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level"
+      },
+      {
+        "chapterIndex": 7,
+        "chapterTitle": "Condesuyos and Islay Provinces",
+        "chapterStartLineNumber": 19,
+        "importantContextChapterIndexes": [
+          1
+        ],
+        "chunkData": "Peru,Arequipa,Chuquibamba,Condesuyos,-15.73,-72.93,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level\nPeru,Arequipa,Mollendo,Islay,-17.02,-72.02,48,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level"
+      },
+      {
+        "chapterIndex": 8,
+        "chapterTitle": "La Unión and Remote Districts",
+        "chapterStartLineNumber": 21,
+        "importantContextChapterIndexes": [
+          1
+        ],
+        "chunkData": "Peru,Arequipa,Cotahuasi,La Unión,-15.5,-72.7,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level"
+      }
+    ]
+  },
+  "74640396b70f2609cfff85f3b9af853f": {
+    "url": "http://localhost:3001/solar-energy-district-data-index.csv",
+    "fileId": "74640396b70f2609cfff85f3b9af853f",
+    "contentType": "text/plain; charset=utf-8",
+    "filePath": "src/ingestion/cache/74640396b70f2609cfff85f3b9af853f/solar-energy-district-data-index.csv.txt",
+    "lastModified": "2025-08-31T13:34:14.811Z",
+    "lastModifiedOnServer": "",
+    "size": 2888,
+    "hash": "e716384fbcb7e1b116f9f0958347b646e0390e580eb49ac06f2073ef99ec7ba0",
+    "title": "Solar Energy Potential in Arequipa, Peru",
+    "shortDescription": "Detailed dataset listing solar energy potential (GHI values) across multiple districts in Arequipa, Peru.",
+    "description": "This document provides a comprehensive dataset detailing the Global Horizontal Irradiation (GHI) values for various cities and districts in the Arequipa region of Peru. It includes data entries for each location's latitude, longitude, and GHI values, essential for solar energy project planning.",
+    "fullDescriptionOfAllContents": "The document contains a table with data entries for various locations in Arequipa, Peru, detailing the latitude, longitude, and Global Horizontal Irradiation (GHI) values for each area. GHI is a measure of the solar energy available at each location, which is crucial for planning solar energy projects. The table covers cities and districts such as Arequipa, La Joya, Alto Selva Alegre, Cerro Colorado, Paucarpata, Yanahuara, Cayma, Miraflores, Sachaca, JL Bustamante, Camaná, Caravelí, Aplao, Chivay, Majes, Chuquibamba, Mollendo, and Cotahuasi, providing their respective GHI values.",
+    "documentMetaData": {
+      "color-scheme": "light dark"
+    },
+    "allReferencesWithUrls": [],
+    "allOtherReferences": [],
+    "allImageUrls": [],
+    "compressedFullDescriptionOfAllContents": "Comprehensive table detailing latitude, longitude, and Global Horizontal Irradiation (GHI) values for cities and districts in Arequipa, Peru including Arequipa, La Joya, Alto Selva Alegre, and others, crucial for solar energy project planning.",
+    "cleanedDocument": "Country,city,District,Province,Latitude,Longitude,Solar Energy Potential (GHI),Unit,Description\nPeru,Arequipa,Arequipa,Arequipa,-16.42,-71.53,6.7979998588562,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,La Joya,Arequipa,-16.7252,-71.8605,6.81300020217896,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Alto Selva Alegre,Arequipa,-16.3632,-71.548,6.79099988937378,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Cerro Colorado,Arequipa,-16.3702,-71.5273,6.78000020980835,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Paucarpata,Arequipa,-16.3989,-71.535,6.79899978637695,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Yanahuara,Arequipa,-16.3985,-71.538,6.80200004577637,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Cayma,Arequipa,-16.395,-71.53,6.79400014877319,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Miraflores,Arequipa,-16.402,-71.54,6.80200004577637,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Sachaca,Arequipa,-16.405,-71.545,6.80600023269653,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,JL Bustamante,Arequipa,-16.4,-71.532,6.79699993133545,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Camaná,Camaná,-16.62,-72.72,5.38800001144409,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Caravelí,Caravelí,-15.9,-74.23,5.60699987411499,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Aplao,Castilla,-15.77,-72.65,6.66800022125244,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Chivay,Caylloma,-15.63,-71.58,6.25799989700317,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Majes,Caylloma,-16.2396,-72.2364,6.85500001907349,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Chuquibamba,Condesuyos,-15.73,-72.93,6.6269998550415,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Mollendo,Islay,-17.02,-72.02,5.01000022888184,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Cotahuasi,La Unión,-15.5,-72.7,6.03299999237061,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential",
+    "chunks": [
+      {
+        "chunkIndex": 0,
+        "chapterIndex": 1,
+        "title": "Solar Energy Potential in Arequipa, Peru",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [],
+        "shortSummary": "Analysis of solar energy potential across various districts in Arequipa, Peru.",
+        "fullSummary": "The data provides detailed solar energy potential measurements for various districts within Arequipa, Peru. Each entry includes the district name, geographical coordinates (latitude and longitude), and the average daily solar energy potential measured in kWh/m². The measurements describe the Global Horizontal Irradiation (GHI), indicating the total amount of direct and scattered solar radiation received on a horizontal surface during the day.",
+        "compressedContent": "Peru, Arequipa, Arequipa, Arequipa, -16.42, -71.53, 6.7979998588562 kWh/m², Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru, Arequipa, La Joya, Arequipa, -16.7252, -71.8605, 6.81300020217896 kWh/m², Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru, Arequipa, Alto Selva Alegre, Arequipa, -16.3632, -71.548, 6.79099988937378 kWh/m², Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru, Arequipa, Cerro Colorado, Arequipa, -16.3702, -71.5273, 6.78000020980835 kWh/m², Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru, Arequipa, Paucarpata, Arequipa, -16.3989, -71.535, 6.79899978637695 kWh/m², Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru, Arequipa, Yanahuara, Arequipa, -16.3985, -71.538, 6.80200004577637 kWh/m², Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru, Arequipa, Cayma, Arequipa, -16.395, -71.53, 6.79400014877319 kWh/m², Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru, Arequipa, Miraflores, Arequipa, -16.402, -71.54, 6.80200004577637 kWh/m², Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru, Arequipa, Sachaca, Arequipa, -16.405, -71.545, 6.80600023269653 kWh/m², Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru, Arequipa, JL Bustamante, Arequipa, -16.4, -71.532, 6.79699993133545 kWh/m², Global Horizontal Irradiation (GHI) - Average daily solar energy potential",
+        "metaData": {
+          "DataType": "CSV",
+          "Columns": "Country, City, District, Province, Latitude, Longitude, Solar Energy Potential (GHI), Unit, Description",
+          "Unit": "kWh/m²",
+          "Measurement": "Global Horizontal Irradiation (GHI)",
+          "Location": "Arequipa, Peru"
+        },
+        "uncompressedContent": "Country,city,District,Province,Latitude,Longitude,Solar Energy Potential (GHI),Unit,Description\nPeru,Arequipa,Arequipa,Arequipa,-16.42,-71.53,6.7979998588562,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,La Joya,Arequipa,-16.7252,-71.8605,6.81300020217896,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Alto Selva Alegre,Arequipa,-16.3632,-71.548,6.79099988937378,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Cerro Colorado,Arequipa,-16.3702,-71.5273,6.78000020980835,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Paucarpata,Arequipa,-16.3989,-71.535,6.79899978637695,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Yanahuara,Arequipa,-16.3985,-71.538,6.80200004577637,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Cayma,Arequipa,-16.395,-71.53,6.79400014877319,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Miraflores,Arequipa,-16.402,-71.54,6.80200004577637,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Sachaca,Arequipa,-16.405,-71.545,6.80600023269653,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,JL Bustamante,Arequipa,-16.4,-71.532,6.79699993133545,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential",
+        "subChunks": [],
+        "relevanceEloRating": 1053.6265227013,
+        "substanceEloRating": 1058.5361810012632,
+        "qualityEloRating": 1058.5361810012632
+      },
+      {
+        "chunkIndex": 1,
+        "chapterIndex": 2,
+        "title": "Solar Energy Potential in Arequipa, Peru",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [
+          1
+        ],
+        "shortSummary": "Analysis of solar energy potential across various locations in Arequipa, Peru.",
+        "fullSummary": "This dataset provides detailed information on the solar energy potential in several locations within the Arequipa region of Peru. Each entry includes the specific area, its geographical coordinates, and the average daily global horizontal irradiation (GHI) measured in kWh/m². The locations covered are Camaná, Caravelí, Aplao, Chivay, Majes, Chuquibamba, and Mollendo.",
+        "compressedContent": "Peru, Arequipa, Camaná, Camaná, -16.62, -72.72, 5.388 kWh/m² GHI average daily solar potential.\nPeru, Arequipa, Caravelí, Caravelí, -15.9, -74.23, 5.607 kWh/m² GHI average daily solar potential.\nPeru, Arequipa, Aplao, Castilla, -15.77, -72.65, 6.668 kWh/m² GHI average daily solar potential.\nPeru, Arequipa, Chivay, Caylloma, -15.63, -71.58, 6.258 kWh/m² GHI average daily solar potential.\nPeru, Arequipa, Majes, Caylloma, -16.2396, -72.2364, 6.855 kWh/m² GHI average daily solar potential.\nPeru, Arequipa, Chuquibamba, Condesuyos, -15.73, -72.93, 6.627 kWh/m² GHI average daily solar potential.\nPeru, Arequipa, Mollendo, Islay, -17.02, -72.02, 5.01 kWh/m² GHI average daily solar potential.",
+        "metaData": {
+          "Country": "Peru",
+          "Region": "Arequipa",
+          "Locations": "Camaná, Caravelí, Aplao, Chivay, Majes, Chuquibamba, Mollendo",
+          "Measurement Unit": "kWh/m²",
+          "Data Type": "Global Horizontal Irradiation (GHI) - Average daily solar energy potential"
+        },
+        "uncompressedContent": "Peru,Arequipa,Camaná,Camaná,-16.62,-72.72,5.38800001144409,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Caravelí,Caravelí,-15.9,-74.23,5.60699987411499,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Aplao,Castilla,-15.77,-72.65,6.66800022125244,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Chivay,Caylloma,-15.63,-71.58,6.25799989700317,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Majes,Caylloma,-16.2396,-72.2364,6.85500001907349,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Chuquibamba,Condesuyos,-15.73,-72.93,6.6269998550415,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Mollendo,Islay,-17.02,-72.02,5.01000022888184,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential",
+        "subChunks": [],
+        "relevanceEloRating": 1001.2263232912771,
+        "substanceEloRating": 998.8798294774041,
+        "qualityEloRating": 998.8798294774041
+      },
+      {
+        "chunkIndex": 2,
+        "chapterIndex": 3,
+        "title": "Solar Energy Potential in Cotahuasi, La Unión, Arequipa, Peru",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [
+          1,
+          2
+        ],
+        "shortSummary": "Geographical and solar energy data for Cotahuasi, La Unión in Arequipa, Peru, detailing average daily Global Horizontal Irradiation.",
+        "fullSummary": "The text provides specific geographical and solar energy data for a location in Peru. It details the average daily solar energy potential in terms of Global Horizontal Irradiation (GHI) for Cotahuasi, La Unión in Arequipa, Peru. The coordinates given are latitude -15.5 and longitude -72.7, and the solar energy potential is measured as 6.03299999237061 kWh/m².",
+        "compressedContent": "Peru, Arequipa, Cotahuasi, La Unión, -15.5, -72.7, 6.033 kWh/m², Daily GHI average.",
+        "metaData": {
+          "Country": "Peru",
+          "Region": "Arequipa",
+          "Sub-region": "La Unión",
+          "Location": "Cotahuasi",
+          "Latitude": "-15.5",
+          "Longitude": "-72.7",
+          "Solar Energy Potential (kWh/m²)": "6.03299999237061",
+          "Measurement Type": "Global Horizontal Irradiation (GHI)"
+        },
+        "uncompressedContent": "Peru,Arequipa,Cotahuasi,La Unión,-15.5,-72.7,6.03299999237061,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential",
+        "subChunks": [],
+        "relevanceEloRating": 943.7894877773673,
+        "substanceEloRating": 943.7263232912771,
+        "qualityEloRating": 943.7263232912771
+      }
+    ],
+    "cachedChunkStrategy": [
+      {
+        "chapterIndex": 1,
+        "chapterTitle": "Central Arequipa Districts",
+        "chapterStartLineNumber": 1,
+        "importantContextChapterIndexes": [],
+        "chunkData": "Country,city,District,Province,Latitude,Longitude,Solar Energy Potential (GHI),Unit,Description\nPeru,Arequipa,Arequipa,Arequipa,-16.42,-71.53,6.7979998588562,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,La Joya,Arequipa,-16.7252,-71.8605,6.81300020217896,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Alto Selva Alegre,Arequipa,-16.3632,-71.548,6.79099988937378,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Cerro Colorado,Arequipa,-16.3702,-71.5273,6.78000020980835,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Paucarpata,Arequipa,-16.3989,-71.535,6.79899978637695,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Yanahuara,Arequipa,-16.3985,-71.538,6.80200004577637,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Cayma,Arequipa,-16.395,-71.53,6.79400014877319,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Miraflores,Arequipa,-16.402,-71.54,6.80200004577637,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Sachaca,Arequipa,-16.405,-71.545,6.80600023269653,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,JL Bustamante,Arequipa,-16.4,-71.532,6.79699993133545,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential"
+      },
+      {
+        "chapterIndex": 2,
+        "chapterTitle": "Peripheral and Coastal Districts with Varied Solar Potential",
+        "chapterStartLineNumber": 12,
+        "importantContextChapterIndexes": [
+          1
+        ],
+        "chunkData": "Peru,Arequipa,Camaná,Camaná,-16.62,-72.72,5.38800001144409,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Caravelí,Caravelí,-15.9,-74.23,5.60699987411499,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Aplao,Castilla,-15.77,-72.65,6.66800022125244,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Chivay,Caylloma,-15.63,-71.58,6.25799989700317,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Majes,Caylloma,-16.2396,-72.2364,6.85500001907349,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Chuquibamba,Condesuyos,-15.73,-72.93,6.6269998550415,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential\nPeru,Arequipa,Mollendo,Islay,-17.02,-72.02,5.01000022888184,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential"
+      },
+      {
+        "chapterIndex": 3,
+        "chapterTitle": "Unique Environmental Districts with Special Solar Observations",
+        "chapterStartLineNumber": 19,
+        "importantContextChapterIndexes": [
+          1,
+          2
+        ],
+        "chunkData": "Peru,Arequipa,Cotahuasi,La Unión,-15.5,-72.7,6.03299999237061,kWh/m²,Global Horizontal Irradiation (GHI) - Average daily solar energy potential"
+      }
+    ]
+  },
+  "7a75215f50e7bba0742c5d2e11c1b925": {
+    "url": "http://localhost:3001/solar-installations-detailed.csv",
+    "fileId": "7a75215f50e7bba0742c5d2e11c1b925",
+    "contentType": "text/plain; charset=utf-8",
+    "filePath": "src/ingestion/cache/7a75215f50e7bba0742c5d2e11c1b925/solar-installations-detailed.csv.txt",
+    "lastModified": "2025-08-31T13:34:16.833Z",
+    "lastModifiedOnServer": "",
+    "size": 3257,
+    "hash": "e4515f448e3f53e70fa239955fc25338d7f6f85cf2336546ae84492ad74ae305",
+    "title": "Solar Energy Stations Inventory in Peru",
+    "shortDescription": "Comprehensive data on various solar energy stations across different regions in Peru, detailing location, capacity, and other operational metrics.",
+    "description": "The document provides an extensive dataset of various solar energy stations across Peru, detailing essential information such as district, province, city, capacity in megawatts, area in square meters, Global Tilted Irradiance (GTI) in kWh/m2, PV output in kWh/kWp, latitude, and longitude. Each station is part of a broader inventory aiming to catalog commercial, industrial, and utility scale solar energy stations.",
+    "fullDescriptionOfAllContents": "The data in the document lists various solar energy stations located in Peru with detailed metrics such as their district, province, city, capacity in megawatts, area in square meters, Global Tilted Irradiance (GTI) in kWh/m2, PV output in kWh/kWp, latitude, and longitude. Each entry also reiterates that it is part of an 'inventory of commercial, industrial and utility scale solar energy stations.'",
+    "documentMetaData": {
+      "color-scheme": "light dark"
+    },
+    "allReferencesWithUrls": [],
+    "allOtherReferences": [],
+    "allImageUrls": [],
+    "compressedFullDescriptionOfAllContents": "Detailed listing of solar energy stations across Peru, including district, province, city, capacity (MW), area (m2), GTI (kWh/m2), PV output (kWh/kWp), latitude, and longitude, all part of a comprehensive inventory.",
+    "cleanedDocument": "Country,District,Province,City,Capacity_MW,Area_SqMeters,GTI_kWh_m2,PVOUT_kWh_kWp,Latitude,Longitude,Description\nPeru,Moquegua,Moquegua,Moquegua,30.3899499405487,376909.905614019,2674.72573328018,2097.63076114655,-17.2331404929259,-70.8634969944871,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,250.090813564646,3166666.75572473,2614.45949721336,2066.94972074032,-17.2513025908204,-71.1844360141199,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,26.1757509968358,324643.504082565,2674.72573328018,2097.63076114655,-17.2288972490171,-70.8628349845061,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,23.5267938025186,295683.33804539,2594.00558638573,2061.47101950645,-17.5433922046114,-71.0365091033265,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,5.23710058331672,58583.253662164,2593.27496516705,2060.00995123386,-17.5426855139522,-71.0297291948997,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,45.1298823568828,566645.806773766,2593.27496516705,2058.914280653,-17.5429972041566,-71.0194140531941,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,12.5883801756336,158115.991625931,2596.92754876614,2062.56669008732,-17.5396047842628,-71.0268951378251,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,28.3079279390067,351244.777956495,2673.99528622627,2097.9959846735,-17.2327397172948,-70.8549605460916,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Tacna,Tacna,Tacna,60.8153631507819,759784.64997132,2363.53282105923,1867.15799582005,-17.9935887238147,-70.3366190704638,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,32.8555854545799,412927.033840273,2594.00558638573,2061.47101950645,-17.5472836490579,-71.0340534663434,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,La Joya,Arequipa,Arequipa,50.030204549693,619105.119598427,2631.26099860668,2058.914280653,-16.5761269288629,-71.8179714619973,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Majes,Caylloma,Arequipa,56.1324744309773,701242.718934184,2615.18994426727,2065.85405015945,-16.4353001383798,-72.2216295180949,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,El Carmen,Ica,Ica,13.7725763616567,174320.666135961,1919.02356827259,1535.87622213364,-13.5279458865771,-76.1111097545794,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Quellouno,Quelluono,Cusco,0.086386455717276,782.436341334743,1877.75017476082,1499.71648049355,-12.6365028948665,-72.4459152788263,\"inventory of commercial, industrial and utility scale solar energy stations. \"",
+    "chunks": [
+      {
+        "chunkIndex": 0,
+        "chapterIndex": 1,
+        "title": "Solar Energy Station Data in Moquegua, Peru",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [
+          2
+        ],
+        "shortSummary": "Data table of solar energy stations in Moquegua, Peru detailing their capacities, areas, irradiance, PV outputs, and locations.",
+        "fullSummary": "The provided data consists of a table of solar energy stations located in Moquegua, Peru. Each row in the table includes information about the country, district, province, city, capacity in megawatts (MW), area in square meters, Global Tilted Irradiance (GTI) in kWh/m2, PV output in kWh/kWp, latitude, and longitude. Additionally, each entry contains a description stating that the data is an inventory of commercial, industrial, and utility-scale solar energy stations.",
+        "compressedContent": "Peru, Moquegua, 30.39MW, 376910m², 2674.73 GTI, 2097.63 PVOUT, -17.2331, -70.8635, solar energy inventory.\nPeru, Moquegua, 250.09MW, 3166667m², 2614.46 GTI, 2066.95 PVOUT, -17.2513, -71.1844, solar energy inventory.\nPeru, Moquegua, 26.18MW, 324644m², 2674.73 GTI, 2097.63 PVOUT, -17.2289, -70.8628, solar energy inventory.\nPeru, Moquegua, 23.53MW, 295683m², 2594.01 GTI, 2061.47 PVOUT, -17.5434, -71.0365, solar energy inventory.\nPeru, Moquegua, 5.24MW, 58583m², 2593.27 GTI, 2060.01 PVOUT, -17.5427, -71.0297, solar energy inventory.\nPeru, Moquegua, 45.13MW, 566646m², 2593.27 GTI, 2058.91 PVOUT, -17.5430, -71.0194, solar energy inventory.\nPeru, Moquegua, 12.59MW, 158116m², 2596.93 GTI, 2062.57 PVOUT, -17.5396, -71.0269, solar energy inventory.\nPeru, Moquegua, 28.31MW, 351245m², 2674.00 GTI, 2098.00 PVOUT, -17.2327, -70.8550, solar energy inventory.",
+        "metaData": {
+          "Country": "Peru",
+          "District": "Moquegua",
+          "Province": "Moquegua",
+          "City": "Moquegua",
+          "Description": "inventory of commercial, industrial and utility scale solar energy stations."
+        },
+        "uncompressedContent": "Country,District,Province,City,Capacity_MW,Area_SqMeters,GTI_kWh_m2,PVOUT_kWh_kWp,Latitude,Longitude,Description\nPeru,Moquegua,Moquegua,Moquegua,30.3899499405487,376909.905614019,2674.72573328018,2097.63076114655,-17.2331404929259,-70.8634969944871,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,250.090813564646,3166666.75572473,2614.45949721336,2066.94972074032,-17.2513025908204,-71.1844360141199,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,26.1757509968358,324643.504082565,2674.72573328018,2097.63076114655,-17.2288972490171,-70.8628349845061,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,23.5267938025186,295683.33804539,2594.00558638573,2061.47101950645,-17.5433922046114,-71.0365091033265,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,5.23710058331672,58583.253662164,2593.27496516705,2060.00995123386,-17.5426855139522,-71.0297291948997,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,45.1298823568828,566645.806773766,2593.27496516705,2058.914280653,-17.5429972041566,-71.0194140531941,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,12.5883801756336,158115.991625931,2596.92754876614,2062.56669008732,-17.5396047842628,-71.0268951378251,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,28.3079279390067,351244.777956495,2673.99528622627,2097.9959846735,-17.2327397172948,-70.8549605460916,\"inventory of commercial, industrial and utility scale solar energy stations. \"",
+        "subChunks": [],
+        "relevanceEloRating": 1099.6451720799303,
+        "substanceEloRating": 1097.2839703982982,
+        "qualityEloRating": 1100.2804118196468
+      },
+      {
+        "chunkIndex": 1,
+        "chapterIndex": 2,
+        "title": "Solar Energy Stations Data in Peru",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [
+          1,
+          3
+        ],
+        "shortSummary": "Geographical and operational data of solar energy stations in Tacna and Moquegua, Peru.",
+        "fullSummary": "The text provides geographical and operational data for solar energy stations in two locations within Peru: Tacna and Moquegua. Each entry includes the region, city, coordinates, and a description of the type of solar energy stations located there.",
+        "compressedContent": "Peru,Tacna,Tacna,Tacna,60.8153631507819,759784.64997132,2363.53282105923,1867.15799582005,-17.9935887238147,-70.3366190704638,\"inventory of commercial, industrial and utility scale solar energy stations.\"\nPeru,Moquegua,Moquegua,Moquegua,32.8555854545799,412927.033840273,2594.00558638573,2061.47101950645,-17.5472836490579,-71.0340534663434,\"inventory of commercial, industrial and utility scale solar energy stations.\"",
+        "metaData": {
+          "Country": "Peru",
+          "Cities": "Tacna, Moquegua",
+          "Coordinates": "-17.9935887238147, -70.3366190704638; -17.5472836490579, -71.0340534663434",
+          "Description": "Inventory of commercial, industrial and utility scale solar energy stations."
+        },
+        "uncompressedContent": "Peru,Tacna,Tacna,Tacna,60.8153631507819,759784.64997132,2363.53282105923,1867.15799582005,-17.9935887238147,-70.3366190704638,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,32.8555854545799,412927.033840273,2594.00558638573,2061.47101950645,-17.5472836490579,-71.0340534663434,\"inventory of commercial, industrial and utility scale solar energy stations. \"",
+        "subChunks": [],
+        "relevanceEloRating": 996.0656120417009,
+        "substanceEloRating": 1048.7707528207493,
+        "qualityEloRating": 1002.2296139128491
+      },
+      {
+        "chunkIndex": 2,
+        "chapterIndex": 3,
+        "title": "Solar Energy Stations Inventory Data in Arequipa, Peru",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [
+          2
+        ],
+        "shortSummary": "Locations and details of solar energy stations in Arequipa, Peru.",
+        "fullSummary": "The text provides detailed information about inventory locations for commercial, industrial, and utility scale solar energy stations in Arequipa, Peru. It includes geographical coordinates, regional data, and specific area details for two locations: La Joya and Majes in the Arequipa region. Each entry specifies the city, district, region, and precise latitude and longitude.",
+        "compressedContent": "Peru,La Joya,Arequipa,50.03020455,619105.12,2631.26099861,2058.91428065,-16.57612693,-71.81797146,\"inventory of solar energy stations.\"\nPeru,Majes,Caylloma,Arequipa,56.13247443,701242.72,2615.18994427,2065.85405016,-16.43530014,-72.22162952,\"inventory of solar energy stations.\"",
+        "metaData": {
+          "Country": "Peru",
+          "Region": "Arequipa",
+          "Locations": "La Joya, Majes",
+          "Purpose": "Inventory of solar energy stations",
+          "Type of Stations": "Commercial, industrial and utility scale"
+        },
+        "uncompressedContent": "Peru,La Joya,Arequipa,Arequipa,50.030204549693,619105.119598427,2631.26099860668,2058.914280653,-16.5761269288629,-71.8179714619973,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Majes,Caylloma,Arequipa,56.1324744309773,701242.718934184,2615.18994426727,2065.85405015945,-16.4353001383798,-72.2216295180949,\"inventory of commercial, industrial and utility scale solar energy stations. \"",
+        "subChunks": [],
+        "relevanceEloRating": 954.901502867858,
+        "substanceEloRating": 949.5124334799281,
+        "qualityEloRating": 1006.1151894882798
+      },
+      {
+        "chunkIndex": 3,
+        "chapterIndex": 4,
+        "title": "Dataset Information for El Carmen, Ica, Peru",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [],
+        "shortSummary": "Dataset entry for El Carmen, Ica, Peru including geographical and solar energy inventory data.",
+        "fullSummary": "The text provides a specific dataset entry pertaining to a location in Peru, named El Carmen, within the region of Ica. The dataset includes geographical coordinates, population statistics and a description of the inventory related to solar energy stations in the area.",
+        "compressedContent": "Peru, El Carmen, Ica, Ica, 13.772576, 174320.666, 1919.024, 1535.876, -13.527946, -76.111110, \"inventory of commercial, industrial and utility scale solar energy stations.\"",
+        "metaData": {
+          "Country": "Peru",
+          "City": "El Carmen",
+          "Region": "Ica",
+          "Subregion": "Ica",
+          "Latitude": "13.7725763616567",
+          "Longitude": "-76.1111097545794",
+          "Population": "174320.666135961",
+          "Area": "1919.02356827259",
+          "Density": "1535.87622213364"
+        },
+        "uncompressedContent": "Peru,El Carmen,Ica,Ica,13.7725763616567,174320.666135961,1919.02356827259,1535.87622213364,-13.5279458865771,-76.1111097545794,\"inventory of commercial, industrial and utility scale solar energy stations. \"",
+        "subChunks": [],
+        "relevanceEloRating": 998.1321549824823,
+        "substanceEloRating": 956.9465132135159,
+        "qualityEloRating": 955.8647043038106
+      },
+      {
+        "chunkIndex": 4,
+        "chapterIndex": 5,
+        "title": "Geographical and Statistical Data on Quellouno, Peru",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [],
+        "shortSummary": "Geographical and statistical data on Quellouno, Peru, with a focus on solar energy stations.",
+        "fullSummary": "The text provides geographical and statistical data related to Quellouno, a location in Cusco, Peru. It includes latitude, longitude, and various numerical data points possibly representing altitudes or other measurements, followed by a description of the content as an inventory of commercial, industrial, and utility scale solar energy stations.",
+        "compressedContent": "Peru, Quellouno, Quelluono, Cusco, -12.6365028948665, -72.4459152788263, inventory of commercial, industrial, and utility scale solar energy stations, 0.086386455717276, 782.436341334743, 1877.75017476082, 1499.71648049355.",
+        "metaData": {
+          "Country": "Peru",
+          "City": "Quellouno",
+          "AlternateCityName": "Quelluono",
+          "Region": "Cusco",
+          "Latitude": "-12.6365028948665",
+          "Longitude": "-72.4459152788263",
+          "DataPoint1": "0.086386455717276",
+          "DataPoint2": "782.436341334743",
+          "DataPoint3": "1877.75017476082",
+          "DataPoint4": "1499.71648049355"
+        },
+        "uncompressedContent": "Peru,Quellouno,Quelluono,Cusco,0.086386455717276,782.436341334743,1877.75017476082,1499.71648049355,-12.6365028948665,-72.4459152788263,\"inventory of commercial, industrial and utility scale solar energy stations. \"",
+        "subChunks": [],
+        "relevanceEloRating": 953.7168384270284,
+        "substanceEloRating": 947.876020451316,
+        "qualityEloRating": 947.2789018030493
+      }
+    ],
+    "cachedChunkStrategy": [
+      {
+        "chapterIndex": 1,
+        "chapterTitle": "Moquegua",
+        "chapterStartLineNumber": 1,
+        "importantContextChapterIndexes": [
+          2
+        ],
+        "chunkData": "Country,District,Province,City,Capacity_MW,Area_SqMeters,GTI_kWh_m2,PVOUT_kWh_kWp,Latitude,Longitude,Description\nPeru,Moquegua,Moquegua,Moquegua,30.3899499405487,376909.905614019,2674.72573328018,2097.63076114655,-17.2331404929259,-70.8634969944871,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,250.090813564646,3166666.75572473,2614.45949721336,2066.94972074032,-17.2513025908204,-71.1844360141199,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,26.1757509968358,324643.504082565,2674.72573328018,2097.63076114655,-17.2288972490171,-70.8628349845061,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,23.5267938025186,295683.33804539,2594.00558638573,2061.47101950645,-17.5433922046114,-71.0365091033265,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,5.23710058331672,58583.253662164,2593.27496516705,2060.00995123386,-17.5426855139522,-71.0297291948997,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,45.1298823568828,566645.806773766,2593.27496516705,2058.914280653,-17.5429972041566,-71.0194140531941,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,12.5883801756336,158115.991625931,2596.92754876614,2062.56669008732,-17.5396047842628,-71.0268951378251,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,28.3079279390067,351244.777956495,2673.99528622627,2097.9959846735,-17.2327397172948,-70.8549605460916,\"inventory of commercial, industrial and utility scale solar energy stations. \""
+      },
+      {
+        "chapterIndex": 2,
+        "chapterTitle": "Tacna",
+        "chapterStartLineNumber": 10,
+        "importantContextChapterIndexes": [
+          1,
+          3
+        ],
+        "chunkData": "Peru,Tacna,Tacna,Tacna,60.8153631507819,759784.64997132,2363.53282105923,1867.15799582005,-17.9935887238147,-70.3366190704638,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Moquegua,Moquegua,Moquegua,32.8555854545799,412927.033840273,2594.00558638573,2061.47101950645,-17.5472836490579,-71.0340534663434,\"inventory of commercial, industrial and utility scale solar energy stations. \""
+      },
+      {
+        "chapterIndex": 3,
+        "chapterTitle": "Arequipa",
+        "chapterStartLineNumber": 12,
+        "importantContextChapterIndexes": [
+          2
+        ],
+        "chunkData": "Peru,La Joya,Arequipa,Arequipa,50.030204549693,619105.119598427,2631.26099860668,2058.914280653,-16.5761269288629,-71.8179714619973,\"inventory of commercial, industrial and utility scale solar energy stations. \"\nPeru,Majes,Caylloma,Arequipa,56.1324744309773,701242.718934184,2615.18994426727,2065.85405015945,-16.4353001383798,-72.2216295180949,\"inventory of commercial, industrial and utility scale solar energy stations. \""
+      },
+      {
+        "chapterIndex": 4,
+        "chapterTitle": "Ica",
+        "chapterStartLineNumber": 14,
+        "importantContextChapterIndexes": [],
+        "chunkData": "Peru,El Carmen,Ica,Ica,13.7725763616567,174320.666135961,1919.02356827259,1535.87622213364,-13.5279458865771,-76.1111097545794,\"inventory of commercial, industrial and utility scale solar energy stations. \""
+      },
+      {
+        "chapterIndex": 5,
+        "chapterTitle": "Cusco",
+        "chapterStartLineNumber": 15,
+        "importantContextChapterIndexes": [],
+        "chunkData": "Peru,Quellouno,Quelluono,Cusco,0.086386455717276,782.436341334743,1877.75017476082,1499.71648049355,-12.6365028948665,-72.4459152788263,\"inventory of commercial, industrial and utility scale solar energy stations. \""
+      }
+    ]
+  },
+  "9c200ec6352fb4305580394551395bae": {
+    "url": "http://localhost:3001/population_density_arequipa_censo2025.csv",
+    "fileId": "9c200ec6352fb4305580394551395bae",
+    "contentType": "text/plain; charset=utf-8",
+    "filePath": "src/ingestion/cache/9c200ec6352fb4305580394551395bae/population_density_arequipa_censo2025.csv.txt",
+    "lastModified": "2025-08-31T13:34:18.871Z",
+    "lastModifiedOnServer": "",
+    "size": 932,
+    "hash": "ca9894f9602dfe59add746a18bb228eb0aab5f48cdf0283a546cb8b5befa591b",
+    "title": "Population Density Data of Arequipa, Peru",
+    "shortDescription": "Detailed population density information across various districts in Arequipa, Peru.",
+    "description": "This document presents a comprehensive table detailing population densities in distinct districts throughout the city and province of Arequipa, Peru. It includes specific data on population density, measured in people per square kilometer, for each district such as Arequipa, La Joya, Alto Selva Alegre, Cerro Colorado, and more, highlighting the variation from densely to sparsely populated areas.",
+    "fullDescriptionOfAllContents": "The document contains a table with columns titled Country, City, District, Province, and Population Density (people/km²), enumerating various districts within the city and province of Arequipa, Peru. Each row provides specific population density data for districts such as Arequipa, La Joya, Alto Selva Alegre, Cerro Colorado, and others, ranging from densely populated areas to sparsely populated zones.",
+    "documentMetaData": {
+      "color-scheme": "light dark"
+    },
+    "allReferencesWithUrls": [],
+    "allOtherReferences": [],
+    "allImageUrls": [],
+    "compressedFullDescriptionOfAllContents": "The document features a data table listing population density (people/km²) for various districts in Arequipa, Peru, such as Arequipa, La Joya, Alto Selva Alegre, and Cerro Colorado, indicating a range from high to low population densities.",
+    "cleanedDocument": "Country,City,District,Province,Population Density (people/km²)\nPeru,Arequipa,Arequipa,Arequipa,4721\nPeru,Arequipa,La Joya,Arequipa,25\nPeru,Arequipa,Alto Selva Alegre,Arequipa,3800\nPeru,Arequipa,Cerro Colorado,Arequipa,2200\nPeru,Arequipa,Camaná,Camaná,25\nPeru,Arequipa,Ocoña,Camaná,2\nPeru,Arequipa,Caravelí,Caravelí,5\nPeru,Arequipa,Chala,Caravelí,8\nPeru,Arequipa,Aplao,Castilla,10\nPeru,Arequipa,Chivay,Caylloma,15\nPeru,Arequipa,Majes,Caylloma,20\nPeru,Arequipa,Chuquibamba,Condesuyos,10\nPeru,Arequipa,Mollendo,Islay,500\nPeru,Arequipa,Cotahuasi,La Unión,1\nPeru,Arequipa,Paucarpata,Arequipa,3800\nPeru,Arequipa,Yanahuara,Arequipa,4000\nPeru,Arequipa,Cayma,Arequipa,3000\nPeru,Arequipa,Miraflores,Arequipa,2000\nPeru,Arequipa,Sachaca,Arequipa,2800\nPeru,Arequipa,JL Bustamante,Arequipa,2500",
+    "chunks": [
+      {
+        "chunkIndex": 0,
+        "chapterIndex": 1,
+        "title": "Geographic and Demographic Table Header",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [],
+        "shortSummary": "Table header for geographical and demographic data.",
+        "fullSummary": "The provided text consists of a table header related to geographical and demographic information. The data fields include Country, City, District, Province, and Population Density measured in people per square kilometer.",
+        "compressedContent": "Country,City,District,Province,Population Density (people/km²)",
+        "metaData": {
+          "fields": "Country, City, District, Province, Population Density (people/km²)",
+          "dataMeasurement": "Population Density in people per square kilometer",
+          "format": "CSV Header"
+        },
+        "uncompressedContent": "Country,City,District,Province,Population Density (people/km²)",
+        "subChunks": [],
+        "relevanceEloRating": 1055.008574491317,
+        "substanceEloRating": 1005.8179197252398,
+        "qualityEloRating": 865.5996694933968
+      },
+      {
+        "chunkIndex": 1,
+        "chapterIndex": 2,
+        "title": "Geographical Data Point for Arequipa, Peru",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [
+          3
+        ],
+        "shortSummary": "Geographical data for Arequipa, Peru, possibly indicating altitude or population.",
+        "fullSummary": "The text provides a geographical data point related to Arequipa, Peru. The format suggests a structured data with possible implications for mapping or demographics, containing a location followed by a numerical value, likely representing an altitude or population figure.",
+        "compressedContent": "Peru,Arequipa,Arequipa,Arequipa,4721",
+        "metaData": {
+          "Country": "Peru",
+          "Region": "Arequipa",
+          "City": "Arequipa",
+          "District": "Arequipa",
+          "NumericValue": "4721"
+        },
+        "uncompressedContent": "Peru,Arequipa,Arequipa,Arequipa,4721",
+        "subChunks": [],
+        "relevanceEloRating": 1087.4618424183363,
+        "substanceEloRating": 1059.022957436558,
+        "qualityEloRating": 1060.1488938410323
+      },
+      {
+        "chunkIndex": 2,
+        "chapterIndex": 3,
+        "title": "Population Data for Arequipa, Peru",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [
+          2
+        ],
+        "shortSummary": "List of districts in Arequipa, Peru with populations.",
+        "fullSummary": "The text lists several districts in the Arequipa region of Peru along with their respective populations. It includes the districts of La Joya, Alto Selva Alegre, and Cerro Colorado with populations of 25, 3800, and 2200 respectively.",
+        "compressedContent": "Peru,Arequipa,La Joya,Arequipa,25\nPeru,Arequipa,Alto Selva Alegre,Arequipa,3800\nPeru,Arequipa,Cerro Colorado,Arequipa,2200",
+        "metaData": {
+          "Location": "Arequipa, Peru",
+          "DistrictsMentioned": "La Joya, Alto Selva Alegre, Cerro Colorado",
+          "PopulationDataIncluded": "Yes",
+          "Format": "CSV-like structure"
+        },
+        "uncompressedContent": "Peru,Arequipa,La Joya,Arequipa,25\nPeru,Arequipa,Alto Selva Alegre,Arequipa,3800\nPeru,Arequipa,Cerro Colorado,Arequipa,2200",
+        "subChunks": [],
+        "relevanceEloRating": 1162.6998425113427,
+        "substanceEloRating": 1089.3988265537457,
+        "qualityEloRating": 1142.604519356789
+      },
+      {
+        "chunkIndex": 3,
+        "chapterIndex": 4,
+        "title": "Location Data for Arequipa, Peru",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [
+          2,
+          3
+        ],
+        "shortSummary": "CSV formatted data representing specific locations and values in Arequipa, Peru.",
+        "fullSummary": "The text consists of data entries formatted as CSV, representing locations in Peru, specifically in the region of Arequipa. Each entry includes the country, region, province, district, and a number, possibly indicating a value like population or an administrative code.",
+        "compressedContent": "Peru, Arequipa, Camaná, Camaná, 25\nPeru, Arequipa, Ocoña, Camaná, 2",
+        "metaData": {
+          "format": "CSV",
+          "dataEntries": "2",
+          "columns": "5",
+          "columnNames": "Country, Region, Province, District, Value"
+        },
+        "uncompressedContent": "Peru,Arequipa,Camaná,Camaná,25\nPeru,Arequipa,Ocoña,Camaná,2",
+        "subChunks": [],
+        "relevanceEloRating": 969.6874496582726,
+        "substanceEloRating": 1062.2432618353287,
+        "qualityEloRating": 1034.1836838126803
+      },
+      {
+        "chunkIndex": 4,
+        "chapterIndex": 5,
+        "title": "Locations in Arequipa, Peru",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [],
+        "shortSummary": "Listing of locations in Arequipa, Peru with numerical data.",
+        "fullSummary": "The text lists specific locations in Peru, specifically within the region of Arequipa. Each line contains a structured format detailing the country, region, city, district, and a numerical value which could represent data like population or an administrative code.",
+        "compressedContent": "Peru,Arequipa,Caravelí,Caravelí,5\nPeru,Arequipa,Chala,Caravelí,8",
+        "metaData": {
+          "Country": "Peru",
+          "Region": "Arequipa",
+          "Cities": "Caravelí, Chala",
+          "District": "Caravelí",
+          "NumericalDataPresent": "Yes"
+        },
+        "uncompressedContent": "Peru,Arequipa,Caravelí,Caravelí,5\nPeru,Arequipa,Chala,Caravelí,8",
+        "subChunks": [],
+        "relevanceEloRating": 836.0794502444082,
+        "substanceEloRating": 983.0847642286526,
+        "qualityEloRating": 941.3874774761223
+      },
+      {
+        "chunkIndex": 5,
+        "chapterIndex": 6,
+        "title": "Geographical Data of Peru",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [],
+        "shortSummary": "Geographical hierarchy of a location in Peru with an unidentified number.",
+        "fullSummary": "The text represents a hierarchical geographical data indicating a location in Peru. It starts from the country level and narrows down to a specific locality. The sequence is: Country (Peru), Region (Arequipa), Province (Castilla), District (Aplao), followed by an unidentified numerical value (10).",
+        "compressedContent": "Peru,Arequipa,Aplao,Castilla,10",
+        "metaData": {
+          "Country": "Peru",
+          "Region": "Arequipa",
+          "Province": "Castilla",
+          "District": "Aplao",
+          "UnidentifiedNumber": "10"
+        },
+        "uncompressedContent": "Peru,Arequipa,Aplao,Castilla,10",
+        "subChunks": [],
+        "relevanceEloRating": 874.1814681557978,
+        "substanceEloRating": 820.0593355956612,
+        "qualityEloRating": 877.2611355554245
+      },
+      {
+        "chunkIndex": 6,
+        "chapterIndex": 7,
+        "title": "Structured Data of Locations in Peru",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [],
+        "shortSummary": "Listing of locations in Peru with associated numerical data.",
+        "fullSummary": "The text presents a structured list of locations and numerical data associated with the regions in Peru, specifically within the Arequipa province and Caylloma district. Each line lists a country, province, specific location, district, and a number which could represent a statistical figure like population or another metric.",
+        "compressedContent": "Peru,Arequipa,Chivay,Caylloma,15\nPeru,Arequipa,Majes,Caylloma,20",
+        "metaData": {
+          "Countries": "Peru",
+          "Provinces": "Arequipa",
+          "Districts": "Caylloma",
+          "Locations": "Chivay, Majes",
+          "NumericalData": "15, 20"
+        },
+        "uncompressedContent": "Peru,Arequipa,Chivay,Caylloma,15\nPeru,Arequipa,Majes,Caylloma,20",
+        "subChunks": [],
+        "relevanceEloRating": 964.5564266008927,
+        "substanceEloRating": 969.592691582577,
+        "qualityEloRating": 1061.7345119765673
+      },
+      {
+        "chunkIndex": 7,
+        "chapterIndex": 8,
+        "title": "Geographical Information of Peru",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [],
+        "shortSummary": "Geographical data listing locations in Peru.",
+        "fullSummary": "The text provided contains comma-separated values representing geographical locations in Peru, specifically mentioning the country, city, town, and district along with an unidentified number '10'.",
+        "compressedContent": "Peru,Arequipa,Chuquibamba,Condesuyos,10",
+        "metaData": {
+          "Country": "Peru",
+          "City": "Arequipa",
+          "Town": "Chuquibamba",
+          "District": "Condesuyos",
+          "Number": "10"
+        },
+        "uncompressedContent": "Peru,Arequipa,Chuquibamba,Condesuyos,10",
+        "subChunks": [],
+        "relevanceEloRating": 879.2870544513985,
+        "substanceEloRating": 893.3988931915235,
+        "qualityEloRating": 956.6685645160618
+      },
+      {
+        "chunkIndex": 8,
+        "chapterIndex": 9,
+        "title": "Geographical Breakdown and Numerical Data for Peru",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [],
+        "shortSummary": "Geographical hierarchy in Peru with a numerical value.",
+        "fullSummary": "The text represents a structured list of geographical locations in Peru, starting from the country level down to a specific location, followed by a numerical value which could indicate a statistical measure or code.",
+        "compressedContent": "Peru,Arequipa,Mollendo,Islay,500",
+        "metaData": {
+          "Country": "Peru",
+          "Region": "Arequipa",
+          "City": "Mollendo",
+          "Province": "Islay",
+          "NumericValue": "500"
+        },
+        "uncompressedContent": "Peru,Arequipa,Mollendo,Islay,500",
+        "subChunks": [],
+        "relevanceEloRating": 983.0304426878033,
+        "substanceEloRating": 903.6785509748884,
+        "qualityEloRating": 939.8321995377189
+      },
+      {
+        "chunkIndex": 9,
+        "chapterIndex": 10,
+        "title": "Population Data for Districts in Arequipa, Peru",
+        "mainExternalUrlFound": "",
+        "importantContextChunkIndexes": [],
+        "shortSummary": "List of districts in Arequipa, Peru with population data.",
+        "fullSummary": "The text provides a list of districts within Arequipa, Peru, along with their corresponding main localities and population counts. Each line lists a district and its primary locality followed by a population figure.",
+        "compressedContent": "Peru,Arequipa,Cotahuasi,La Unión,1\nPeru,Arequipa,Paucarpata,Arequipa,3800\nPeru,Arequipa,Yanahuara,Arequipa,4000\nPeru,Arequipa,Cayma,Arequipa,3000\nPeru,Arequipa,Miraflores,Arequipa,2000\nPeru,Arequipa,Sachaca,Arequipa,2800\nPeru,Arequipa,JL Bustamante,Arequipa,2500",
+        "metaData": {
+          "Country": "Peru",
+          "Region": "Arequipa",
+          "Number of Entries": "7",
+          "Data Format": "Country, Region, District, Locality, Population"
+        },
+        "uncompressedContent": "Peru,Arequipa,Cotahuasi,La Unión,1\nPeru,Arequipa,Paucarpata,Arequipa,3800\nPeru,Arequipa,Yanahuara,Arequipa,4000\nPeru,Arequipa,Cayma,Arequipa,3000\nPeru,Arequipa,Miraflores,Arequipa,2000\nPeru,Arequipa,Sachaca,Arequipa,2800\nPeru,Arequipa,JL Bustamante,Arequipa,2500",
+        "subChunks": [],
+        "relevanceEloRating": 1114.582149595252,
+        "substanceEloRating": 1159.983086995802,
+        "qualityEloRating": 1173.266302301966
+      }
+    ],
+    "cachedChunkStrategy": [
+      {
+        "chapterIndex": 1,
+        "chapterTitle": "Introduction",
+        "chapterStartLineNumber": 1,
+        "importantContextChapterIndexes": [],
+        "chunkData": "Country,City,District,Province,Population Density (people/km²)"
+      },
+      {
+        "chapterIndex": 2,
+        "chapterTitle": "Arequipa Province - Central Districts",
+        "chapterStartLineNumber": 2,
+        "importantContextChapterIndexes": [
+          3
+        ],
+        "chunkData": "Peru,Arequipa,Arequipa,Arequipa,4721"
+      },
+      {
+        "chapterIndex": 3,
+        "chapterTitle": "Arequipa Province - Peripheral Districts",
+        "chapterStartLineNumber": 3,
+        "importantContextChapterIndexes": [
+          2
+        ],
+        "chunkData": "Peru,Arequipa,La Joya,Arequipa,25\nPeru,Arequipa,Alto Selva Alegre,Arequipa,3800\nPeru,Arequipa,Cerro Colorado,Arequipa,2200"
+      },
+      {
+        "chapterIndex": 4,
+        "chapterTitle": "Camaná Province",
+        "chapterStartLineNumber": 6,
+        "importantContextChapterIndexes": [
+          2,
+          3
+        ],
+        "chunkData": "Peru,Arequipa,Camaná,Camaná,25\nPeru,Arequipa,Ocoña,Camaná,2"
+      },
+      {
+        "chapterIndex": 5,
+        "chapterTitle": "Caravelí Province",
+        "chapterStartLineNumber": 8,
+        "importantContextChapterIndexes": [],
+        "chunkData": "Peru,Arequipa,Caravelí,Caravelí,5\nPeru,Arequipa,Chala,Caravelí,8"
+      },
+      {
+        "chapterIndex": 6,
+        "chapterTitle": "Castilla Province",
+        "chapterStartLineNumber": 10,
+        "importantContextChapterIndexes": [],
+        "chunkData": "Peru,Arequipa,Aplao,Castilla,10"
+      },
+      {
+        "chapterIndex": 7,
+        "chapterTitle": "Caylloma Province",
+        "chapterStartLineNumber": 11,
+        "importantContextChapterIndexes": [],
+        "chunkData": "Peru,Arequipa,Chivay,Caylloma,15\nPeru,Arequipa,Majes,Caylloma,20"
+      },
+      {
+        "chapterIndex": 8,
+        "chapterTitle": "Condesuyos Province",
+        "chapterStartLineNumber": 13,
+        "importantContextChapterIndexes": [],
+        "chunkData": "Peru,Arequipa,Chuquibamba,Condesuyos,10"
+      },
+      {
+        "chapterIndex": 9,
+        "chapterTitle": "Islay Province",
+        "chapterStartLineNumber": 14,
+        "importantContextChapterIndexes": [],
+        "chunkData": "Peru,Arequipa,Mollendo,Islay,500"
+      },
+      {
+        "chapterIndex": 10,
+        "chapterTitle": "La Unión Province",
+        "chapterStartLineNumber": 15,
+        "importantContextChapterIndexes": [],
+        "chunkData": "Peru,Arequipa,Cotahuasi,La Unión,1\nPeru,Arequipa,Paucarpata,Arequipa,3800\nPeru,Arequipa,Yanahuara,Arequipa,4000\nPeru,Arequipa,Cayma,Arequipa,3000\nPeru,Arequipa,Miraflores,Arequipa,2000\nPeru,Arequipa,Sachaca,Arequipa,2800\nPeru,Arequipa,JL Bustamante,Arequipa,2500"
       }
     ]
   }

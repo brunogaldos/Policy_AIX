@@ -1,0 +1,21 @@
+Country,city,District,Province,Latitude,Longitude,Nighttime Lights,Unit,Description
+Peru,Arequipa,Arequipa,Arequipa,-16.42,-71.53,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,La Joya,Arequipa,-16.7252,-71.8605,8,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,Alto Selva Alegre,Arequipa,-16.3632,-71.548,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,Cerro Colorado,Arequipa,-16.3702,-71.5273,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,Paucarpata,Arequipa,-16.3989,-71.535,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,Yanahuara,Arequipa,-16.3985,-71.538,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,Cayma,Arequipa,-16.395,-71.53,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,Miraflores,Arequipa,-16.402,-71.54,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,Sachaca,Arequipa,-16.405,-71.545,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,JL Bustamante,Arequipa,-16.4,-71.532,63,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,Camaná,Camaná,-16.62,-72.72,41,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,Ocoña,Camaná,-16.7,-72.9,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,Caravelí,Caravelí,-15.9,-74.23,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,Chala,Caravelí,-16.5,-74.5,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,Aplao,Castilla,-15.77,-72.65,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,Chivay,Caylloma,-15.63,-71.58,9,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,Majes,Caylloma,-16.2396,-72.2364,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,Chuquibamba,Condesuyos,-15.73,-72.93,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,Mollendo,Islay,-17.02,-72.02,48,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level
+Peru,Arequipa,Cotahuasi,La Unión,-15.5,-72.7,0,nW/cm²/sr,Annual average nighttime lights intensity from DMSP-OLS satellite data - indicates urbanization and development level

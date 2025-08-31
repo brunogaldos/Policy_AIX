@@ -13,14 +13,7 @@ async function optimizedNO2Extraction() {
     // Define cities with their coordinates
     const cities = [
         // Colombia
-        { name: 'Bogotá', country: 'Colombia', lat: 4.7110, lng: -74.0721, region: 'Andean' },
-        { name: 'Medellín', country: 'Colombia', lat: 6.2442, lng: -75.5812, region: 'Andean' },
-        { name: 'Cali', country: 'Colombia', lat: 3.4516, lng: -76.5320, region: 'Pacific' },
-        { name: 'Barranquilla', country: 'Colombia', lat: 10.9685, lng: -74.7813, region: 'Caribbean' },
-        { name: 'Cartagena', country: 'Colombia', lat: 10.3932, lng: -75.4792, region: 'Caribbean' },
-        { name: 'Bucaramanga', country: 'Colombia', lat: 7.1258, lng: -73.1290, region: 'Andean' },
-        { name: 'Pereira', country: 'Colombia', lat: 4.8143, lng: -75.6946, region: 'Andean' },
-        { name: 'Manizales', country: 'Colombia', lat: 5.0689, lng: -75.5174, region: 'Andean' },
+        // Colombia
         
         // Other major cities for comparison
         { name: 'Mexico City', country: 'Mexico', lat: 19.4326, lng: -99.1332, region: 'North America' },
@@ -31,26 +24,41 @@ async function optimizedNO2Extraction() {
         { name: 'Caracas', country: 'Venezuela', lat: 10.4806, lng: -66.9036, region: 'South America' },
         { name: 'Quito', country: 'Ecuador', lat: -0.2299, lng: -78.5249, region: 'South America' },
         { name: 'La Paz', country: 'Bolivia', lat: -16.4897, lng: -68.1193, region: 'South America' },
-        { name: 'New York', country: 'United States', lat: 40.7128, lng: -74.0060, region: 'North America' },
-        { name: 'London', country: 'United Kingdom', lat: 51.5074, lng: -0.1278, region: 'Europe' },
-        { name: 'Tokyo', country: 'Japan', lat: 35.6762, lng: 139.6503, region: 'Asia' },
-        { name: 'Paris', country: 'France', lat: 48.8566, lng: 2.3522, region: 'Europe' },
-        { name: 'Beijing', country: 'China', lat: 39.9042, lng: 116.4074, region: 'Asia' },
-        { name: 'Moscow', country: 'Russia', lat: 55.7558, lng: 37.6176, region: 'Europe/Asia' },
-        { name: 'Los Angeles', country: 'United States', lat: 34.0522, lng: -118.2437, region: 'North America' },
-        { name: 'Chicago', country: 'United States', lat: 41.8781, lng: -87.6298, region: 'North America' },
-        { name: 'Mumbai', country: 'India', lat: 19.0760, lng: 72.8777, region: 'Asia' },
-        { name: 'São Paulo', country: 'Brazil', lat: -23.5505, lng: -46.6333, region: 'South America' },
-        { name: 'Mexico City', country: 'Mexico', lat: 19.4326, lng: -99.1332, region: 'North America' },
-        { name: 'Cairo', country: 'Egypt', lat: 30.0444, lng: 31.2357, region: 'Africa' },
-        { name: 'Seoul', country: 'South Korea', lat: 37.5665, lng: 126.9780, region: 'Asia' },
-        { name: 'Jakarta', country: 'Indonesia', lat: -6.2088, lng: 106.8456, region: 'Asia' },
-        { name: 'Delhi', country: 'India', lat: 28.7041, lng: 77.1025, region: 'Asia' },
-        { name: 'Shanghai', country: 'China', lat: 31.2304, lng: 121.4737, region: 'Asia' },
-        { name: 'Istanbul', country: 'Turkey', lat: 41.0082, lng: 28.9784, region: 'Europe/Asia' },
-        { name: 'Bangkok', country: 'Thailand', lat: 13.7563, lng: 100.5018, region: 'Asia' },
-        { name: 'Lagos', country: 'Nigeria', lat: 6.5244, lng: 3.3792, region: 'Africa' },
-        { name: 'Kinshasa', country: 'Democratic Republic of the Congo', lat: -4.4419, lng: 15.2663, region: 'Africa' }
+        
+  
+    
+        
+        // Peru - Major Cities
+        { name: 'Arequipa', country: 'Peru', lat: -16.3989, lng: -71.5350, region: 'Southern' },
+        { name: 'Trujillo', country: 'Peru', lat: -8.1090, lng: -79.0215, region: 'Northern' },
+        { name: 'Chiclayo', country: 'Peru', lat: -6.7760, lng: -79.8441, region: 'Northern' },
+        { name: 'Piura', country: 'Peru', lat: -5.1945, lng: -80.6328, region: 'Northern' },
+        { name: 'Iquitos', country: 'Peru', lat: -3.7491, lng: -73.2538, region: 'Amazon' },
+        { name: 'Cusco', country: 'Peru', lat: -13.5167, lng: -71.9789, region: 'Southern' },
+        { name: 'Chimbote', country: 'Peru', lat: -9.0745, lng: -78.5936, region: 'Northern' },
+        { name: 'Huancayo', country: 'Peru', lat: -12.0670, lng: -75.2096, region: 'Central' },
+        { name: 'Tacna', country: 'Peru', lat: -18.0066, lng: -70.2463, region: 'Southern' },
+        { name: 'Ica', country: 'Peru', lat: -14.0750, lng: -75.7286, region: 'Central' },
+        { name: 'Cajamarca', country: 'Peru', lat: -7.1617, lng: -78.5128, region: 'Northern' },
+        { name: 'Pucallpa', country: 'Peru', lat: -8.3833, lng: -74.5333, region: 'Amazon' },
+        { name: 'Sullana', country: 'Peru', lat: -4.9039, lng: -80.6853, region: 'Northern' },
+        { name: 'Chincha Alta', country: 'Peru', lat: -13.4500, lng: -76.1333, region: 'Central' },
+        { name: 'Huaraz', country: 'Peru', lat: -9.5277, lng: -77.5278, region: 'Central' },
+        { name: 'Ayacucho', country: 'Peru', lat: -13.1631, lng: -74.2246, region: 'Central' },
+        { name: 'Tarapoto', country: 'Peru', lat: -6.4833, lng: -76.3667, region: 'Amazon' },
+        { name: 'Moquegua', country: 'Peru', lat: -17.1956, lng: -71.3372, region: 'Southern' },
+        { name: 'Puno', country: 'Peru', lat: -15.8402, lng: -70.0219, region: 'Southern' },
+        { name: 'Juliaca', country: 'Peru', lat: -15.5000, lng: -70.1333, region: 'Southern' },
+        { name: 'Huánuco', country: 'Peru', lat: -9.9281, lng: -76.2427, region: 'Central' },
+        { name: 'Tumbes', country: 'Peru', lat: -3.5667, lng: -80.4500, region: 'Northern' },
+        { name: 'Puerto Maldonado', country: 'Peru', lat: -12.6000, lng: -69.1833, region: 'Amazon' },
+        { name: 'Chachapoyas', country: 'Peru', lat: -6.2167, lng: -77.8500, region: 'Northern' },
+        { name: 'Abancay', country: 'Peru', lat: -13.6333, lng: -72.8833, region: 'Central' },
+        { name: 'Huancavelica', country: 'Peru', lat: -12.7833, lng: -74.9667, region: 'Central' }
+        
+
+        
+
 
     ];
     

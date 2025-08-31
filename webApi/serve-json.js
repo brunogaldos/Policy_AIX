@@ -22,24 +22,9 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    if (req.url === '/city-data-index.txt') {
+    if (req.url === '/nighttime-lights-district-data-index.csv') {
         try {
-            const filePath = path.join(__dirname, 'src/ingestion/generated/city-data-index.txt');
-            const data = await fs.readFile(filePath, 'utf-8');
-            
-            res.writeHead(200, {
-                'Content-Type': 'text/plain',
-                'Content-Length': Buffer.byteLength(data)
-            });
-            res.end(data);
-        } catch (error) {
-            console.error('Error reading city-data-index.txt:', error);
-            res.writeHead(500, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: 'Failed to read file' }));
-        }
-    } else if (req.url === '/city-data-index.csv') {
-        try {
-            const filePath = path.join(__dirname, 'src/ingestion/generated/city-data-index.csv');
+            const filePath = path.join(__dirname, 'src/ingestion/generated/nighttime-lights-district-data-index.csv');
             const data = await fs.readFile(filePath, 'utf-8');
             
             res.writeHead(200, {
@@ -49,25 +34,57 @@ const server = http.createServer(async (req, res) => {
             });
             res.end(data);
         } catch (error) {
-            console.error('Error reading city-data-index.csv:', error);
+            console.error('Error reading nighttime-lights-district-data-index.csv:', error);
             res.writeHead(500, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: 'Failed to read file' }));
         }
-    } else if (req.url.startsWith('/cities/')) {
+    } else if (req.url === '/solar-energy-district-data-index.csv') {
         try {
-            const cityName = req.url.split('/cities/')[1];
-            const filePath = path.join(__dirname, 'src/ingestion/generated/cities', cityName);
+            const filePath = path.join(__dirname, 'src/ingestion/generated/solar-energy-district-data-index.csv');
             const data = await fs.readFile(filePath, 'utf-8');
             
             res.writeHead(200, {
-                'Content-Type': 'application/json',
+                'Content-Type': 'text/plain; charset=utf-8',
+                'Content-Disposition': 'inline',
                 'Content-Length': Buffer.byteLength(data)
             });
             res.end(data);
         } catch (error) {
-            console.error('Error reading city file:', error);
+            console.error('Error reading solar-energy-district-data-index.csv:', error);
             res.writeHead(500, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: 'Failed to read city file' }));
+            res.end(JSON.stringify({ error: 'Failed to read file' }));
+        }
+    } else if (req.url === '/solar-installations-detailed.csv') {
+        try {
+            const filePath = path.join(__dirname, 'src/ingestion/generated/solar-installations-detailed.csv');
+            const data = await fs.readFile(filePath, 'utf-8');
+            
+            res.writeHead(200, {
+                'Content-Type': 'text/plain; charset=utf-8',
+                'Content-Disposition': 'inline',
+                'Content-Length': Buffer.byteLength(data)
+            });
+            res.end(data);
+        } catch (error) {
+            console.error('Error reading solar-installations-detailed.csv:', error);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Failed to read file' }));
+        }
+    } else if (req.url === '/population_density_arequipa_censo2025.csv') {
+        try {
+            const filePath = path.join(__dirname, 'src/ingestion/generated/population_density_arequipa_censo2025.csv');
+            const data = await fs.readFile(filePath, 'utf-8');
+            
+            res.writeHead(200, {
+                'Content-Type': 'text/plain; charset=utf-8',
+                'Content-Disposition': 'inline',
+                'Content-Length': Buffer.byteLength(data)
+            });
+            res.end(data);
+        } catch (error) {
+            console.error('Error reading population_density_arequipa_censo2025.csv:', error);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Failed to read file' }));
         }
     } else {
         res.writeHead(404, { 'Content-Type': 'application/json' });
@@ -77,7 +94,11 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
     console.log(`🚀 Data server running on http://localhost:${PORT}`);
-    console.log(`📊 Serving city data at http://localhost:${PORT}/city-data-index.csv`);
+    console.log(`📊 Serving district data at:`);
+    console.log(`   • http://localhost:${PORT}/nighttime-lights-district-data-index.csv`);
+    console.log(`   • http://localhost:${PORT}/solar-energy-district-data-index.csv`);
+    console.log(`   • http://localhost:${PORT}/solar-installations-detailed.csv`);
+    console.log(`   • http://localhost:${PORT}/population_density_arequipa_censo2025.csv`);
 });
 
 // Handle graceful shutdown

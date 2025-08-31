@@ -1,0 +1,22 @@
+<html><head><meta name="color-scheme" content="light dark"></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">Country,City,District,Province,Population Density (people/km²)
+Peru,Arequipa,Arequipa,Arequipa,4721
+Peru,Arequipa,La Joya,Arequipa,25
+Peru,Arequipa,Alto Selva Alegre,Arequipa,3800
+Peru,Arequipa,Cerro Colorado,Arequipa,2200
+Peru,Arequipa,Camaná,Camaná,25
+Peru,Arequipa,Ocoña,Camaná,2
+Peru,Arequipa,Caravelí,Caravelí,5
+Peru,Arequipa,Chala,Caravelí,8
+Peru,Arequipa,Aplao,Castilla,10
+Peru,Arequipa,Chivay,Caylloma,15
+Peru,Arequipa,Majes,Caylloma,20
+Peru,Arequipa,Chuquibamba,Condesuyos,10
+Peru,Arequipa,Mollendo,Islay,500
+Peru,Arequipa,Cotahuasi,La Unión,1
+Peru,Arequipa,Paucarpata,Arequipa,3800
+Peru,Arequipa,Yanahuara,Arequipa,4000
+Peru,Arequipa,Cayma,Arequipa,3000
+Peru,Arequipa,Miraflores,Arequipa,2000
+Peru,Arequipa,Sachaca,Arequipa,2800
+Peru,Arequipa,JL Bustamante,Arequipa,2500
+</pre></body></html>

@@ -3,18 +3,24 @@
     
   ],
   "documentUrls": [
-    "http://localhost:3001/city-data-index.csv"
+    "http://localhost:3001/nighttime-lights-district-data-index.csv",
+    "http://localhost:3001/solar-energy-district-data-index.csv",
+    "http://localhost:3001/solar-installations-detailed.csv",
+    "http://localhost:3001/population_density_arequipa_censo2025.csv"
   ],
   "categories": [
-    "NO₂ (Nitrogen Dioxide)",
-    "Air Quality",
-    "Environmental Health",
-    "Urban Pollution",
+    "Nighttime Lights",
+    "Solar Energy",
+    "Renewable Energy Infrastructure",
+    "Population Density",
+    "Urban Development",
     "Satellite Data",
-    "Atmospheric Chemistry",
     "Environmental Monitoring",
-    "Climate Change",
-    "Geospatial Data"
+    "Energy Potential",
+    "Demographic Data",
+    "Geospatial Analysis",
+    "District Planning",
+    "Sustainable Development"
   ],
-  "aboutProject": "This RAG system provides comprehensive NO₂ (Nitrogen Dioxide) air quality data for cities across Latin America, with a focus on Colombia. The system contains detailed measurements from TROPOMI satellite data, including NO₂ concentrations, air quality categories, health impacts, and environmental context for major cities. Users can query specific cities, compare air quality across regions, understand health risks, and get recommendations for different air quality levels. The data covers 15 major cities including 8 Colombian cities (Medellín, Cali, Barranquilla, Cartagena, Bucaramanga, Pereira, Manizales) and 7 other Latin American cities (Mexico City, São Paulo, Buenos Aires, Lima, Santiago, Caracas, Quito, La Paz). Each city entry includes coordinates, NO₂ measurements, air quality categories, health impacts, pollution sources, and recommendations."
+  "aboutProject": "This RAG system provides comprehensive environmental, energy, and demographic data for districts across the Arequipa region of Peru. The system contains detailed measurements from multiple datasets including nighttime lights intensity, solar energy potential, solar installation details, and population density from the 2025 census. Users can query specific districts, compare environmental indicators across provinces, understand energy potential, analyze development patterns, and examine demographic distributions. The data covers districts across 8 provinces (Arequipa, Camaná, Caravelí, Castilla, Caylloma, Condesuyos, Islay, La Unión) with detailed information on nighttime lights, solar irradiation potential, existing solar infrastructure, and population density. Each district entry includes coordinates, environmental measurements, energy potential data, infrastructure details, and demographic statistics."
 }
