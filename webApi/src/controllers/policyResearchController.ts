@@ -162,7 +162,7 @@ ${ragContext}
 USER QUESTION: ${userQuestion}
 
 REQUIRED: Use the RAG data above to provide:
-1. Specific data points, statistics, and findings from the RAG context
+1. Specific data points, statistics, and findings from the RAG context: density population, district, Annual average nighttime lights intensity, Irradiation (GHI) Average daily solar energy potential, inventory of scale solar energy stations, etc
 2. Concrete examples and evidence from the retrieved information
 3. Detailed analysis based on the actual data, not generic statements
 4. Specific policy recommendations grounded in the RAG data
@@ -196,7 +196,7 @@ ${ragContext}
 FOLLOW-UP QUESTION: ${chatLog[chatLog.length - 1].message}
 
 REQUIRED: Use the RAG data above to provide:
-1. Specific data points, statistics, and findings from the RAG context: data population, district, inventory of solar plants, solar energy potential, night-lights per capita, etc.
+1. Specific data points, statistics, and findings from the RAG context: density population, district, Annual average nighttime lights intensity, Irradiation (GHI) Average daily solar energy potential, inventory of scale solar energy stations, etc.
 2. Concrete examples and evidence from the retrieved information
 3. Detailed analysis based on the actual data, not generic statements
 4. Specific policy recommendations grounded in the RAG data

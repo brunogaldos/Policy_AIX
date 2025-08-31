@@ -658,8 +658,7 @@ const ResearchChatbot = ({
     // Add user message to chat as is
     addMessage('user', userMessage);
     
-    // Clear selected datasets after sending
-    setSelectedDatasets([]);
+    // Keep selected datasets active after sending (don't clear them)
     setIsLoading(true);
 
     try {
@@ -1537,11 +1536,11 @@ const ResearchChatbot = ({
         .research-chatbot-token {
           display: inline-flex;
           align-items: center;
-          padding: 5px 11px; /* Adjusted padding for 11px font size */
+          padding: 5px 10px; /* Adjusted padding for 10px font size */
           background: rgba(255, 255, 255, 0.1);
           color: #FFFFFF;
           border-radius: 3px;
-          font-size: 11px; /* Adjusted font size from 9px to 11px */
+          font-size: 10px; /* Adjusted font size from 11px to 10px */
           font-family: 'Inter', sans-serif;
           font-weight: 400;
           border: 1px solid rgba(255, 255, 255, 0.2);
