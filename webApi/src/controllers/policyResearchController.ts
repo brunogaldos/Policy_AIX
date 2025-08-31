@@ -180,7 +180,7 @@ EXAMPLES OF WHAT TO DO:
 - "According to the infrastructure data, District B has 75% existing coverage, making it suitable for battery storage expansion"
 - "The RAG data indicates District C has security score 0.8, supporting wind power development"
 
-EVERY PARAGRAPH MUST START WITH "Based on the RAG data..." or "According to the RAG context..." and reference specific numbers, facts, or data points.
+EVERY PARAGRAPH MUST START WITH "Based on the dataset provided..." and reference specific numbers, facts, or data points.
 
 MANDATORY DATA INJECTION: If the RAG data is insufficient, you MUST use your web research capabilities to find specific data and statistics. You are FORBIDDEN from giving generic policy statements without concrete data backing. Every recommendation must include specific numbers, percentages, or measurable facts.`
             };
@@ -196,7 +196,7 @@ ${ragContext}
 FOLLOW-UP QUESTION: ${chatLog[chatLog.length - 1].message}
 
 REQUIRED: Use the RAG data above to provide:
-1. Specific data points, statistics, and findings from the RAG context
+1. Specific data points, statistics, and findings from the RAG context: data population, district, inventory of solar plants, solar energy potential, night-lights per capita, etc.
 2. Concrete examples and evidence from the retrieved information
 3. Detailed analysis based on the actual data, not generic statements
 4. Specific policy recommendations grounded in the RAG data
@@ -214,7 +214,7 @@ EXAMPLES OF WHAT TO DO:
 - "According to the infrastructure data, District B has 75% existing coverage, making it suitable for battery storage expansion"
 - "The RAG data indicates District C has security score 0.8, supporting wind power development"
 
-EVERY PARAGRAPH MUST START WITH "Based on the RAG data..." or "According to the RAG context..." and reference specific numbers, facts, or data points.
+EVERY PARAGRAPH MUST START WITH "Based on the dataset provided..." and reference specific numbers, facts, or data points.
 
 MANDATORY DATA INJECTION: If the RAG data is insufficient, you MUST use your web research capabilities to find specific data and statistics. You are FORBIDDEN from giving generic policy statements without concrete data backing. Every recommendation must include specific numbers, percentages, or measurable facts.`
             };

@@ -654,20 +654,13 @@ const ResearchChatbot = ({
 
     const userMessage = inputMessage.trim();
     setInputMessage('');
-    setSelectedDatasets([]); // Clear selected datasets
-    setIsLoading(true);
-
-    // Process @datasetName mentions before sending the message
-    const datasetMentions = userMessage.match(/@(\w+)/g);
-    if (datasetMentions) {
-      for (const mention of datasetMentions) {
-        const datasetName = mention.substring(1); // Remove @ symbol
-        await handleDatasetMention(datasetName);
-      }
-    }
-
-    // Add user message to chat
+    
+    // Add user message to chat as is
     addMessage('user', userMessage);
+    
+    // Clear selected datasets after sending
+    setSelectedDatasets([]);
+    setIsLoading(true);
 
     try {
       // Convert messages to simplified format for API
@@ -743,7 +736,7 @@ const ResearchChatbot = ({
     numberOfSelectQueries,
     percentOfTopQueriesToSearch,
     percentOfTopResultsToScan,
-    handleDatasetMention,
+    selectedDatasets,
   ]);
 
   /**
@@ -753,25 +746,6 @@ const ResearchChatbot = ({
     (e) => {
       const value = e.target.value;
       setInputMessage(value);
-      
-      // Detect manual token deletions in the input and deactivate corresponding map layers
-      // As soon as any character of a token label is deleted (token text no longer matches), deactivate
-      if (selectedDatasets.length > 0) {
-        const removedItems = selectedDatasets.filter((item) => {
-          const label = `@${item.shortName}`;
-          return !value.includes(label);
-        });
-        if (removedItems.length > 0) {
-          setSelectedDatasets((prev) => prev.filter((item) => value.includes(`@${item.shortName}`)));
-          setActiveDatasets((prev) => prev.filter((d) => !removedItems.some((ri) => ri.dataset.id === d.id)));
-          removedItems.forEach((ri) => {
-            if (ri.dataset?.layer && ri.dataset.layer.length > 0) {
-              dispatch(toggleMapLayerGroup({ dataset: ri.dataset, toggle: false }));
-              dispatch(resetMapLayerGroupsInteraction());
-            }
-          });
-        }
-      }
       
       // Check if we're typing after an @ symbol
       const lastAtSymbol = value.lastIndexOf('@');
@@ -801,7 +775,7 @@ const ResearchChatbot = ({
         setShowDatasetDropdown(false);
       }
     },
-    [allDatasets, getDatasetSearchTerms, selectedDatasets, dispatch],
+    [allDatasets, getDatasetSearchTerms],
   );
 
   /**
@@ -816,7 +790,9 @@ const ResearchChatbot = ({
     // Use the metadata name as the identifier
     const datasetName = getDatasetDisplayName(dataset);
     const tokenLabel = datasetName; // no longer shorten; show full friendly name
-    const newValue = beforeAt + '@' + tokenLabel + afterDataset;
+    
+    // Remove the @ and dataset name from input, keep only the text before and after
+    const newValue = beforeAt + afterDataset;
     setInputMessage(newValue);
     
     // Add to selected datasets for visual indication (store full dataset object)
@@ -841,11 +817,11 @@ const ResearchChatbot = ({
     
     setShowDatasetDropdown(false);
     
-    // Focus back on input
+    // Focus back on input at the position where the @ was
     setTimeout(() => {
       if (inputRef.current) {
         inputRef.current.focus();
-        const newCursorPos = beforeAt.length + tokenLabel.length + 1; // +1 for @
+        const newCursorPos = beforeAt.length;
         inputRef.current.setSelectionRange(newCursorPos, newCursorPos);
       }
     }, 0);
@@ -1561,11 +1537,11 @@ const ResearchChatbot = ({
         .research-chatbot-token {
           display: inline-flex;
           align-items: center;
-          padding: 5px 10px; /* Bigger token */
+          padding: 5px 11px; /* Adjusted padding for 11px font size */
           background: rgba(255, 255, 255, 0.1);
           color: #FFFFFF;
           border-radius: 3px;
-          font-size: 9px; /* Larger token text */
+          font-size: 11px; /* Adjusted font size from 9px to 11px */
           font-family: 'Inter', sans-serif;
           font-weight: 400;
           border: 1px solid rgba(255, 255, 255, 0.2);
@@ -1581,14 +1557,14 @@ const ResearchChatbot = ({
           border: none;
           color: rgba(255, 255, 255, 0.6);
           cursor: pointer;
-          font-size: 7px;
+          font-size: 14px;
           padding: 0;
           line-height: 1;
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 9px;
-          height: 9px;
+          width: 12px;
+          height: 12px;
           border-radius: 50%;
           transition: all 0.2s ease;
           flex-shrink: 0;
