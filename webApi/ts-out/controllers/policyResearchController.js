@@ -96,21 +96,47 @@ export class PolicyResearchController extends BaseController {
                         // Step 1: Get RAG context from SkillsFirstChatBot
                         const userQuestion = chatLog[0].message;
                         console.log(`📄 Original user question:`, userQuestion);
-                        const ragContext = await this.getRAGContext(userQuestion, wsClientId);
-                        console.log(`📝 RAG context retrieved, length:`, ragContext.length);
+                        // Check if this is a follow-up question (more than 1 message)
+                        let ragContext;
+                        if (chatLog.length === 1) {
+                            // First question - get initial RAG context
+                            ragContext = await this.getRAGContext(userQuestion, wsClientId);
+                            console.log(`📝 Initial RAG context retrieved, length:`, ragContext.length);
+                        }
+                        else {
+                            // Follow-up question - get fresh RAG context for the follow-up
+                            const followUpQuestion = chatLog[chatLog.length - 1].message;
+                            console.log(`📝 Follow-up question detected:`, followUpQuestion);
+                            ragContext = await this.getRAGContext(followUpQuestion, wsClientId);
+                            console.log(`📝 Fresh RAG context for follow-up retrieved, length:`, ragContext.length);
+                        }
                         console.log(`📝 RAG context preview (first 500 chars):`, ragContext.substring(0, 500));
                         // Step 2: Enhance the query with RAG context
-                        enhancedChatLog[0] = {
-                            ...enhancedChatLog[0],
-                            message: `RAG Context: ${ragContext}
+                        if (chatLog.length === 1) {
+                            // First question - use original enhancement
+                            enhancedChatLog[0] = {
+                                ...enhancedChatLog[0],
+                                message: `${ragContext}
 
 User Question: ${userQuestion}
 
 Please research current policies and regulations that address this situation, incorporating the data context provided above. Provide comprehensive policy recommendations based on both the data and current best practices.`
-                        };
+                            };
+                        }
+                        else {
+                            // Follow-up question - enhance with fresh RAG context
+                            enhancedChatLog[enhancedChatLog.length - 1] = {
+                                ...enhancedChatLog[enhancedChatLog.length - 1],
+                                message: `${ragContext}
+
+Follow-up Question: ${chatLog[chatLog.length - 1].message}
+
+Please provide a comprehensive answer using the data context above, following the energy-transition policy advisor format with neighborhood rankings and detailed analysis.`
+                            };
+                        }
                         console.log(`📝 Enhanced query created with RAG context`);
-                        console.log(`📄 Enhanced query preview (first 300 chars):`, enhancedChatLog[0].message.substring(0, 300));
-                        console.log(`📊 Enhanced query total length:`, enhancedChatLog[0].message.length);
+                        console.log(`📄 Enhanced query preview (first 300 chars):`, enhancedChatLog[enhancedChatLog.length - 1].message.substring(0, 300));
+                        console.log(`📊 Enhanced query total length:`, enhancedChatLog[enhancedChatLog.length - 1].message.length);
                     }
                     catch (ragError) {
                         console.error(`❌ Error getting RAG context:`, ragError);
