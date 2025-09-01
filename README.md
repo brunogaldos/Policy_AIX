@@ -1,10 +1,4 @@
-## Live Web Research Example
-
-# Steps
-- Get Express API running
-- Run the Web App
-
-
+## Policy AI Research Example
 
 
 ![policy_AI_COMPLETE(1)](https://github.com/user-attachments/assets/57e2423f-e109-4f3d-894e-e71b5cea100c)
