@@ -26,9 +26,31 @@ echo "   - Weaviate API Key: Configured"
 echo "📁 Ensuring cache directory exists..."
 mkdir -p src/ingestion/cache
 
-# Run the RAG ingestion pipeline
+# Run the RAG ingestion pipeline directly
 echo "🤖 Starting RAG ingestion pipeline..."
-node example-complete-rag.js
+node -e "
+import { SkillsFirstIngestionProcessor } from './src/ingestion/agentProcessor.js';
+
+async function main() {
+    try {
+        console.log('🚀 Starting Skills First RAG ingestion pipeline...');
+        
+        const processor = new SkillsFirstIngestionProcessor();
+        await processor.processDataLayout();
+        
+        console.log('✅ RAG ingestion completed successfully!');
+        console.log('📚 Documents have been processed and embedded in the vector store.');
+        console.log('🤖 The RAG chatbot is now ready to answer questions.');
+        
+        process.exit(0);
+    } catch (error) {
+        console.error('❌ Failed to run RAG ingestion:', error);
+        process.exit(1);
+    }
+}
+
+main();
+"
 
 # Check if the script completed successfully
 if [ $? -eq 0 ]; then

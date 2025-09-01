@@ -2,7 +2,7 @@
 set -e  # Exit if any command fails
 
 # 1. Export the API key
-export WEAVIATE_API_KEY="bC80K2dPTEV0N2tkaXdLdV9BYU4wNVJkeFRIelRiSUJoRHlsUGNHWHkzTkNlRjVkSlh1UUJYbFA3ZXBrPV92MjAw"
+export WEAVIATE_APIKEY="bC80K2dPTEV0N2tkaXdLdV9BYU4wNVJkeFRIelRiSUJoRHlsUGNHWHkzTkNlRjVkSlh1UUJYbFA3ZXBrPV92MjAw"
 
 # 2. Run docker compose inside vectorstore
 cd ~/policy-synth/policy-synth/projects/skillsFirst/webResearchTool/webApi/src/vectorstore || {

@@ -3,13 +3,13 @@
 # Steps
 - Get Express API running
 - Run the Web App
-<img width="1158" height="765" alt="Screenshot from 2025-07-30 20-54-46" src="https://github.com/user-attachments/assets/03a34d7c-ddff-4a31-b824-d8343566a101" />
 
-<img width="1184" height="914" alt="Screenshot from 2025-07-30 20-55-02" src="https://github.com/user-attachments/assets/df6a51d4-b4d5-4626-aa1c-ef898d8e0b41" />
+
+
 
 ![policy_AI_COMPLETE(1)](https://github.com/user-attachments/assets/57e2423f-e109-4f3d-894e-e71b5cea100c)
 
-
+!
 # Pipeline Flow Explanation
 
 ## 1. Initial Setup & WebSocket Connection
@@ -30,6 +30,9 @@
 - **Controller:** `LiveResearchChatController.liveResearchChat()` receives the request
 - **Bot Instantiation:** `LiveResearchChatBot` is created and linked to WebSocket client
 - **WebSocket Lookup:** Bot uses `wsClientId` to stream results to frontend
+
+## 3. Frontned Processing
+- `Resource watch`: Webpage with datasets from different topics 
 
 ## 4. Research Pipeline (Sequential)
 
@@ -81,3 +84,12 @@
 - Redis
 - OpenAI API Key
 - WebSocket-compatible frontend (tested on modern browsers)
+- Redis
+- Postgres
+- Weaviate
+
+
+# How to start
+
+- Execute first the server in the backend directory webApi
+- Execute the frontend in the directory resource-watch to connect the functionalities  
